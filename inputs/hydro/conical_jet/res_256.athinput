@@ -1,0 +1,91 @@
+# Athena++ (Kokkos version) input file for spherical blast problem
+
+<comment>
+problem   = AGN Jet injection
+reference = (arXiv:2401.00446v1) Dissipation of AGN Jets in clumpy interstellar medium
+
+<job>
+basename  = conical_jet      # problem ID: basename of output filenames
+
+<mesh>
+nghost    = 4           # Number of ghost cells
+nx1       = 256         # Number of zones in X1-direction
+x1min     = 0           # minimum value of X1
+x1max     = 16          # maximum value of X1
+ix1_bc    = reflect     # inner-X1 boundary flag
+ox1_bc    = outflow     # outer-X1 boundary flag
+
+nx2       = 256         # Number of zones in X2-direction
+x2min     = -4        # minimum value of X2
+x2max     = 4         # maximum value of X2
+ix2_bc    = reflect     # inner-X2 boundary flag
+ox2_bc    = reflect     # outer-X2 boundary flag
+
+nx3       = 256         # Number of zones in X3-direction
+x3min     = -4          # minimum value of X3
+x3max     = 4          # maximum value of X3
+ix3_bc    = reflect     # inner-X3 boundary flag
+ox3_bc    = reflect     # outer-X3 boundary flag
+
+<meshblock>
+nx1       = 64          # Number of cells in each MeshBlock, X1-dir(4)
+nx2       = 128         # Number of cells in each MeshBlock, X2-dir(2)
+nx3       = 128         # Number of cells in each MeshBlock, X3-dir(2)
+
+<mesh_refinement>
+refinement = static    # type of refinement
+
+<refinement1>
+level = 1
+x1min = 0
+x1max = 16
+x2min = -2
+x2max = 2
+x3min = -2
+x3max = 2
+
+
+<time>
+evolution  = dynamic    # dynamic/kinematic/static
+integrator = rk2        # time integration algorithm
+cfl_number = 0.3        # The Courant, Friedrichs, & Lewy (CFL) Number
+nlim       = -1         # cycle limit
+tlim       = 5          # time limit
+ndiag      = 1000         # cycles between diagostic output
+
+<hydro>
+eos         = ideal     # EOS type
+reconstruct = plm       # spatial reconstruction method
+rsolver     = llf       # Riemann-solver to be used
+nscalars    = 1         # number of passive scalars in hydro
+gamma       = 1.666666666667 # gamma = C_p/C_v
+fofc        = true
+
+<units>
+length_cgs  = 3.086e+20                     # 100 pc  'L0'
+mass_cgs    = 4.907996409352e+37            # 1 (kpc^3)*(mp/cm^3)   'L0^3*rho0'
+time_cgs    = 3.0857e+12                    # 0.1 Myr; v0 = 1000 km/s
+
+<problem>
+user_srcs   = True           #Set to True to enable User Source Terms
+cs_amb      = 0.01           #km/s (T=1e4K => snd speed of 10 km/s)
+d_amb       = 1              #rho0 (1 mp/cm^3)
+r_jet       = 0.5            #50 pc
+l_jet       = 6.905          #L0^2*rho0*cs^3 (1.1e42 erg/s)
+v_jet       = 15             #1000 km/s (0.05c)          
+alpha_jet_d = 30             #degree
+theta_jet_d = 0              #degree
+
+
+<output1>
+file_type  = hst        # History data dump
+dt         = 1e-3       # time increment between outputs
+
+<output2>
+file_type  = bin        # Binary data dump
+variable   = hydro_w    # variables to be output
+dt         = 0.5        # time increment between outputs
+
+<output3>
+file_type   = rst         # Restart file
+dt          = 0.5
