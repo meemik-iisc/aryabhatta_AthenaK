@@ -1,0 +1,22 @@
+default_dict={
+    "input_folder":"/home/meemik/athenak/build_cylindrical_jet_2/src/res_scaling/res_256/cylindricalJetAmbHalfOut/bin",
+    # "input_folder":"/home/meemik/athenak/build_cylindrical_jet/src/cylindrical_jet_10d/cylindricalJetAmbHalfOut/bin",
+    "input_file": "jet_amb.hydro_w.00004.bin",
+    "loop_bin": False,
+    "dt": 0.1,
+    "variable": "eint",
+    "cmap":"viridis",
+    "cmap_label":r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)",
+    "norm":"log",
+    "direction": 'x3',
+    "location":0,
+    "extents": [None,None,None,None],
+    "clim": [1e-11, 10],
+    "streamline_density": 5.0,
+    "profile_variable":"zh",
+    "profile_slice":0,
+    "figsize":(16,4),
+    "xlabel":"x (kpc)",
+    "ylabel":"y (kpc)",
+    "axes_scale":0.1
+}
