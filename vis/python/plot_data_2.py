@@ -14,13 +14,13 @@ input_dir = Path(input("Enter path to binary folder: "))
 if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
-dt=0.05
+dt=1.0
 #Plotting variables
 dens_var={
     'cmap':"coolwarm",
-    'norm':"log",
-    'vmin':1e-3,
-    'vmax':10,
+    'norm':None,
+    'vmin':1.0,
+    'vmax':2.0,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -28,29 +28,39 @@ dens_var={
 }
 pres_var={
     'cmap':"viridis",
-    'norm':"log",
-    'vmin':1e-11,
-    'vmax':10,
+    'norm':None,
+    'vmin':20,
+    'vmax':160,
     'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
 }
-velx_var={
-    'cmap':"seismic",
-    'norm':"twoSlope",
-    'vmin':-2,
-    'vmax':15,
-    'x1min':None,
-    'x1max':None,
-    'x2min':None,
-    'x2max':None,
-}
-vely_var={
+velr_var={
     'cmap':"seismic",
     'norm':None,
-    'vmin':-3,
-    'vmax':3,
+    'vmin':0.0,
+    'vmax':1.0,
+    'x1min':None,
+    'x1max':None,
+    'x2min':None,
+    'x2max':None,
+}
+# vely_var={
+#     'cmap':"seismic",
+#     'norm':None,
+#     'vmin':None,
+#     'vmax':None,
+#     'x1min':None,
+#     'x1max':None,
+#     'x2min':None,
+#     'x2max':None,
+# }
+temp_var={
+    'cmap':"hot",
+    'norm':None,
+    'vmin':1.0e7,
+    'vmax':5.0e7,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -62,8 +72,9 @@ out_root = input_dir.parent / (input_dir.name + '_outputs')
 folders = {
     'dens': out_root / 'dens',
     'pres': out_root / 'pres',
-    'velx': out_root / 'velx',
-    'vely': out_root / 'vely',
+    'velr': out_root / 'velr',
+    # 'vely': out_root / 'vely',
+    'temp': out_root / 'temp',
     'data': out_root / 'data'
 }
 for folder in folders.values():
@@ -84,8 +95,9 @@ if not bin_files:
 quantities = {
     'dens': folders['dens'],
     'pgas': folders['pres'],
-    'velx': folders['velx'],
-    'vely': folders['vely']
+    'velr': folders['velr'],
+    # 'vely': folders['vely'],
+    'temp': folders['temp']
 }
 
 def plot_data(bf,qty,out_file,qtyvar,dim='z'):
@@ -124,19 +136,23 @@ for idx,bf in enumerate(bin_files):
     
     
 
-    # Plot velocity x
-    velx_out = folders['velx'] / f"{basename}_velx.png"
-    plot_data(bf,'velx',velx_out,velx_var)
+    # Plot radial velocity
+    velr_out = folders['velr'] / f"{basename}_velr.png"
+    plot_data(bf,'derived:velr',velr_out,velr_var)
 
-    # Plot velocity y
-    vely_out = folders['vely'] / f"{basename}_vely.png"
-    plot_data(bf,'vely',vely_out,vely_var)
+    # # Plot velocity y
+    # vely_out = folders['vely'] / f"{basename}_vely.png"
+    # plot_data(bf,'vely',vely_out,vely_var)
+    
+    #Plot temperature
+    temp_out = folders['temp'] / f"{basename}_temp.png"
+    plot_data(bf,'derived:T',temp_out,temp_var)
 
 
-    # Create combined 4x1 subplot: dens, pgas, velx, vely
-    fig, axes = plt.subplots(4, 1, figsize=(16, 16))
-    plot_order = ['dens', 'pgas', 'velx', 'vely']
-    titles = ['Density', 'Pressure', 'Velocity X', 'Velocity Y']
+    # Create combined 4x1 subplot: dens, pgas, velr, temp
+    fig, axes = plt.subplots(2, 2, figsize=(12, 12))
+    plot_order = ['dens', 'pgas', 'velr', 'temp']
+    titles = ['Density', 'Pressure', 'Radial Velocity', 'Temperature']
     for ax, key, title in zip(axes.flatten(), plot_order, titles):
         img_path = folders[key if key != 'pgas' else 'pres'] / f"{basename}_{key}.png"
         if img_path.exists():
@@ -144,7 +160,7 @@ for idx,bf in enumerate(bin_files):
             ax.imshow(img)
         ax.set_title(title)
         ax.axis('off')
-    fig.suptitle(f"t={timestep:.2f} Myr")
+    fig.suptitle(f"t={timestep:.2f}"+r'$t_{ff}$')
 
     combo_file = folders['data'] / f"{basename}_combined.png"
     fig.tight_layout()
