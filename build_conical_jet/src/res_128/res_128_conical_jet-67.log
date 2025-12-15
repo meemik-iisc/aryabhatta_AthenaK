@@ -1,0 +1,157 @@
+
+Root grid = 4 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 128
+Number of logical  levels of refinement = 3 (4 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 128
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+  Rank = 64: 1 MeshBlocks, cost = 1
+  Rank = 65: 1 MeshBlocks, cost = 1
+  Rank = 66: 1 MeshBlocks, cost = 1
+  Rank = 67: 1 MeshBlocks, cost = 1
+  Rank = 68: 1 MeshBlocks, cost = 1
+  Rank = 69: 1 MeshBlocks, cost = 1
+  Rank = 70: 1 MeshBlocks, cost = 1
+  Rank = 71: 1 MeshBlocks, cost = 1
+  Rank = 72: 1 MeshBlocks, cost = 1
+  Rank = 73: 1 MeshBlocks, cost = 1
+  Rank = 74: 1 MeshBlocks, cost = 1
+  Rank = 75: 1 MeshBlocks, cost = 1
+  Rank = 76: 1 MeshBlocks, cost = 1
+  Rank = 77: 1 MeshBlocks, cost = 1
+  Rank = 78: 1 MeshBlocks, cost = 1
+  Rank = 79: 1 MeshBlocks, cost = 1
+  Rank = 80: 1 MeshBlocks, cost = 1
+  Rank = 81: 1 MeshBlocks, cost = 1
+  Rank = 82: 1 MeshBlocks, cost = 1
+  Rank = 83: 1 MeshBlocks, cost = 1
+  Rank = 84: 1 MeshBlocks, cost = 1
+  Rank = 85: 1 MeshBlocks, cost = 1
+  Rank = 86: 1 MeshBlocks, cost = 1
+  Rank = 87: 1 MeshBlocks, cost = 1
+  Rank = 88: 1 MeshBlocks, cost = 1
+  Rank = 89: 1 MeshBlocks, cost = 1
+  Rank = 90: 1 MeshBlocks, cost = 1
+  Rank = 91: 1 MeshBlocks, cost = 1
+  Rank = 92: 1 MeshBlocks, cost = 1
+  Rank = 93: 1 MeshBlocks, cost = 1
+  Rank = 94: 1 MeshBlocks, cost = 1
+  Rank = 95: 1 MeshBlocks, cost = 1
+  Rank = 96: 1 MeshBlocks, cost = 1
+  Rank = 97: 1 MeshBlocks, cost = 1
+  Rank = 98: 1 MeshBlocks, cost = 1
+  Rank = 99: 1 MeshBlocks, cost = 1
+  Rank = 100: 1 MeshBlocks, cost = 1
+  Rank = 101: 1 MeshBlocks, cost = 1
+  Rank = 102: 1 MeshBlocks, cost = 1
+  Rank = 103: 1 MeshBlocks, cost = 1
+  Rank = 104: 1 MeshBlocks, cost = 1
+  Rank = 105: 1 MeshBlocks, cost = 1
+  Rank = 106: 1 MeshBlocks, cost = 1
+  Rank = 107: 1 MeshBlocks, cost = 1
+  Rank = 108: 1 MeshBlocks, cost = 1
+  Rank = 109: 1 MeshBlocks, cost = 1
+  Rank = 110: 1 MeshBlocks, cost = 1
+  Rank = 111: 1 MeshBlocks, cost = 1
+  Rank = 112: 1 MeshBlocks, cost = 1
+  Rank = 113: 1 MeshBlocks, cost = 1
+  Rank = 114: 1 MeshBlocks, cost = 1
+  Rank = 115: 1 MeshBlocks, cost = 1
+  Rank = 116: 1 MeshBlocks, cost = 1
+  Rank = 117: 1 MeshBlocks, cost = 1
+  Rank = 118: 1 MeshBlocks, cost = 1
+  Rank = 119: 1 MeshBlocks, cost = 1
+  Rank = 120: 1 MeshBlocks, cost = 1
+  Rank = 121: 1 MeshBlocks, cost = 1
+  Rank = 122: 1 MeshBlocks, cost = 1
+  Rank = 123: 1 MeshBlocks, cost = 1
+  Rank = 124: 1 MeshBlocks, cost = 1
+  Rank = 125: 1 MeshBlocks, cost = 1
+  Rank = 126: 1 MeshBlocks, cost = 1
+  Rank = 127: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=8.524774e+02 cycle=0 time=0.000000e+00 dt=5.991503e-04
+elapsed=1.941842e+03 cycle=1000 time=5.734916e-01 dt=5.421167e-04
+elapsed=3.113717e+03 cycle=2000 time=1.151797e+00 dt=5.944321e-04
+elapsed=4.144280e+03 cycle=3000 time=1.750573e+00 dt=5.991503e-04
+elapsed=5.235953e+03 cycle=4000 time=2.349724e+00 dt=5.991503e-04
+elapsed=6.336017e+03 cycle=5000 time=2.948874e+00 dt=5.991503e-04
+elapsed=8.109248e+03 cycle=6000 time=3.548024e+00 dt=5.991503e-04
+elapsed=9.112411e+03 cycle=7000 time=4.147175e+00 dt=5.991503e-04
+elapsed=1.015187e+04 cycle=8000 time=4.746314e+00 dt=5.991503e-04
+
+Terminating on time limit
+time=5.000000e+00 cycle=8426
+tlim=5.000000e+00 nlim=-1
+
+MeshBlock-cycles = 1078528
+cpu time used  = 1.013282e+04
+zone-cycles/cpu_second = 1.395118e+07
+particle-updates/cpu_second = 0.000000e+00

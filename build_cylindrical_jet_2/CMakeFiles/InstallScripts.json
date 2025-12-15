@@ -1,0 +1,19 @@
+{
+	"InstallScripts" : 
+	[
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/src/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/core/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/core/src/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/containers/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/containers/src/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/algorithms/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/algorithms/src/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/simd/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/simd/src/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/example/cmake_install.cmake",
+		"/scratch/meemik/athenak/build_cylindrical_jet_2/kokkos/benchmarks/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
