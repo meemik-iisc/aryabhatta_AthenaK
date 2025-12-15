@@ -1,10 +1,10 @@
 default_dict={
-    "input_folder":"/home/meemik/athenak/build_cylindrical_jet_2/src/res_scaling/res_256/cylindricalJetAmbHalfOut/bin",
+    "input_folder":"/scratch/meemik/athenak/build_bondi_accr/src/bondiAccrBigBoxOut/bin",
     # "input_folder":"/home/meemik/athenak/build_cylindrical_jet/src/cylindrical_jet_10d/cylindricalJetAmbHalfOut/bin",
-    "input_file": "jet_amb.hydro_w.00004.bin",
+    "input_file": "bondi_accr.hydro_w.00001.bin",
     "loop_bin": False,
     "dt": 0.1,
-    "variable": "eint",
+    "variable": "dens",
     "cmap":"viridis",
     "cmap_label":r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)",
     "norm":"log",

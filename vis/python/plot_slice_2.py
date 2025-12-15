@@ -158,9 +158,9 @@ def main(**kwargs):
     ergosphere_line_width = 1.0
     x1_labelpad = 2.0
     x2_labelpad = 2.0
-    axes_scale = 0.1
+    axes_scale = 1
     font_size = 14
-    fig_size = (16,4)
+    fig_size = (8,6)
 
     # Adjust user inputs
     if kwargs['dimension'] == '1':
@@ -281,7 +281,7 @@ def main(**kwargs):
             raise RuntimeError('Unable to find number of ghost cells in input file.')
 
         # Extract adiabatic index from input file metadata
-        names = ('pgas', 'pgas_rho', 'T', 'prad_pgas', 'sigmah_rel', 'va_rel', 'wgas',
+        names = ('pgas', 'pgas_rho', 'T','velr', 'prad_pgas', 'sigmah_rel', 'va_rel', 'wgas',
                  'wgasrad', 'Begas', 'Begasrad', 'cons_hydro_rel_t', 'cons_hydro_rel_x',
                  'cons_hydro_rel_y', 'cons_hydro_rel_z')
         if kwargs['variable'] in ['derived:' + name for name in names]:
@@ -574,7 +574,7 @@ def main(**kwargs):
         quantities[name] = np.array(quantities[name])
 
     # Calculate gas pressure or related quantity
-    names = ('pgas', 'pgas_rho', 'T', 'prad_pgas')
+    names = ('pgas', 'pgas_rho', 'T', 'prad_pgas', 'velr')
     if kwargs['variable'] in ['derived:' + name for name in names]:
         pgas = (gamma_adi - 1.0) * quantities['eint']
         if kwargs['variable'] == 'derived:pgas':
@@ -584,6 +584,12 @@ def main(**kwargs):
         elif kwargs['variable'] == 'derived:T':
             quantity = (mu * amu_cgs / kb_cgs * (length_cgs / time_cgs) ** 2 * pgas
                         / quantities['dens'])
+        elif kwargs['variable'] == 'derived:velr':
+            vx = quantities['velx']
+            vy = quantities['vely']
+            vz = quantities['velz']
+            velr = np.sqrt(vx**2+vy**2+vz**2)
+            quantity = velr
         else:
             prad = quantities['r00_ff'] / 3.0
             quantity = prad / pgas
@@ -1314,19 +1320,19 @@ def main(**kwargs):
     plt.xlim((x1_min, x1_max))
     plt.ylim((x2_min, x2_max))
     if kwargs['dimension'] == 'x':
-        plt.xlabel('$y$ (kpc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z$ (kpc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$y$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'y':
-        plt.xlabel('$x$ (kpc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z$ (kpc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'z':
-        plt.xlabel('$x$ (kpc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$y$ (kpc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$y$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
 
     # Adjust layout
-    plt.tight_layout(pad=0.5, w_pad=0.2, h_pad=0.2)
-    # plt.tight_layout()
-    fig.subplots_adjust(left=0.05, right=1.1, top=0.9, bottom=0.15) 
+    # plt.tight_layout(pad=0.5, w_pad=0.2, h_pad=0.2)
+    plt.tight_layout()
+    # fig.subplots_adjust(left=0.05, right=1.1, top=0.9, bottom=0.15) 
 
     # Save or display figure
     if kwargs['output_file'] != 'show':
@@ -1343,6 +1349,7 @@ def set_derived_dependencies():
     for name in names:
         derived_dependencies[name] = ('dens', 'eint')
     derived_dependencies['prad_pgas'] = ('eint', 'r00_ff')
+    derived_dependencies['velr']=('dens', 'eint','velx', 'vely', 'velz')
     names = ('vr_nr', 'vth_nr', 'vph_nr', 'uut', 'ut', 'ux', 'uy', 'uz', 'ur', 'uth',
              'uph', 'u_t', 'u_x', 'u_y', 'u_z', 'u_r', 'u_th', 'u_ph', 'vx', 'vy', 'vz',
              'vr_rel', 'vth_rel', 'vph_rel')
@@ -1437,8 +1444,9 @@ def set_derived_dependencies():
 # Function that defines colorbar labels
 def set_labels(general_rel_v):
     labels = {}
-    labels['dens'] = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
+    labels['dens'] = r"$\rho\ \left[\mathrm{100\,m_p/cm^3}\right]$"
     labels['eint'] = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
+    labels['velr'] = r"$|v_r|\ [10^2\ \mathrm{km/s}]$"
     if general_rel_v:
         labels['velx'] = r"$v_x\ [10^3\ \mathrm{km/s}]$"
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"
