@@ -1,0 +1,158 @@
+
+Root grid = 4 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 128
+Number of logical  levels of refinement = 3 (4 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 128
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+  Rank = 64: 1 MeshBlocks, cost = 1
+  Rank = 65: 1 MeshBlocks, cost = 1
+  Rank = 66: 1 MeshBlocks, cost = 1
+  Rank = 67: 1 MeshBlocks, cost = 1
+  Rank = 68: 1 MeshBlocks, cost = 1
+  Rank = 69: 1 MeshBlocks, cost = 1
+  Rank = 70: 1 MeshBlocks, cost = 1
+  Rank = 71: 1 MeshBlocks, cost = 1
+  Rank = 72: 1 MeshBlocks, cost = 1
+  Rank = 73: 1 MeshBlocks, cost = 1
+  Rank = 74: 1 MeshBlocks, cost = 1
+  Rank = 75: 1 MeshBlocks, cost = 1
+  Rank = 76: 1 MeshBlocks, cost = 1
+  Rank = 77: 1 MeshBlocks, cost = 1
+  Rank = 78: 1 MeshBlocks, cost = 1
+  Rank = 79: 1 MeshBlocks, cost = 1
+  Rank = 80: 1 MeshBlocks, cost = 1
+  Rank = 81: 1 MeshBlocks, cost = 1
+  Rank = 82: 1 MeshBlocks, cost = 1
+  Rank = 83: 1 MeshBlocks, cost = 1
+  Rank = 84: 1 MeshBlocks, cost = 1
+  Rank = 85: 1 MeshBlocks, cost = 1
+  Rank = 86: 1 MeshBlocks, cost = 1
+  Rank = 87: 1 MeshBlocks, cost = 1
+  Rank = 88: 1 MeshBlocks, cost = 1
+  Rank = 89: 1 MeshBlocks, cost = 1
+  Rank = 90: 1 MeshBlocks, cost = 1
+  Rank = 91: 1 MeshBlocks, cost = 1
+  Rank = 92: 1 MeshBlocks, cost = 1
+  Rank = 93: 1 MeshBlocks, cost = 1
+  Rank = 94: 1 MeshBlocks, cost = 1
+  Rank = 95: 1 MeshBlocks, cost = 1
+  Rank = 96: 1 MeshBlocks, cost = 1
+  Rank = 97: 1 MeshBlocks, cost = 1
+  Rank = 98: 1 MeshBlocks, cost = 1
+  Rank = 99: 1 MeshBlocks, cost = 1
+  Rank = 100: 1 MeshBlocks, cost = 1
+  Rank = 101: 1 MeshBlocks, cost = 1
+  Rank = 102: 1 MeshBlocks, cost = 1
+  Rank = 103: 1 MeshBlocks, cost = 1
+  Rank = 104: 1 MeshBlocks, cost = 1
+  Rank = 105: 1 MeshBlocks, cost = 1
+  Rank = 106: 1 MeshBlocks, cost = 1
+  Rank = 107: 1 MeshBlocks, cost = 1
+  Rank = 108: 1 MeshBlocks, cost = 1
+  Rank = 109: 1 MeshBlocks, cost = 1
+  Rank = 110: 1 MeshBlocks, cost = 1
+  Rank = 111: 1 MeshBlocks, cost = 1
+  Rank = 112: 1 MeshBlocks, cost = 1
+  Rank = 113: 1 MeshBlocks, cost = 1
+  Rank = 114: 1 MeshBlocks, cost = 1
+  Rank = 115: 1 MeshBlocks, cost = 1
+  Rank = 116: 1 MeshBlocks, cost = 1
+  Rank = 117: 1 MeshBlocks, cost = 1
+  Rank = 118: 1 MeshBlocks, cost = 1
+  Rank = 119: 1 MeshBlocks, cost = 1
+  Rank = 120: 1 MeshBlocks, cost = 1
+  Rank = 121: 1 MeshBlocks, cost = 1
+  Rank = 122: 1 MeshBlocks, cost = 1
+  Rank = 123: 1 MeshBlocks, cost = 1
+  Rank = 124: 1 MeshBlocks, cost = 1
+  Rank = 125: 1 MeshBlocks, cost = 1
+  Rank = 126: 1 MeshBlocks, cost = 1
+  Rank = 127: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=3.916725e+02 cycle=6000 time=1.004568e+00 dt=1.598164e-04
+elapsed=1.301775e+04 cycle=7000 time=1.170822e+00 dt=1.826640e-04
+elapsed=2.571952e+04 cycle=8000 time=1.338393e+00 dt=1.587550e-04
+elapsed=3.940417e+04 cycle=9000 time=1.511828e+00 dt=1.778493e-04
+elapsed=5.214570e+04 cycle=10000 time=1.686341e+00 dt=1.650257e-04
+elapsed=6.490475e+04 cycle=11000 time=1.861608e+00 dt=1.674133e-04
+elapsed=7.861717e+04 cycle=12000 time=2.038043e+00 dt=1.644620e-04
+slurmstepd-cn01: error: *** JOB 40 ON cn01 CANCELLED AT 2025-09-18T15:23:24 DUE TO TIME LIMIT ***
+--------------------------------------------------------------------------
+ORTE has lost communication with a remote daemon.
+
+  HNP daemon   : [[57173,0],0] on node cn01
+  Remote daemon: [[57173,0],1] on node cn02
+
+This is usually due to either a failure of the TCP network
+connection to the node, or possibly an internal failure of
+the daemon itself. We cannot recover from this failure, and
+therefore will terminate the job.
+--------------------------------------------------------------------------
