@@ -19,8 +19,8 @@ dt=1.0
 dens_var={
     'cmap':"coolwarm",
     'norm':None,
-    'vmin':1.0,
-    'vmax':2.0,
+    'vmin':None,
+    'vmax':None,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -29,8 +29,8 @@ dens_var={
 pres_var={
     'cmap':"viridis",
     'norm':None,
-    'vmin':20,
-    'vmax':160,
+    'vmin':None,
+    'vmax':None,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -39,8 +39,8 @@ pres_var={
 velr_var={
     'cmap':"seismic",
     'norm':None,
-    'vmin':0.0,
-    'vmax':1.0,
+    'vmin':None,
+    'vmax':None,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -49,8 +49,8 @@ velr_var={
 # vely_var={
 #     'cmap':"seismic",
 #     'norm':None,
-#     'vmin':None,
-#     'vmax':None,
+#     'vmin':None
+#     'vmax':None
 #     'x1min':None,
 #     'x1max':None,
 #     'x2min':None,
@@ -59,8 +59,8 @@ velr_var={
 temp_var={
     'cmap':"hot",
     'norm':None,
-    'vmin':1.0e7,
-    'vmax':5.0e7,
+    'vmin':None,
+    'vmax':None,
     'x1min':None,
     'x1max':None,
     'x2min':None,

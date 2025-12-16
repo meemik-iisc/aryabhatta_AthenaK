@@ -1,6 +1,7 @@
 import struct
 import numpy as np
 import pandas as pd
+from constants import mu,mp_cgs,kB_cgs,L_code,M_code,t_code,gamma
 
 def extract_athenak_slice(user_params):
     """
@@ -20,6 +21,10 @@ def extract_athenak_slice(user_params):
     """
     file_path = user_params["input_folder"].rstrip('/') + '/' + user_params["input_file"]
     variable = user_params["variable"]
+    if variable.startswith("derived:"):
+        variable=variable.split(":", 1)[1].strip()
+        if variable == "temp":
+            return extract_temp_slice(user_params)
     direction = user_params.get("direction", None)
     if direction in ('x1', '1'):
         dimension = 'x'
@@ -197,6 +202,24 @@ def extract_athenak_slice(user_params):
             "num_blocks": num_blocks_used,
             "block_shape": (block_nx2, block_nx1)
         }
+        
+        
+def extract_temp_slice(user_params):
+    rho_params = user_params.copy()
+    rho_params.update(variable="dens")
+    rho_data_df=extract_athenak_slice(rho_params)
+    rho_data=rho_data_df['df_quantities']
+    pres_params = user_params.copy()
+    pres_params.update(variable="eint")
+    pres_data_df = extract_athenak_slice(pres_params)
+    pres_data = pres_data_df['df_quantities']
+    temp_data=(pres_data/rho_data)* (mu*mp_cgs/(kB_cgs*(gamma-1)))*((L_code/t_code)**2)
+    return {
+        "df_quantities": temp_data,
+        "df_extents": pres_data_df['df_extents'],
+        "num_blocks": pres_data_df['num_blocks'],
+        "block_shape": pres_data_df['block_shape']
+    }
         
 import numpy as np
 

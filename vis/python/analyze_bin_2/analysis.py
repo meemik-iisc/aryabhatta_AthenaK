@@ -13,7 +13,7 @@ import bin_convert
 from io_utils import ensure_dir, extract_slice_number
 from data_processing import extract_athenak_slice, stitch_meshblocks_to_global
 from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data 
-from plotting.plot_1d_profiles import plot_zh,plot_rc
+from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile
 from plotting.streamlines import plot_streamlines_from_dataframes
 
 def run(analysis_type, user_params):
@@ -34,6 +34,8 @@ def run(analysis_type, user_params):
                 plot_zh(df, user_params)
             elif user_params['profile_variable']=='rc':
                 plot_rc(df,user_params)
+            elif user_params['profile_variable']=='x':
+                plot_x_profile(df,user_params)
         else:
             p_u = user_params.copy(); p_u['variable']="velx"
             p_v = user_params.copy(); p_v['variable']="velz"
