@@ -1,0 +1,90 @@
+# Athena++ (Kokkos version) input file for spherical blast problem
+
+<comment>
+problem   = Spherical Bondi Accretion
+reference = (arXiv:2401.00446v1) Dissipation of AGN Jets in clumpy interstellar medium
+
+<job>
+basename  = bondi_accr      # problem ID: basename of output filenames
+
+<mesh>
+nghost    = 4           # Number of ghost cells
+nx1       = 128         # Number of zones in X1-direction
+x1min     = -10          # minimum value of X1
+x1max     = 10           # maximum value of X1
+ix1_bc    = outflow     # inner-X1 boundary flag
+ox1_bc    = outflow     # outer-X1 boundary flag
+
+nx2       = 128         # Number of zones in X2-direction
+x2min     = -10          # minimum value of X2
+x2max     = 10           # maximum value of X2
+ix2_bc    = outflow     # inner-X2 boundary flag
+ox2_bc    = outflow     # outer-X2 boundary flag
+
+nx3       = 128         # Number of zones in X3-direction
+x3min     = -10          # minimum value of X3
+x3max     = 10           # maximum value of X3
+ix3_bc    = outflow     # inner-X3 boundary flag
+ox3_bc    = outflow     # outer-X3 boundary flag
+
+<meshblock>
+nx1       = 64           # Number of cells in each MeshBlock, X1-dir(2)
+nx2       = 64           # Number of cells in each MeshBlock, X2-dir(2)
+nx3       = 64           # Number of cells in each MeshBlock, X3-dir(2)
+
+<mesh_refinement>
+refinement = static     # type of refinement
+
+<refinement1>
+level = 1
+x1min = -5
+x1max = 5
+x2min = -5
+x2max = 5
+x3min = -5
+x3max = 5
+
+
+
+<time>
+evolution  = dynamic    # dynamic/kinematic/static
+integrator = rk2        # time integration algorithm
+cfl_number = 0.3        # The Courant, Friedrichs, & Lewy (CFL) Number
+nlim       = -1         # cycle limit
+tlim       = 2.78       # time limit(27 kyr)
+ndiag      = 1000       # cycles between diagostic output
+
+<hydro>
+eos         = ideal     # EOS type
+reconstruct = plm       # spatial reconstruction method
+rsolver     = llf       # Riemann-solver to be used
+gamma       = 1.666666666667 # gamma = C_p/C_v
+fofc        = true
+
+<units>
+length_cgs  = 3.086e+18                     # 1 pc  'L0'
+mass_cgs    = 4.907996409352e+33            # 1 (pc^3)*(100mp/cm^3)   'L0^3*rho0'
+time_cgs    = 3.0857e+11                    # 9.7 kyr; v0 = 100 km/s
+
+<problem>
+user_srcs   = True            #Set to True to enable User Source Terms
+cs_amb      = 0.11            #km/s (T=1e4K => snd speed of 11.7 km/s)
+d_amb       = 1               #rho0 (100 mp/cm^3)
+M_bh        = 8.16e6          # (2e7 M_solar)
+epsilon     = 125             # 0.1 R_Bondi (R_Bondi = 1250  pc)
+CONST_G     = 1.06e-6         #1/(rho0*t0^2)          
+
+
+
+<output1>
+file_type  = hst        # History data dump
+dt         = 2.78e-2       # time increment between outputs
+
+<output2>
+file_type  = bin        # Binary data dump
+variable   = hydro_w    # variables to be output
+dt         = 2.78e-1    # time increment between outputs (10 output files)
+
+<output3>
+file_type   = rst         # Restart file
+dt          = 2.78e-1
