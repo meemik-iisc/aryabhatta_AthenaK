@@ -25,6 +25,8 @@ def extract_athenak_slice(user_params):
         variable=variable.split(":", 1)[1].strip()
         if variable == "temp":
             return extract_temp_slice(user_params)
+        elif variable == "velr":
+            return extract_radial_vel_slice(user_params)
     direction = user_params.get("direction", None)
     if direction in ('x1', '1'):
         dimension = 'x'
@@ -76,7 +78,6 @@ def extract_athenak_slice(user_params):
         
         num_ghost = int(input_data['mesh']['nghost'])
         num_variables_base = len(variable_names_base)
-        
         quantities_list = []
         extents_list = []
         file_size = f.seek(0, 2)
@@ -220,7 +221,23 @@ def extract_temp_slice(user_params):
         "num_blocks": pres_data_df['num_blocks'],
         "block_shape": pres_data_df['block_shape']
     }
-        
+
+def extract_radial_vel_slice(user_params):
+    vel_params = user_params.copy()
+    vel_params.update(variable="velx")
+    velx_data_df=extract_athenak_slice(vel_params)
+    velx_data = velx_data_df['df_quantities']
+    vel_params.update(variable="vely")
+    vely_data = extract_athenak_slice(vel_params)['df_quantities']
+    vel_params.update(variable="velz")
+    velz_data = extract_athenak_slice(vel_params)['df_quantities']
+    velr_data = np.sqrt(np.square(velx_data)+np.square(vely_data)+np.square(velz_data))
+    return {
+        "df_quantities": velr_data,
+        "df_extents": velx_data_df['df_extents'],
+        "num_blocks": velx_data_df['num_blocks'],
+        "block_shape": velx_data_df['block_shape']
+    }
 import numpy as np
 
 def stitch_meshblocks_to_global(data_dict, user_params):
