@@ -171,7 +171,7 @@ def plot_x_profile(data_dict, user_params):
     data_sorted = data_filtered[sort_idx]
 
     plt.figure(figsize=(10,6))
-    plt.plot(x_sorted, data_sorted, 'o-', markersize=3)
+    plt.plot(x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
     plt.ylim([
         user_params['clim'][0] or np.min(data_values),
         user_params['clim'][1] or np.max(data_values)
@@ -182,12 +182,15 @@ def plot_x_profile(data_dict, user_params):
     plt.grid(alpha=0.3)
     
     if user_params['variable']=="eint":
-        out_dir = Path(user_params['output_path'])/ "x_profile" / "pres" 
+        out_dir = Path(user_params['output_path'])/ "x_profile" / "pres"
+    elif user_params['variable'].startswith("derived:"):
+        variable=user_params['variable'].split(":", 1)[1].strip()
+        out_dir = Path(user_params['output_path'])/ "x_profile" / variable
     else:    
         out_dir = Path(user_params['output_path'])/ "x_profile" / user_params["variable"] 
     os.makedirs(out_dir, exist_ok=True)
     if user_params.get('loop_bin', False):
-        plt.title(f"t={user_params['slice_number']}"+r'$t_{ff}$')
+        # plt.title(f"t={user_params['slice_number']}"+r'$t_{ff}$')
         fname = os.path.join(out_dir, f"t_{user_params['slice_number']}.png")
     else:
         plt.title("x profile")

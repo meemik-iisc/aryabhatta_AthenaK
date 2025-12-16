@@ -55,6 +55,7 @@ def build_params_for(analysis_type):
             "axes_scale":       {"prompt":"Scale Axis","default":default_dict['axes_scale'],"type":str},
             "cmap_label":   {"prompt":"Color label","default":default_dict['cmap_label'],"type":str},
             "clim":         {"prompt":"Colorbar limits: [vmin,vmax]","default":default_dict['clim'],"type":parse_int_list},
+            "color":   {"prompt":"Plot color","default":default_dict['color'],"type":str},
             })
     else:  # streamlines
         base.update({
