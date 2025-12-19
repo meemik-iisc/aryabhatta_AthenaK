@@ -34,7 +34,14 @@ nx3       = 64           # Number of cells in each MeshBlock, X3-dir(2)
 
 <mesh_refinement>
 refinement = static     # type of refinement
-
+<refinement1>
+level = 1
+x1min = -5
+x1max = 5
+x2min = -5
+x2max = 5
+x3min = -5
+x3max = 5
 <time>
 evolution  = dynamic    # dynamic/kinematic/static
 integrator = rk2        # time integration algorithm

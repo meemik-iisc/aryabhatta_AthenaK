@@ -7,6 +7,11 @@ gamma = 5.0/3.0
 
 
 #Code units
-L_code = 3.086e18                      #1pc
-M_code = 4.907996409352e+33            # 1 (pc^3)*(100mp/cm^3)   'L0^3*rho0'
-t_code = 3.0857e+11                    # 9.7 kyr; v0 = 100 km/s
+L_code = 3.086e21                      #0.01pc
+M_code = 4.907996409352e+42            # 1 (pc^3)*(100mp/cm^3)   'L0^3*rho0'
+t_code = 3.0857e+16                    # 9.7 kyr; v0 = 100 km/s
+
+#Bondi Radius
+R_bondi = 1.25
+
+Temp_norm = 2.23

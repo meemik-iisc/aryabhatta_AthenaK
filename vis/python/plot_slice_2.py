@@ -158,10 +158,11 @@ def main(**kwargs):
     ergosphere_line_width = 1.0
     x1_labelpad = 2.0
     x2_labelpad = 2.0
-    axes_scale = 1
+    R_bondi=1.25
+    axes_scale = 1/R_bondi
     font_size = 14
     fig_size = (8,6)
-
+    temp_norm =1.5
     # Adjust user inputs
     if kwargs['dimension'] == '1':
         kwargs['dimension'] = 'x'
@@ -583,7 +584,7 @@ def main(**kwargs):
             quantity = pgas / quantities['dens']
         elif kwargs['variable'] == 'derived:T':
             quantity = (mu * amu_cgs / kb_cgs * (length_cgs / time_cgs) ** 2 * pgas
-                        / quantities['dens'])
+                        / quantities['dens'])/ temp_norm
         elif kwargs['variable'] == 'derived:velr':
             vx = quantities['velx']
             vy = quantities['vely']
@@ -1320,14 +1321,14 @@ def main(**kwargs):
     plt.xlim((x1_min, x1_max))
     plt.ylim((x2_min, x2_max))
     if kwargs['dimension'] == 'x':
-        plt.xlabel('$y$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$y/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'y':
-        plt.xlabel('$x$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'z':
-        plt.xlabel('$x$ (pc)', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$y$ (pc)', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$y/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
 
     # Adjust layout
     # plt.tight_layout(pad=0.5, w_pad=0.2, h_pad=0.2)
@@ -1446,7 +1447,7 @@ def set_labels(general_rel_v):
     labels = {}
     labels['dens'] = r"$\rho\ \left[\mathrm{100\,m_p/cm^3}\right]$"
     labels['eint'] = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
-    labels['velr'] = r"$|v_r|\ [10^2\ \mathrm{km/s}]$"
+    labels['velr'] = r"$|v_r|\ [\mathrm{km/s}]$"
     if general_rel_v:
         labels['velx'] = r"$v_x\ [10^3\ \mathrm{km/s}]$"
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"

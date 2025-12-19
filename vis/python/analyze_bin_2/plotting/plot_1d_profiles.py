@@ -171,12 +171,12 @@ def plot_x_profile(data_dict, user_params):
     data_sorted = data_filtered[sort_idx]
 
     plt.figure(figsize=(10,6))
-    plt.plot(x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
+    plt.plot(user_params['axes_scale']*x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
     plt.ylim([
         user_params['clim'][0] or np.min(data_values),
         user_params['clim'][1] or np.max(data_values)
     ])
-    plt.xlabel('x (pc)')
+    plt.xlabel(user_params['xlabel'])
     plt.ylabel(user_params['cmap_label'])
     
     plt.grid(alpha=0.3)
