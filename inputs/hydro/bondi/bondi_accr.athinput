@@ -10,20 +10,20 @@ basename  = bondi_accr      # problem ID: basename of output filenames
 <mesh>
 nghost    = 4           # Number of ghost cells
 nx1       = 128         # Number of zones in X1-direction
-x1min     = -10          # minimum value of X1
-x1max     = 10           # maximum value of X1
+x1min     = -12.5       # minimum value of X1
+x1max     = 12.5        # maximum value of X1
 ix1_bc    = outflow     # inner-X1 boundary flag
 ox1_bc    = outflow     # outer-X1 boundary flag
 
 nx2       = 128         # Number of zones in X2-direction
-x2min     = -10          # minimum value of X2
-x2max     = 10           # maximum value of X2
+x2min     = -12.5       # minimum value of X2
+x2max     = 12.5        # maximum value of X2
 ix2_bc    = outflow     # inner-X2 boundary flag
 ox2_bc    = outflow     # outer-X2 boundary flag
 
 nx3       = 128         # Number of zones in X3-direction
-x3min     = -10          # minimum value of X3
-x3max     = 10           # maximum value of X3
+x3min     = -12.5       # minimum value of X3
+x3max     = 12.5        # maximum value of X3
 ix3_bc    = outflow     # inner-X3 boundary flag
 ox3_bc    = outflow     # outer-X3 boundary flag
 
@@ -51,7 +51,7 @@ evolution  = dynamic    # dynamic/kinematic/static
 integrator = rk2        # time integration algorithm
 cfl_number = 0.3        # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim       = -1         # cycle limit
-tlim       = 2.78       # time limit(27 kyr)
+tlim       = 5.28       # time limit(52 kyr)
 ndiag      = 1000       # cycles between diagostic output
 
 <hydro>
@@ -68,23 +68,23 @@ time_cgs    = 3.0857e+11                    # 9.7 kyr; v0 = 100 km/s
 
 <problem>
 user_srcs   = True            #Set to True to enable User Source Terms
-cs_amb      = 2.87            #km/s (T=1e7K => snd speed of 287 km/s)
+cs_amb      = 3.71            #km/s (T=1e7K => snd speed of 371 km/s)
 d_amb       = 1               #rho0 (100 mp/cm^3)
 M_bh        = 8.16e6          # (2e7 M_solar)
-epsilon     = 0.08            # 0.1 R_Bondi (R_Bondi = 0.83  pc)
+epsilon     = 0.125           # 0.1 R_Bondi (R_Bondi = 1.25  pc)
 CONST_G     = 1.06e-6         #1/(rho0*t0^2)          
 
 
 
 <output1>
 file_type  = hst        # History data dump
-dt         = 2.78e-2       # time increment between outputs
+dt         = 5.28e-2       # time increment between outputs
 
 <output2>
 file_type  = bin        # Binary data dump
 variable   = hydro_w    # variables to be output
-dt         = 2.78e-1    # time increment between outputs (10 output files)
+dt         = 5.28e-1    # time increment between outputs (10 output files)
 
 <output3>
 file_type   = rst         # Restart file
-dt          = 2.78e-1
+dt          = 5.28e-1
