@@ -171,10 +171,17 @@ def plot_x_profile(data_dict, user_params):
     data_sorted = data_filtered[sort_idx]
 
     plt.figure(figsize=(10,6))
-    plt.plot(user_params['axes_scale']*x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
+    if user_params['norm']=="log":
+        data_sorted = np.log10(data_sorted)
+        if user_params['xlabel'].endswith("[log]"):
+            plt.plot(np.log10(user_params['axes_scale']*x_sorted), data_sorted, 'o-',color=user_params['color'], markersize=3)
+        else:
+            plt.plot(user_params['axes_scale']*x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
+    else:
+        plt.plot(user_params['axes_scale']*x_sorted, data_sorted, 'o-',color=user_params['color'], markersize=3)
     plt.ylim([
-        user_params['clim'][0] or np.min(data_values),
-        user_params['clim'][1] or np.max(data_values)
+        user_params['clim'][0] or np.min(data_sorted),
+        user_params['clim'][1] or np.max(data_sorted)
     ])
     plt.xlabel(user_params['xlabel'])
     plt.ylabel(user_params['cmap_label'])

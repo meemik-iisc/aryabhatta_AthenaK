@@ -131,6 +131,11 @@ import matplotlib
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.colors import SymLogNorm
 
+dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
+pres_label  = r"$P_{gas}\ (10^{-9}\, \mathrm{dyne/cm^2}$)"
+velr_label   = r"$|v_r|\ [\mathrm{10 km/s}]$"
+temp_label  = r" T (K)"
+
 
 # Main function
 def main(**kwargs):
@@ -162,7 +167,9 @@ def main(**kwargs):
     axes_scale = 1/R_bondi
     font_size = 14
     fig_size = (8,6)
-    temp_norm =1.5
+    temp_norm =1.0
+    dens_scale = 1.0    
+    
     # Adjust user inputs
     if kwargs['dimension'] == '1':
         kwargs['dimension'] = 'x'
@@ -1100,7 +1107,10 @@ def main(**kwargs):
 
     # Extract quantity without derivation
     if kwargs['variable'][:8] != 'derived:':
-        quantity = quantities[variable_name]
+        if kwargs['variable']=='dens':
+            quantity = dens_scale*quantities[variable_name]
+        else:
+            quantity = quantities[variable_name]
 
     # Mask horizon for purposes of calculating colorbar limits
     if kwargs['horizon_mask']:
@@ -1445,9 +1455,9 @@ def set_derived_dependencies():
 # Function that defines colorbar labels
 def set_labels(general_rel_v):
     labels = {}
-    labels['dens'] = r"$\rho\ \left[\mathrm{100\,m_p/cm^3}\right]$"
-    labels['eint'] = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
-    labels['velr'] = r"$|v_r|\ [\mathrm{km/s}]$"
+    labels['dens'] = dens_label
+    labels['eint'] = pres_label
+    labels['velr'] = velr_label
     if general_rel_v:
         labels['velx'] = r"$v_x\ [10^3\ \mathrm{km/s}]$"
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"
@@ -1481,7 +1491,7 @@ def set_labels(general_rel_v):
     labels['r33_ff'] = r'$R^{\bar{z}\bar{z}}$'
     labels['pgas'] = r'$p_\mathrm{gas}$'
     labels['pgas_rho'] = r'$p_\mathrm{gas} / \rho$'
-    labels['T'] = r'$T$ ($\mathrm{K}$)'
+    labels['T'] = temp_label
     labels['prad_pgas'] = r'$p_\mathrm{rad} / p_\mathrm{gas}$'
     labels['vr_nr'] = r'$v^{\hat{r}}$'
     labels['vth_nr'] = r'$v^{\hat{\theta}}$'

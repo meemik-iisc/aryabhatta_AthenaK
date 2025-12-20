@@ -1,7 +1,7 @@
 import struct
 import numpy as np
 import pandas as pd
-from constants import mu,mp_cgs,kB_cgs,L_code,M_code,t_code,gamma,Temp_norm
+from constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm
 
 def extract_athenak_slice(user_params):
     """
@@ -214,7 +214,7 @@ def extract_temp_slice(user_params):
     pres_params.update(variable="eint")
     pres_data_df = extract_athenak_slice(pres_params)
     pres_data = pres_data_df['df_quantities']
-    temp_data=(pres_data/rho_data)* (mu*mp_cgs/(kB_cgs*(gamma-1)))*((L_code/t_code)**2)/Temp_norm
+    temp_data=(pres_data/rho_data)* (mu*mp_cgs/(kB_cgs*(gamma-1)))*((length_cgs/time_cgs)**2)/Temp_norm
     return {
         "df_quantities": temp_data,
         "df_extents": pres_data_df['df_extents'],

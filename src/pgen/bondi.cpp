@@ -28,22 +28,30 @@
 //! \brief Problem Generator for jets in a uniform medium
 namespace {
     // made global to share with source terms   
-  void AddUserSrcs(Mesh *pm, const Real bdt);
-  void AddBHGrav(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
+    void AddUserSrcs(Mesh *pm, const Real bdt);
+    void AddBHGrav(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
                       const DvceArray5D<Real> &w0, const EOS_Data &eos_data);
                                        
-  struct pgen_bh{
-      // jet & ambient medium parameters
-      Real cs_amb, d_amb, M_bh, gamma, CONST_G, epsilon;
-  };
-      pgen_bh* pbh = new pgen_bh();
-  // Function to check if a point is inside the jet
-//   bool InJet(const Real x1v, const Real x2v, const Real x3v, const Real r_jet, const Real alpha_jet, const Real theta_jet) {
-//     Real r = sqrt(SQR(x1v) + SQR(x2v) + SQR(x3v));
-//     Real nhat_dot_rhat = (r > 0) ? (x1v*cos(theta_jet) + x2v*sin(theta_jet))/r : 0.0;
-//     return (r < r_jet) && (abs(nhat_dot_rhat) > cos(alpha_jet));
-//   }
+    struct pgen_bh{
+        Real CONST_G, CONST_K, r_vir, rho_vir, M_bh, v_bh, rho_cgm, cs_cgm, epsilon, gamma_gas;
+    };
+        pgen_bh* pbh = new pgen_bh();
+  //Functions for Bondi Gravitation Potential
+    KOKKOS_INLINE_FUNCTION
+    static Real Phi_Bondi(const Real r,const Real epsilon, const Real CONST_G, const Real M_bh) {
+        Real phi_bondi = (-1*CONST_G*M_bh)/(std::sqrt(SQR(r)+SQR(epsilon)));
+        return phi_bondi;
+  }
+    //Functions for Density Profile
+    KOKKOS_INLINE_FUNCTION
+    static Real Rho_bondi(const Real r, const Real epsilon, const Real CONST_G, const Real M_bh, const Real CONST_K, const Real gamma_gas, const Real rho_vir, const Real r_vir) {
+        Real const gm1 = gamma_gas-1;
+        Real term1 = (-1*(gm1/(CONST_K*gamma_gas))*Phi_Bondi(r, epsilon, CONST_G, M_bh));
+        Real term2 = (-1*(gm1/(CONST_K*gamma_gas))*Phi_Bondi(r_vir, epsilon, CONST_G, M_bh));
+        return rho_vir+std::pow(term1,(1.0/gm1))-std::pow(term2,(1.0/gm1));
+    }
 } // namespace
+  
 
 void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     user_srcs_func = AddUserSrcs;
@@ -57,14 +65,18 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     auto &size = pmbp->pmb->mb_size;
 
     // get initial parameters from input file
-    pbh->cs_amb        = pin->GetReal("problem", "cs_amb");
-    pbh->d_amb         = pin->GetReal("problem", "d_amb");
-    pbh->M_bh          = pin->GetReal("problem", "M_bh");
-    pbh->epsilon       = pin->GetReal("problem","epsilon");
-    pbh->gamma         = pin->GetReal("hydro", "gamma");
-    pbh->CONST_G       = pin->GetReal("problem", "CONST_G");
+    pbh->CONST_G        = pin->GetReal("problem","CONST_G");    
+    pbh->CONST_K        = pin->GetReal("problem","CONST_K");    
+    pbh->r_vir          = pin->GetReal("problem","r_vir");
+    pbh->rho_vir        = pin->GetReal("problem","rho_vir");    
+    pbh->M_bh           = pin->GetReal("problem","M_bh");
+    pbh->v_bh           = pin->GetReal("problem","v_bh");
+    pbh->rho_cgm        = pin->GetReal("problem","rho_cgm");    
+    pbh->cs_cgm         = pin->GetReal("problem","cs_cgm");
+    pbh->epsilon        = pin->GetReal("problem","epsilon");    ;
+    pbh->gamma_gas      = pin->GetReal("hydro", "gamma");
 
-    Real const &gm1     = pbh->gamma - 1;
+    Real const &gm1     = pbh->gamma_gas - 1;
 
     if (restart) return;
     // Select either Hydro or MHD
@@ -88,14 +100,34 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
             int nx3 = indcs.nx3;
             Real x3v = CellCenterX(k-ks, nx3, zmin, zmax);
 
-            //Initialize pressure and density profile
-            Real pres = pbh->d_amb*SQR(pbh->cs_amb); //jet has same pressure as ambient medium
-            // std::cout << "pres= " << pres << "\n";
-            u0(m,IDN,k,j,i) = pbh->d_amb;
-            u0(m,IM1,k,j,i) = 0.0;
-            u0(m,IM2,k,j,i) = 0.0;
-            u0(m,IM3,k,j,i) = 0.0;
-            u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+            Real rad = sqrt(SQR(x1v)+SQR(x2v)+SQR(x3v));
+
+            if (rad<pbh->r_vir){
+                Real dens = Rho_bondi(rad, pbh->epsilon, pbh->CONST_G, pbh->M_bh, pbh->CONST_K, pbh->gamma_gas, pbh->rho_vir, pbh->r_vir);
+                Real pres = pbh->CONST_K*std::pow(dens,pbh->gamma_gas);
+                u0(m,IDN,k,j,i) = dens;
+                u0(m,IM1,k,j,i) = 0.0;
+                u0(m,IM2,k,j,i) = 0.0;
+                u0(m,IM3,k,j,i) = 0.0;
+                u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+            }
+            else{
+                Real pres = pbh->rho_cgm*SQR(pbh->cs_cgm);
+                u0(m,IDN,k,j,i) = pbh->rho_cgm;
+                u0(m,IM1,k,j,i) = 0.0;
+                u0(m,IM2,k,j,i) = 0.0;
+                u0(m,IM3,k,j,i) = 0.0;
+                u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+            }
+
+            // //Initialize pressure and density profile
+            // Real pres = pbh->d_amb*SQR(pbh->cs_amb); //jet has same pressure as ambient medium
+            // // std::cout << "pres= " << pres << "\n";
+            // u0(m,IDN,k,j,i) = pbh->d_amb;
+            // u0(m,IM1,k,j,i) = 0.0;
+            // u0(m,IM2,k,j,i) = 0.0;
+            // u0(m,IM3,k,j,i) = 0.0;
+            // u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
         });
         return;
     }
@@ -125,7 +157,7 @@ namespace{
         int nmb1 = pmbp->nmb_thispack - 1;
         auto size = pmbp->pmb->mb_size;
 
-        Real const &gm1 = pbh->gamma - 1;
+        Real const &gm1 = pbh->gamma_gas - 1;
 
         par_for("jet_inject", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
@@ -149,9 +181,9 @@ namespace{
 
             Real grad_phi_by_r = (pbh->CONST_G*pbh->M_bh)/(pow((SQR(rad)+SQR(pbh->epsilon)),1.5));
 
-            u0(m,IM1,k,j,i) -= (pbh->d_amb*grad_phi_by_r*bdt)*x1v;
-            u0(m,IM2,k,j,i) -= (pbh->d_amb*grad_phi_by_r*bdt)*x2v;
-            u0(m,IM3,k,j,i) -= (pbh->d_amb*grad_phi_by_r*bdt)*x3v;
+            u0(m,IM1,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x1v;
+            u0(m,IM2,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x2v;
+            u0(m,IM3,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x3v;
             Real p_dot_r = (u0(m,IM1,k,j,i)*x1v)+(u0(m,IM2,k,j,i)*x2v)+(u0(m,IM3,k,j,i)*x3v);
             u0(m,IEN,k,j,i) -=p_dot_r*grad_phi_by_r*bdt;
 
