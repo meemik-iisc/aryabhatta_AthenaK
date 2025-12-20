@@ -14,15 +14,16 @@ input_dir = Path(input("Enter path to binary folder: "))
 if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
-dt=1.0
+dt=100.0
+time_label = "Myr"
 #Plotting variables
 dens_var={
-    'cmap':"coolwarm",
-    'norm':None,
-    # 'vmin':None,
-    # 'vmax':None,
-    'vmin':1.0,
-    'vmax':2.4,
+    'cmap':"PiYG",
+    'norm':"log",
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':1.0e-3,
+    # 'vmax':1.0e2,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -30,23 +31,24 @@ dens_var={
 }
 pres_var={
     'cmap':"viridis",
-    'norm':None,
-    # 'vmin':None,
-    # 'vmax':None,
-    'vmin':200,
-    'vmax':1200,
+    'norm':"log",
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':1e-4,
+    # 'vmax':1e0,
     'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
 }
 velr_var={
-    'cmap':"seismic",
+    # 'cmap':"seismic",
+    'cmap':"Reds",
     'norm':None,
-    # 'vmin':None,
-    # 'vmax':None,
-    'vmin':0.0,
-    'vmax':2.0,
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':0.0,
+    # 'vmax':0.05,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -63,12 +65,13 @@ velr_var={
 #     'x2max':None,
 # }
 temp_var={
-    'cmap':"hot",
-    'norm':None,
-    'vmin':1e4,
-    'vmax':6e4,
-    # 'vmin':None,
-    # 'vmax':None,
+    # 'cmap':"plasma",
+    'cmap':"coolwarm",
+    'norm':"log",
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':1e4,
+    # 'vmax':1e6,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -168,7 +171,7 @@ for idx,bf in enumerate(bin_files):
             ax.imshow(img)
         ax.set_title(title)
         ax.axis('off')
-    fig.suptitle(f"t={timestep:.2f}"+r'$t_{ff}$')
+    fig.suptitle(f"t={timestep:.2f} {time_label}")
 
     combo_file = folders['data'] / f"{basename}_combined.png"
     fig.tight_layout()
