@@ -7,6 +7,7 @@
 #SBATCH -t 01-00:00:00  # dd-hh:mm:ss
 #SBATCH -n 64
 #SBATCH --output=%x-%j.log
+#SBATCH --error=%x-%j.err.log
 #SBATCH --export=ALL
 
 

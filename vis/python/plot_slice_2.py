@@ -132,8 +132,8 @@ from matplotlib.colors import TwoSlopeNorm
 from matplotlib.colors import SymLogNorm
 
 dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
-pres_label  = r"$P_{gas}\ (10^{-9}\, \mathrm{dyne/cm^2}$)"
-velr_label   = r"$|v_r|\ [\mathrm{10 km/s}]$"
+pres_label  = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
+velr_label   = r"$|v_r|\ [\mathrm{1000 km/s}]$"
 temp_label  = r" T (K)"
 
 
@@ -164,10 +164,11 @@ def main(**kwargs):
     x1_labelpad = 2.0
     x2_labelpad = 2.0
     R_bondi=1.25
-    axes_scale = 1/R_bondi
+    axes_scale = 1.0
     font_size = 14
     fig_size = (8,6)
     temp_norm =1.0
+    velr_scale = 0.01
     dens_scale = 1.0    
     
     # Adjust user inputs
@@ -597,7 +598,7 @@ def main(**kwargs):
             vy = quantities['vely']
             vz = quantities['velz']
             velr = np.sqrt(vx**2+vy**2+vz**2)
-            quantity = velr
+            quantity = velr*velr_scale
         else:
             prad = quantities['r00_ff'] / 3.0
             quantity = prad / pgas
@@ -1331,14 +1332,14 @@ def main(**kwargs):
     plt.xlim((x1_min, x1_max))
     plt.ylim((x2_min, x2_max))
     if kwargs['dimension'] == 'x':
-        plt.xlabel('$y/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$y (kpc)$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z (kpc)$', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'y':
-        plt.xlabel('$x/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$z/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x (kpc)$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$z (kpc)$', labelpad=x2_labelpad, fontsize=font_size)
     if kwargs['dimension'] == 'z':
-        plt.xlabel('$x/R_{bondi}$', labelpad=x1_labelpad, fontsize=font_size)
-        plt.ylabel('$y/R_{bondi}$', labelpad=x2_labelpad, fontsize=font_size)
+        plt.xlabel('$x (kpc)$', labelpad=x1_labelpad, fontsize=font_size)
+        plt.ylabel('$y (kpc)$', labelpad=x2_labelpad, fontsize=font_size)
 
     # Adjust layout
     # plt.tight_layout(pad=0.5, w_pad=0.2, h_pad=0.2)

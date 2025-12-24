@@ -13,7 +13,7 @@ parent_dir = os.path.abspath(os.path.join(current_dir, '..', '..'))
 if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
-from data_processing import stitch_meshblocks_to_global  # assumes stitch_data in data_processing.py
+from data_processing.slice_data import stitch_meshblocks_to_global  # assumes stitch_data in data_processing.py
 
 def plot_streamlines(X, Y, U, V, user_params, 
     quiver_stride=4,
@@ -144,8 +144,8 @@ def plot_streamlines_from_dataframes(df_u, df_v, user_params):
         user_params (dict): passed to plot_streamlines()
     """
     # Stitch data
-    X, Y, U = stitch_data(df_u)
-    _, _, V = stitch_data(df_v)
+    X, Y, U = stitch_meshblocks_to_global(df_u)
+    _, _, V = stitch_meshblocks_to_global(df_v)
 
     # Plot
     plot_streamlines(X, Y, U, V, user_params)

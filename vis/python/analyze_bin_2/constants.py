@@ -14,4 +14,5 @@ time_cgs    = 3.0857e+13                    # 0.97 Myr; v0 = 1000 km/s
 #Bondi Radius
 R_bondi = 1.25
 
-Temp_norm = 1.40
+Temp_norm = 1.60
+Velr_scale = 1000.0
