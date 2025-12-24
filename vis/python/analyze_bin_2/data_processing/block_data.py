@@ -1,7 +1,8 @@
 import struct
 import numpy as np
 import pandas as pd
-from constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm,Velr_scale
+from constants import mu,mp_cgs,kB_cgs,s_Myr,length_cgs,mass_cgs,time_cgs,pres_cgs,rho_cgs,gamma,Temp_norm,Velr_scale
+from ismcooling import cool_lambda
 
 
 def extract_athenak_3D_block(user_params):
@@ -212,4 +213,90 @@ def extract_velr_data(user_params):
         "blocks": velr_blocks,
         "num_blocks": len(velr_blocks),
         "block_shape": velx_data_dict['block_shape']  # (nz, ny, nx)
+    }
+def extract_cooling_rate_data(user_params):
+    eint_params = user_params.copy()
+    eint_params.update(variable="eint")
+    eint_data_dict=extract_athenak_3D_block(eint_params)
+    eint_blocks = eint_data_dict['blocks']
+    rho_params = user_params.copy()
+    rho_params.update(variable="dens")
+    rho_blocks = extract_athenak_3D_block(rho_params)['blocks']
+    
+    cooling_rate_blocks = []
+    
+    for block_idx, (eint_block, rho_block) in enumerate(zip(eint_blocks, rho_blocks)):
+        eint_data = eint_block['data']
+        rho_data = rho_block['data']
+        
+        #Convert to CGS
+        pres_data_cgs = eint_data*(gamma-1)*pres_cgs
+        rho_data_cgs = rho_data*rho_cgs
+        
+        # Temperature calculation
+        temp_data_cgs = (pres_data_cgs*mu*mp_cgs)/(rho_data_cgs*kB_cgs)
+        #Cooling Rate calculation
+        lambda_cgs = cool_lambda(temp_data_cgs)
+        #Calculate cooling time
+        cooling_rate_cgs = ((rho_data_cgs**2)*lambda_cgs)/((mu**2)*(mp_cgs**2))
+        # Create velocity block dict (same structure as input blocks)
+        cooling_rate_block = dict(
+            data=cooling_rate_cgs,                    # (nz, ny, nx)
+            x=rho_block['x'],                  # 1D coordinate array
+            y=rho_block['y'],                  # 1D coordinate array
+            z=rho_block['z'],                  # 1D coordinate array
+            extent=rho_block['extent'],        # (x_min, x_max, y_min, y_max, z_min, z_max)
+            ijk=rho_block['ijk'],              # (block_i, block_j, block_k, block_level)
+        )
+        cooling_rate_blocks.append(cooling_rate_block)
+    
+    return {
+        "df_extents": eint_data_dict['df_extents'],
+        "blocks": cooling_rate_blocks,
+        "num_blocks": len(cooling_rate_blocks),
+        "block_shape": eint_data_dict['block_shape']  # (nz, ny, nx)
+    }
+    
+def extract_cool_time_data(user_params):
+    eint_params = user_params.copy()
+    eint_params.update(variable="eint")
+    eint_data_dict=extract_athenak_3D_block(eint_params)
+    eint_blocks = eint_data_dict['blocks']
+    rho_params = user_params.copy()
+    rho_params.update(variable="dens")
+    rho_blocks = extract_athenak_3D_block(rho_params)['blocks']
+    
+    tcool_blocks = []
+    
+    for block_idx, (eint_block, rho_block) in enumerate(zip(eint_blocks, rho_blocks)):
+        eint_data = eint_block['data']
+        rho_data = rho_block['data']
+        
+        #Convert to CGS
+        pres_data_cgs = eint_data*(gamma-1)*pres_cgs
+        rho_data_cgs = rho_data*rho_cgs
+        
+        # Temperature calculation
+        temp_data_cgs = (pres_data_cgs*mu*mp_cgs)/(rho_data_cgs*kB_cgs)
+        #Cooling Rate calculation
+        lambda_cgs = cool_lambda(temp_data_cgs)
+        #Calculate cooling time
+        t_cool_cgs = (gamma*pres_data_cgs*(mu**2)*(mp_cgs**2))/((gamma-1)*(rho_data_cgs**2)*lambda_cgs)
+        t_cool_Myr = t_cool_cgs/s_Myr
+        # Create velocity block dict (same structure as input blocks)
+        tcool_block = dict(
+            data=t_cool_Myr,                    # (nz, ny, nx)
+            x=rho_block['x'],                  # 1D coordinate array
+            y=rho_block['y'],                  # 1D coordinate array
+            z=rho_block['z'],                  # 1D coordinate array
+            extent=rho_block['extent'],        # (x_min, x_max, y_min, y_max, z_min, z_max)
+            ijk=rho_block['ijk'],              # (block_i, block_j, block_k, block_level)
+        )
+        tcool_blocks.append(tcool_block)
+    
+    return {
+        "df_extents": eint_data_dict['df_extents'],
+        "blocks": tcool_blocks,
+        "num_blocks": len(tcool_blocks),
+        "block_shape": eint_data_dict['block_shape']  # (nz, ny, nx)
     }

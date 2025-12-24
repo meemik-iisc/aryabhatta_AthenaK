@@ -12,7 +12,7 @@ if parent_dir not in sys.path:
 import bin_convert
 from io_utils import ensure_dir, extract_slice_number
 from data_processing.slice_data import extract_athenak_slice, stitch_meshblocks_to_global
-from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data
+from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_cool_time_data
 from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data 
 from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile, plot_spherical_volume_weighted_avg_profile, plot_spherical_mass_weighted_avg_profile
 from plotting.streamlines import plot_streamlines_from_dataframes
@@ -41,6 +41,12 @@ def run(analysis_type, user_params):
                     elif variable == "velr":
                         df3D = extract_velr_data(user_params)
                         plot_spherical_mass_weighted_avg_profile(df3D, user_params)
+                    elif variable == "cooling_rate":
+                        df3D = extract_cooling_rate_data(user_params)
+                        plot_spherical_volume_weighted_avg_profile(df3D,user_params)
+                    elif variable == "tcool":
+                        df3D = extract_cool_time_data(user_params)
+                        plot_spherical_mass_weighted_avg_profile(df3D,user_params)
                 else:
                     df3D = extract_athenak_3D_block(user_params)
                     plot_spherical_volume_weighted_avg_profile(df3D, user_params)
