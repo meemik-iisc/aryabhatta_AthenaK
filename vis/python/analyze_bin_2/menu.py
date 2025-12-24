@@ -50,7 +50,7 @@ def build_params_for(analysis_type):
     elif analysis_type=="profiles":
         base.update({
             "variable":         {"prompt":"Variable to be plotted. check file_data['var_names'] for valid names","default":default_dict['variable'],"type":str},
-            "profile_variable": {"prompt":"Profile variable [r_c or z_h or x]","default":default_dict['profile_variable'],"type":str},
+            "profile_variable": {"prompt":"Profile variable [r_c or z_h or x or avg]","default":default_dict['profile_variable'],"type":str},
             "profile_slice":    {"prompt":"Select axis of 1D slice","default":default_dict['profile_slice'],"type":int},
             "axes_scale":       {"prompt":"Scale Axis","default":default_dict['axes_scale'],"type":str},
             "cmap_label":       {"prompt":"Color label","default":default_dict['cmap_label'],"type":str},

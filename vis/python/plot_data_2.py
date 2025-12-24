@@ -34,7 +34,7 @@ pres_var={
     'norm':"log",
     'vmin':None,
     'vmax':None,
-    # 'vmin':1e-4,
+    # 'vmin':1e-5,
     # 'vmax':1e0,
     'x1min':None,
     'x1max':None,
@@ -54,16 +54,18 @@ velr_var={
     'x2min':None,
     'x2max':None,
 }
-# vely_var={
-#     'cmap':"seismic",
-#     'norm':None,
-#     'vmin':None
-#     'vmax':None
-#     'x1min':None,
-#     'x1max':None,
-#     'x2min':None,
-#     'x2max':None,
-# }
+velx_var={
+    'cmap':"seismic",
+    'norm':None,
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':-0.03,
+    # 'vmax':0.03,
+    'x1min':None,
+    'x1max':None,
+    'x2min':None,
+    'x2max':None,
+}
 temp_var={
     # 'cmap':"plasma",
     'cmap':"coolwarm",
@@ -76,7 +78,7 @@ temp_var={
     'x1max':None,
     'x2min':None,
     'x2max':None,
-}
+} 
 
 # Prepare output directories
 out_root = input_dir.parent / (input_dir.name + '_outputs')
@@ -84,7 +86,7 @@ folders = {
     'dens': out_root / 'dens',
     'pres': out_root / 'pres',
     'velr': out_root / 'velr',
-    # 'vely': out_root / 'vely',
+    'velx': out_root / 'velx',
     'temp': out_root / 'temp',
     'data': out_root / 'data'
 }
@@ -107,7 +109,7 @@ quantities = {
     'dens': folders['dens'],
     'pgas': folders['pres'],
     'velr': folders['velr'],
-    # 'vely': folders['vely'],
+    'velx': folders['velx'],
     'temp': folders['temp']
 }
 
@@ -151,9 +153,9 @@ for idx,bf in enumerate(bin_files):
     velr_out = folders['velr'] / f"{basename}_velr.png"
     plot_data(bf,'derived:velr',velr_out,velr_var)
 
-    # # Plot velocity y
-    # vely_out = folders['vely'] / f"{basename}_vely.png"
-    # plot_data(bf,'vely',vely_out,vely_var)
+    # Plot velocity x
+    velx_out = folders['velx'] / f"{basename}_velx.png"
+    plot_data(bf,'velx',velx_out,velx_var)
     
     #Plot temperature
     temp_out = folders['temp'] / f"{basename}_temp.png"
