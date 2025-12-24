@@ -10,20 +10,20 @@ basename  = bondi_accr          # problem ID: basename of output filenames
 <mesh>
 nghost    = 4                   # Number of ghost cells
 nx1       = 128                 # Number of zones in X1-direction
-x1min     = -1                  # minimum value of X1
-x1max     = 1                   # maximum value of X1
+x1min     = -1.5                # minimum value of X1
+x1max     = 1.5                 # maximum value of X1
 ix1_bc    = outflow             # inner-X1 boundary flag
 ox1_bc    = outflow             # outer-X1 boundary flag
 
 nx2       = 128                 # Number of zones in X2-direction
-x2min     = -1                  # minimum value of X2
-x2max     = 1                   # maximum value of X2
+x2min     = -1.5                # minimum value of X2
+x2max     = 1.5                 # maximum value of X2
 ix2_bc    = outflow             # inner-X2 boundary flag
 ox2_bc    = outflow             # outer-X2 boundary flag
 
 nx3       = 128                 # Number of zones in X3-direction
-x3min     = -1                  # minimum value of X3
-x3max     = 1                   # maximum value of X3
+x3min     = -1.5                # minimum value of X3
+x3max     = 1.5                 # maximum value of X3
 ix3_bc    = outflow             # inner-X3 boundary flag
 ox3_bc    = outflow             # outer-X3 boundary flag
 

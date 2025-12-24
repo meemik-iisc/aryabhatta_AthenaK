@@ -133,7 +133,7 @@ from matplotlib.colors import SymLogNorm
 
 dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
 pres_label  = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
-velr_label   = r"$|v_r|\ [\mathrm{1000 km/s}]$"
+velr_label   = r"$|v_r|\ [\mathrm{km/s}]$"
 temp_label  = r" T (K)"
 
 
@@ -168,7 +168,7 @@ def main(**kwargs):
     font_size = 14
     fig_size = (8,6)
     temp_norm =1.0
-    velr_scale = 0.01
+    velr_scale = 1000
     dens_scale = 1.0    
     
     # Adjust user inputs
