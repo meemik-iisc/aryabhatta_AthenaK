@@ -14,7 +14,7 @@ input_dir = Path(input("Enter path to binary folder: "))
 if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
-dt=1.0
+dt=10.0
 time_label = "Myr"
 #Plotting variables
 dens_var={

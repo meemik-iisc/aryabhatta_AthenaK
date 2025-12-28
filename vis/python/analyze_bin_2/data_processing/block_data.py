@@ -1,7 +1,7 @@
 import struct
 import numpy as np
 import pandas as pd
-from constants import mu,mp_cgs,kB_cgs,s_Myr,length_cgs,mass_cgs,time_cgs,pres_cgs,rho_cgs,gamma,Temp_norm,Velr_scale
+from constants import mu,mp_cgs,kB_cgs,s_Myr,length_cgs,mass_cgs,time_cgs,pres_cgs,rho_cgs,gamma,Temp_norm,Velr_scale, dens_scale, pres_scale
 from ismcooling import cool_lambda
 
 
@@ -101,6 +101,10 @@ def extract_athenak_3D_block(user_params):
             cell_data = np.array(struct.unpack(block_cell_fmt, f.read(variable_data_size)))
             cell_data = cell_data.reshape((block_nz, block_ny, block_nx))
 
+            if user_params['variable']=="dens":
+                cell_data = dens_scale*cell_data
+            if user_params['variable']=="eint":
+                cell_data = pres_scale*cell_data
             # store per-block numpy representation for fast later use
             x_coords = np.linspace(x_min, x_max, block_nx)
             y_coords = np.linspace(y_min, y_max, block_ny)

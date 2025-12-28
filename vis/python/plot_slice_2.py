@@ -169,7 +169,8 @@ def main(**kwargs):
     fig_size = (8,6)
     temp_norm =1.0
     velr_scale = 1000
-    dens_scale = 1.0    
+    dens_scale = 1.0
+    pres_scale = 1.0    
     
     # Adjust user inputs
     if kwargs['dimension'] == '1':
@@ -1110,6 +1111,8 @@ def main(**kwargs):
     if kwargs['variable'][:8] != 'derived:':
         if kwargs['variable']=='dens':
             quantity = dens_scale*quantities[variable_name]
+        elif kwargs['variable']=='eint':
+            quantity = pres_scale*quantities[variable_name]
         else:
             quantity = quantities[variable_name]
 

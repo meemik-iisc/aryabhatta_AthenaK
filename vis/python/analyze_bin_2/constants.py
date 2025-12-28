@@ -21,3 +21,5 @@ R_bondi = 1.25
 
 Temp_norm = 1.60
 Velr_scale = 1000.0
+dens_scale = 1.0
+pres_scale = 1.0
