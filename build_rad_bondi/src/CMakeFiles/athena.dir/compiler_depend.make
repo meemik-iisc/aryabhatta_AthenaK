@@ -45970,13 +45970,7 @@ src/CMakeFiles/athena.dir/pgen/rad_bondi.cpp.o: /scratch/meemik/athenak/src/pgen
   /scratch/meemik/athenak/src/coordinates/cell_locations.hpp \
   /scratch/meemik/athenak/src/pgen/pgen.hpp \
   /scratch/meemik/athenak/src/srcterms/srcterms.hpp \
-  /scratch/meemik/athenak/src/srcterms/load_cooling_table.hpp \
-  /usr/include/c++/11/fstream \
-  /usr/include/c++/11/bits/codecvt.h \
-  /usr/include/c++/11/x86_64-redhat-linux/bits/basic_file.h \
-  /usr/include/c++/11/x86_64-redhat-linux/bits/c++io.h \
-  /usr/include/c++/11/bits/fstream.tcc \
-  /scratch/meemik/athenak/src/srcterms/tabularcooling.hpp \
+  /scratch/meemik/athenak/src/srcterms/ismcooling.hpp \
   /scratch/meemik/athenak/src/units/units.hpp
 
 src/CMakeFiles/athena.dir/pgen/tests/advection.cpp.o: /scratch/meemik/athenak/src/pgen/tests/advection.cpp \
@@ -77514,8 +77508,6 @@ src/CMakeFiles/athena.dir/z4c/z4c_wave_extr.cpp.o: /scratch/meemik/athenak/src/z
 
 /scratch/meemik/athenak/src/srcterms/srcterms_newdt.cpp:
 
-/scratch/meemik/athenak/src/srcterms/ismcooling.hpp:
-
 /scratch/meemik/athenak/src/shearing_box/shearing_box_fc.cpp:
 
 /scratch/meemik/athenak/src/shearing_box/orbital_advection_tasks.cpp:
@@ -77555,6 +77547,8 @@ src/CMakeFiles/athena.dir/z4c/z4c_wave_extr.cpp.o: /scratch/meemik/athenak/src/z
 /scratch/meemik/athenak/src/pgen/tests/cshock.cpp:
 
 /scratch/meemik/athenak/src/pgen/tests/advection.cpp:
+
+/scratch/meemik/athenak/src/srcterms/ismcooling.hpp:
 
 /scratch/meemik/athenak/src/pgen/rad_bondi.cpp:
 
@@ -77672,8 +77666,6 @@ src/CMakeFiles/athena.dir/z4c/z4c_wave_extr.cpp.o: /scratch/meemik/athenak/src/z
 
 /scratch/meemik/athenak/src/srcterms/srcterms.hpp:
 
-/scratch/meemik/athenak/src/srcterms/load_cooling_table.hpp:
-
 /scratch/meemik/athenak/src/utils/legendre_roots.hpp:
 
 /scratch/meemik/athenak/src/geodesic-grid/gauss_legendre.hpp:
@@ -77775,8 +77767,6 @@ src/CMakeFiles/athena.dir/z4c/z4c_wave_extr.cpp.o: /scratch/meemik/athenak/src/z
 /scratch/meemik/athenak/src/bvals/physics/hydro_bcs.cpp:
 
 /scratch/meemik/athenak/src/bvals/physics/bfield_bcs.cpp:
-
-/scratch/meemik/athenak/src/srcterms/tabularcooling.hpp:
 
 /scratch/meemik/athenak/src/bvals/flux_correct_fc.cpp:
 

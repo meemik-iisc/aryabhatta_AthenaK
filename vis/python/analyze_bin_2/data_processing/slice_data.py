@@ -1,7 +1,7 @@
 import struct
 import numpy as np
 import pandas as pd
-from constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm
+from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm
 
 def extract_athenak_slice(user_params):
     """

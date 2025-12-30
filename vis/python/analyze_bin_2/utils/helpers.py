@@ -47,3 +47,4 @@ def cool_lambda(T):
         result[mask_mid] = 10.0 ** logcool
     
     return result
+

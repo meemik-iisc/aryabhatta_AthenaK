@@ -30,13 +30,15 @@
 namespace {
     // made global to share with source terms   
     void AddUserSrcs(Mesh *pm, const Real bdt);
-    void AddTabularCooling(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
+    void AddISMCooling(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
                       const DvceArray5D<Real> &w0, const EOS_Data &eos_data);
     void AddBHGrav(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
                       const DvceArray5D<Real> &w0, const EOS_Data &eos_data);
                                        
     struct pgen_bh{
-        Real CONST_G, CONST_K, CONST_kB_cgs, CONST_mp, CONST_mu, r_vir, rho_vir, M_bh, v_bh, rho_cgm, cs_cgm, epsilon, gamma_gas, length_cgs, mass_cgs, time_cgs;
+        Real CONST_G, CONST_K, CONST_kB_cgs, CONST_mp, CONST_mu, 
+        r_vir, rho_vir, M_bh, v_bh, rho_cgm, cs_cgm, epsilon, gamma_gas, 
+        length_cgs, mass_cgs, time_cgs, temp_floor;
     };
         pgen_bh* pbh = new pgen_bh();
   //Functions for Bondi Gravitation Potential
@@ -81,6 +83,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     pbh->cs_cgm         = pin->GetReal("problem","cs_cgm");
     pbh->epsilon        = pin->GetReal("problem","epsilon");
     pbh->gamma_gas      = pin->GetReal("hydro", "gamma");
+    pbh->temp_floor     = pin->GetOrAddReal("problem", "temp_floor", 1.0e4 );
     pbh->length_cgs     = pin->GetReal("units", "length_cgs");
     pbh->mass_cgs       = pin->GetReal("units", "mass_cgs");
     pbh->time_cgs       = pin->GetReal("units", "time_cgs");
@@ -93,7 +96,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     if (pmbp->phydro!=nullptr){
 
         auto &u0 = pmbp->phydro->u0;
-        par_for("bondi",DevExeSpace(),0,(pmbp->nmb_thispack-1),ks,ke,js,je,is,ie,
+        par_for("rad_bondi",DevExeSpace(),0,(pmbp->nmb_thispack-1),ks,ke,js,je,is,ie,
         KOKKOS_LAMBDA(int m,int k,int j,int i) {
             Real &xmin = size.d_view(m).x1min;
             Real &xmax = size.d_view(m).x1max;
@@ -153,10 +156,11 @@ namespace{
         const auto &w0 = pmbp->phydro->w0;
         auto &u0 = pmbp->phydro->u0;
         const EOS_Data &eos_data = pmbp->phydro->peos->eos_data;
+        AddISMCooling(pm,bdt,u0,w0,eos_data);
         AddBHGrav(pm,bdt,u0,w0,eos_data);
         return;
     }
-    void AddTabularCooling(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
+    void AddISMCooling(Mesh *pm, const Real bdt, DvceArray5D<Real> &u0,
                 const DvceArray5D<Real> &w0, const EOS_Data &eos_data) { //Apply BH Grav at all timesteps
         MeshBlockPack *pmbp = pm->pmb_pack;
         auto &indcs = pmbp->pmesh->mb_indcs;
@@ -167,13 +171,14 @@ namespace{
         auto size = pmbp->pmb->mb_size;
 
         Real const &gm1         = pbh->gamma_gas - 1;
-        Real rho_cgs            = pbh->mass_cgs/(std::pow(pbh->length_cgs,3.0));
-        Real v_cgs              = pbh->length_cgs/pbh->time_cgs;
+        Real rho_unit           = pbh->mass_cgs/(std::pow(pbh->length_cgs,3.0));
+        Real v_unit             = pbh->length_cgs/pbh->time_cgs;
         Real temp_unit          = pbh->CONST_mu*pbh->CONST_mp/(pbh->CONST_kB_cgs);
         Real cooling_rate_unit  = pbh->mass_cgs/(pbh->length_cgs*std::pow(pbh->time_cgs,3.0));
-        
+        Real pres_unit          = rho_unit*v_unit*v_unit;
+        std::cout<<"rho_unit = "<<rho_unit<<"v_unit = "<<v_unit<<"temp_unit = "<<temp_unit<<"pres_unit = "<<pres_unit<<" cool_rate_unit = "<<cooling_rate_unit<<std::endl;
 
-        par_for("jet_inject", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
+        par_for("ism_cooling", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
 
             Real &x1min = size.d_view(m).x1min;
@@ -193,18 +198,31 @@ namespace{
 
             Real rad = sqrt(SQR(x1v)+SQR(x2v)+SQR(x3v));
 
+            //Compute Pressure Unit
+            
             //Calculate temperature in CGS
-            Real dens_cgs   = w0(m, IDN, k, j, i)*rho_cgs;
-            Real pres_cgs   = w0(m, IEN, k, j, i)*gm1*rho_cgs*SQR(v_cgs);
+            Real dens_cgs   = w0(m, IDN, k, j, i)*rho_unit;
+            Real pres_cgs   = w0(m, IEN, k, j, i)*gm1*pres_unit;
             Real temp_cgs   = (pres_cgs/dens_cgs)*temp_unit;
-
             Real n_cgs      = dens_cgs/(pbh->CONST_mu*pbh->CONST_mp);
-            Real lambda_cgs = ISMCoolFn(temp_cgs);
-            Real cooling_rate_cgs   = SQR(n_cgs)*lambda_cgs;
-            //Convert to code units
-            Real cooling_rate_code  = cooling_rate_cgs/cooling_rate_unit;
-            //Update internal Energy
-            u0(m, IEN, k, j, i) -= cooling_rate_code*bdt;
+            //Put a hard temperature floor
+            if (temp_cgs<pbh->temp_floor){
+                Real pres_floor_cgs     = (dens_cgs*pbh->CONST_kB_cgs*pbh->temp_floor)/(pbh->CONST_mu*pbh->CONST_mp);
+                Real pres_floor_code    = pres_floor_cgs/pres_unit;
+                // std::cout<<"Temp less than 1e4K, temp_cgs = "<<temp_cgs<<" pres_cgs = "<<pres_cgs<<" dens_cgs = "<<dens_cgs<<" pres_floor = "<<pres_floor_cgs<<std::endl;
+                u0(m, IEN, k, j, i)     = pres_floor_code/gm1 +0.5*w0(m, IDN, k, j, i)*(SQR(w0(m,IVX,k,j,i))+SQR(w0(m,IVY,k,j,i))+SQR(w0(m,IVZ,k,j,i)));
+                // std::cout<<"I Energy = "<<u0(m, IEN, k, j, i)<<std::endl;
+            }else{
+                //Add Radiative cooling if temp>temp_floor
+                Real lambda_cgs         = ISMCoolFn(temp_cgs);
+                Real cooling_rate_cgs   = SQR(n_cgs)*lambda_cgs;
+                std::cout<<"T>1e4, temp_cgs = "<<temp_cgs<<" lambda_cgs = "<<lambda_cgs<<" cool_rate_cgs = "<<cooling_rate_cgs<<std::endl;
+                //Convert to code units
+                Real cooling_rate_code  = cooling_rate_cgs/cooling_rate_unit;
+                //Update internal Energy
+                u0(m, IEN, k, j, i)     -= cooling_rate_code*bdt;
+            }
+            
 
         });
         return;
@@ -221,7 +239,7 @@ namespace{
 
         Real const &gm1 = pbh->gamma_gas - 1;
 
-        par_for("jet_inject", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
+        par_for("bh_gravity", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
 
             Real &x1min = size.d_view(m).x1min;

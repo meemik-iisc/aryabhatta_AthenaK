@@ -1,8 +1,8 @@
 import struct
 import numpy as np
 import pandas as pd
-from constants import mu,mp_cgs,kB_cgs,s_Myr,length_cgs,mass_cgs,time_cgs,pres_cgs,rho_cgs,gamma,Temp_norm,Velr_scale, dens_scale, pres_scale
-from ismcooling import cool_lambda
+from utils.constants import mu,mp_cgs,kB_cgs,s_Myr,length_cgs,mass_cgs,time_cgs,pres_cgs,rho_cgs,gamma,Temp_norm,Velr_scale, dens_scale, pres_scale
+from utils.helpers import cool_lambda
 
 
 def extract_athenak_3D_block(user_params):
@@ -303,4 +303,145 @@ def extract_cool_time_data(user_params):
         "blocks": tcool_blocks,
         "num_blocks": len(tcool_blocks),
         "block_shape": eint_data_dict['block_shape']  # (nz, ny, nx)
+    }
+
+def compute_radial_profile(df3D, user_params, weight_type='volume'):
+    """
+    Helper function: Compute radial profile with flexible weighting scheme.
+    
+    Parameters:
+    -----------
+    df3D : dict
+        Output from extract_athenak_3D_block containing blocks and metadata
+    user_params : dict
+        Parameters including center coordinates, num_radial_bins, etc.
+    weight_type : str
+        'volume' - constant volume weighting (all cells equally weighted)
+        'mass' - mass weighting (rho * volume per cell)
+    
+    Returns:
+    --------
+    dict with keys: r_centers, profile, std, count, sum
+    """
+    
+    blocks = df3D['blocks']
+    nz, ny, nx = df3D['block_shape']
+    
+    x_center = user_params.get('center_x', 0.0)
+    y_center = user_params.get('center_y', 0.0)
+    z_center = user_params.get('center_z', 0.0)
+    num_bins = user_params.get('num_radial_bins', 100)
+    
+    # Extract density if mass-weighting is requested
+    rho_blocks = None
+    if weight_type == 'mass':
+        rho_params = user_params.copy()
+        rho_params['variable'] = 'dens'
+        rho_df3D = extract_athenak_3D_block(rho_params)
+        rho_blocks = rho_df3D['blocks']
+    
+    radii_all = []
+    data_all = []
+    weights_all = []
+    
+    # Iterate through each block
+    for block_idx, block_dict in enumerate(blocks):
+        try:
+            data_3d = block_dict['data']
+            x_coords = block_dict['x']
+            y_coords = block_dict['y']
+            z_coords = block_dict['z']
+            x_min, x_max, y_min, y_max, z_min, z_max = block_dict['extent']
+            
+            # Create 3D coordinate grids
+            xx, yy, zz = np.meshgrid(x_coords, y_coords, z_coords, indexing='ij')
+            xx = np.transpose(xx, (2, 1, 0))
+            yy = np.transpose(yy, (2, 1, 0))
+            zz = np.transpose(zz, (2, 1, 0))
+            
+            # Compute radial distance
+            rr = np.sqrt((xx - x_center)**2 + (yy - y_center)**2 + (zz - z_center)**2)
+            
+            # Cell volume
+            dx = (x_max - x_min) / nx if nx > 1 else 1.0
+            dy = (y_max - y_min) / ny if ny > 1 else 1.0
+            dz = (z_max - z_min) / nz if nz > 1 else 1.0
+            cell_volume = dx * dy * dz
+            
+            # Compute weights based on type
+            if weight_type == 'volume':
+                # Constant volume: all cells weighted equally
+                weights = np.full_like(data_3d, cell_volume, dtype=np.float64)
+            elif weight_type == 'mass':
+                # Mass: rho * volume per cell
+                rho_3d = rho_blocks[block_idx]['data']
+                weights = rho_3d * cell_volume
+            else:
+                raise ValueError(f"Unknown weight_type: {weight_type}")
+            
+            # Flatten and accumulate
+            radii_all.append(rr.ravel())
+            data_all.append(data_3d.ravel())
+            weights_all.append(weights.ravel())
+            
+        except Exception as e:
+            print(f"  ✗ Error processing block {block_idx}: {e}")
+            continue
+    
+    # Concatenate all blocks
+    radii = np.concatenate(radii_all)
+    data = np.concatenate(data_all)
+    weights = np.concatenate(weights_all)
+    
+    # Remove NaN and invalid data
+    mask = np.isfinite(data) & np.isfinite(radii) & np.isfinite(weights) & (radii >= 0) & (weights > 0)
+    radii = radii[mask]
+    data = data[mask]
+    weights = weights[mask]
+    
+    # Define radial bins
+    r_min = np.min(radii)
+    r_max = np.max(radii)
+    r_bins = np.linspace(r_min, r_max, num_bins + 1)
+    r_centers = (r_bins[:-1] + r_bins[1:]) / 2
+    
+    # Bin and compute weighted averages
+    radial_profile = np.empty(num_bins)
+    radial_std = np.empty(num_bins)
+    radial_count = np.zeros(num_bins, dtype=int)
+    radial_sum = np.empty(num_bins)
+    
+    for i in range(num_bins):
+        mask_shell = (radii >= r_bins[i]) & (radii < r_bins[i+1])
+        n_cells = np.sum(mask_shell)
+        
+        if n_cells > 0:
+            data_in_shell = data[mask_shell]
+            weights_in_shell = weights[mask_shell]
+            
+            # Weighted average using numpy.average
+            radial_profile[i] = np.average(data_in_shell, weights=weights_in_shell)
+            radial_sum[i] = np.sum(data_in_shell * weights_in_shell)
+            radial_std[i] = np.std(data_in_shell)
+            radial_count[i] = n_cells
+        else:
+            radial_profile[i] = np.nan
+            radial_sum[i] = np.nan
+            radial_std[i] = np.nan
+            radial_count[i] = 0
+    
+    # Filter out empty bins
+    valid_mask = radial_count > 0
+    r_centers_valid = r_centers[valid_mask]
+    radial_profile_valid = radial_profile[valid_mask]
+    radial_std_valid = radial_std[valid_mask]
+    radial_sum_valid = radial_sum[valid_mask]
+    radial_count_valid = radial_count[valid_mask]
+    
+    return {
+        "r_centers": r_centers_valid,
+        "profile": radial_profile_valid,
+        "std": radial_std_valid,
+        "count": radial_count_valid,
+        "sum": radial_sum_valid
     }

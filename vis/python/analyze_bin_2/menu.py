@@ -2,7 +2,7 @@
 import sys, os
 from config import default_dict
 from params import build_user_params, parse_int_list
-from io_utils import ensure_dir
+from utils.io_utils import ensure_dir
 
 try:
     from simple_term_menu import TerminalMenu
@@ -13,17 +13,17 @@ except ImportError:
 
 def select_analysis():
     if MENU_AVAILABLE:
-        options = ["Plot 2D slice","Plot 1D profiles","Plot streamlines","Quit"]
+        options = ["Plot 2D slice","Plot 1D profiles","Plot Comparative Profile","Plot streamlines","Quit"]
         menu = TerminalMenu(options, title="Choose analysis:")
         idx = menu.show()
         if idx is None:
             return "quit"
-        return ["slice","profiles","streamlines","quit"][idx]
+        return ["slice","profiles","comparative","streamlines","quit"][idx]
     else:
-        print("\n1) Plot 2D slice\n2) Plot 1D profiles\n3) Plot streamlines\n4) Quit")
+        print("\n1) Plot 2D slice\n2) Plot 1D profiles\n3) Plot Comparative Profile\n4) Plot streamlines\n5) Quit")
         while True:
             c = input("Choice? ").strip()
-            return {"1":"slice","2":"profiles","3":"streamlines","4":"quit"}.get(c)
+            return {"1":"slice","2":"profiles","3":"comparative","4":"streamlines","5":"quit"}.get(c)
 
 def build_params_for(analysis_type):
     """Return a meta-dict of prompts for the chosen analysis."""
@@ -49,6 +49,20 @@ def build_params_for(analysis_type):
         })
     elif analysis_type=="profiles":
         base.update({
+            "variable":         {"prompt":"Variable to be plotted. check file_data['var_names'] for valid names","default":default_dict['variable'],"type":str},
+            "profile_variable": {"prompt":"Profile variable [r_c or z_h or x or avg]","default":default_dict['profile_variable'],"type":str},
+            "profile_slice":    {"prompt":"Select axis of 1D slice","default":default_dict['profile_slice'],"type":int},
+            "axes_scale":       {"prompt":"Scale Axis","default":default_dict['axes_scale'],"type":str},
+            "cmap_label":       {"prompt":"Color label","default":default_dict['cmap_label'],"type":str},
+            "norm":             {"prompt":"Y axis normalization:[None=linear,'log'=logarithmic]","default":default_dict['norm'],"type":str},
+            "clim":             {"prompt":"Colorbar limits: [vmin,vmax]","default":default_dict['clim'],"type":parse_int_list},
+            "color":            {"prompt":"Plot color","default":default_dict['color'],"type":str},
+            "xlabel":           {"prompt":"X label","default":default_dict['xlabel'],"type":str},
+            "axes_scale":       {"prompt":"Scale Axis","default":default_dict['axes_scale'],"type":str},
+            })
+    elif analysis_type=="comparative":
+        base.update({
+            "rad_input_folder": {"prompt":"Radiative Cooling Input folder","default":default_dict['rad_input_folder'],"type":str},
             "variable":         {"prompt":"Variable to be plotted. check file_data['var_names'] for valid names","default":default_dict['variable'],"type":str},
             "profile_variable": {"prompt":"Profile variable [r_c or z_h or x or avg]","default":default_dict['profile_variable'],"type":str},
             "profile_slice":    {"prompt":"Select axis of 1D slice","default":default_dict['profile_slice'],"type":int},

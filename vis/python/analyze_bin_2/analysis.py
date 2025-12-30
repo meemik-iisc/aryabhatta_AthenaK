@@ -10,11 +10,13 @@ if parent_dir not in sys.path:
     sys.path.append(parent_dir)
     
 import bin_convert
-from io_utils import ensure_dir, extract_slice_number
+from utils.io_utils import ensure_dir, extract_slice_number
+from params import rad_build_params
 from data_processing.slice_data import extract_athenak_slice, stitch_meshblocks_to_global
-from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_cool_time_data
+from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_cool_time_data, compute_radial_profile
 from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data 
 from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile, plot_spherical_volume_weighted_avg_profile, plot_spherical_mass_weighted_avg_profile
+from plotting.plot_comparative_profile import plot_comparative_profile
 from plotting.streamlines import plot_streamlines_from_dataframes
 
 def run(analysis_type, user_params):
@@ -37,19 +39,72 @@ def run(analysis_type, user_params):
                     variable=variable.split(":", 1)[1].strip()
                     if variable == "temp":
                         df3D = extract_temp_data(user_params)
-                        plot_spherical_volume_weighted_avg_profile(df3D, user_params)
+                        profile = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        plot_spherical_volume_weighted_avg_profile(profile, user_params)
                     elif variable == "velr":
                         df3D = extract_velr_data(user_params)
-                        plot_spherical_mass_weighted_avg_profile(df3D, user_params)
+                        profile = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile, user_params)
                     elif variable == "cooling_rate":
                         df3D = extract_cooling_rate_data(user_params)
-                        plot_spherical_volume_weighted_avg_profile(df3D,user_params)
+                        profile = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        plot_spherical_volume_weighted_avg_profile(profile,user_params)
                     elif variable == "tcool":
                         df3D = extract_cool_time_data(user_params)
-                        plot_spherical_mass_weighted_avg_profile(df3D,user_params)
+                        profile = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile,user_params)
                 else:
                     df3D = extract_athenak_3D_block(user_params)
-                    plot_spherical_volume_weighted_avg_profile(df3D, user_params)
+                    profile = compute_radial_profile(df3D, user_params, weight_type='volume')
+                    plot_spherical_volume_weighted_avg_profile(profile, user_params)
+                
+            else:
+                df = extract_athenak_slice(user_params)
+                if user_params['profile_variable']=='zh':
+                    plot_zh(df, user_params)
+                elif user_params['profile_variable']=='rc':
+                    plot_rc(df,user_params)
+                elif user_params['profile_variable']=='x':
+                    plot_x_profile(df,user_params)
+                    
+        elif analysis_type=="comparative":
+            rad_user_params = rad_build_params(user_params)
+            if user_params['profile_variable']=='avg':
+                variable = user_params["variable"]
+                if variable.startswith('derived:'):
+                    variable=variable.split(":", 1)[1].strip()
+                    if variable == "temp":
+                        df3D    = extract_temp_data(user_params)
+                        raddf3D = extract_temp_data(rad_user_params) 
+                        avg_profile_no_rad = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='volume')
+                        plot_spherical_volume_weighted_avg_profile(avg_profile_no_rad, user_params)
+                        plot_spherical_volume_weighted_avg_profile(avg_profile_rad, rad_user_params)
+                        plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)
+                    elif variable == "velr":
+                        df3D = extract_velr_data(user_params)
+                        raddf3D = extract_velr_data(rad_user_params)
+                        avg_profile_no_rad = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(avg_profile_no_rad, user_params)
+                        plot_spherical_mass_weighted_avg_profile(avg_profile_rad, rad_user_params)
+                        plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)                       
+                    elif variable == "cooling_rate":
+                        raddf3D = extract_cooling_rate_data(rad_user_params)
+                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='volume')
+                        plot_spherical_volume_weighted_avg_profile(avg_profile_rad,rad_user_params)
+                    elif variable == "tcool":
+                        raddf3D = extract_cool_time_data(rad_user_params)
+                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(avg_profile_rad,rad_user_params)
+                else:
+                    df3D = extract_athenak_3D_block(user_params)
+                    raddf3D = extract_athenak_3D_block(rad_user_params)
+                    avg_profile_no_rad = compute_radial_profile(df3D, user_params, weight_type='volume')
+                    avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='volume')
+                    plot_spherical_volume_weighted_avg_profile(avg_profile_no_rad, user_params)
+                    plot_spherical_volume_weighted_avg_profile(avg_profile_rad, rad_user_params)
+                    plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)
                 
             else:
                 df = extract_athenak_slice(user_params)
@@ -70,7 +125,7 @@ def run(analysis_type, user_params):
     if user_params['loop_bin']:
         for fn in user_params['input_files']:
             fp = os.path.join(user_params['input_folder'], fn)
-            data = bin_convert.read_binary(fp)
+            # data = bin_convert.read_binary(fp)
             user_params.update(input_file=fn,
                                bin_path=fp,
                                slice_number=extract_slice_number(fn))

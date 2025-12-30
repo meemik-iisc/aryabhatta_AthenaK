@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name="rad_bondi_accr"
+#SBATCH --job-name="100Myr_rad_bondi_accr"
 #SBATCH --mail-type=END
 #SBATCH --mail-user=meemikroy@iisc.ac.in
 #SBATCH -p normal

@@ -35,9 +35,10 @@ Real ISMCoolFn(Real temp) {
 
   Real logt = log10(temp);
 
-  // for temperatures less than 10^4 K, use Koyama & Inutsuka (2002)
+  // for temperatures less than 10^4 K, return 0
   if (logt <= 4.2) {
-    return (2.0e-19*exp(-1.184e5/(temp + 1.0e3)) + 2.8e-28*sqrt(temp)*exp(-92.0/temp));
+    // return (2.0e-19*exp(-1.184e5/(temp + 1.0e3)) + 2.8e-28*sqrt(temp)*exp(-92.0/temp));
+    return 0;
   }
 
   // for temperatures above 10^8.15 use CGOLS fit
