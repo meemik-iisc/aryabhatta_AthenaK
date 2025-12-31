@@ -12,20 +12,36 @@ if parent_dir not in sys.path:
 import bin_convert
 from utils.io_utils import ensure_dir, extract_slice_number
 from params import rad_build_params
-from data_processing.slice_data import extract_athenak_slice, stitch_meshblocks_to_global
-from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_cool_time_data, compute_radial_profile
+from data_processing.slice_data import extract_athenak_slice,extract_temp_slice,extract_cooling_rate_slice,extract_tcool_slice, stitch_meshblocks_to_global
+from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_t_cool_data, extract_t_free_fall_data, extract_t_in_data, extract_mass_flux_data, compute_radial_profile
 from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data 
-from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile, plot_spherical_volume_weighted_avg_profile, plot_spherical_mass_weighted_avg_profile
-from plotting.plot_comparative_profile import plot_comparative_profile
+from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile, plot_spherical_volume_weighted_avg_profile, plot_spherical_mass_weighted_avg_profile, plot_time_scales_profile
+from plotting.plot_comparative_profile import plot_comparative_profile, plot_comparative_time_scales
 from plotting.streamlines import plot_streamlines_from_dataframes
 
 def run(analysis_type, user_params):
     ensure_dir(user_params['output_path'])
     def handle():
         if analysis_type=="slice":
-            file_data_2d = extract_athenak_slice(user_params)
-            stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
-            plot_stitched_data(stitch_data, stitch_extent, user_params)
+            variable = user_params["variable"]
+            if variable.startswith('derived:'):
+                variable=variable.split(":", 1)[1].strip()
+                if variable == "temp":
+                    file_data_2d = extract_temp_slice(user_params)
+                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
+                    plot_stitched_data(stitch_data, stitch_extent, user_params)
+                elif variable == "cooling_rate":
+                    file_data_2d = extract_cooling_rate_slice(user_params)
+                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
+                    plot_stitched_data(stitch_data, stitch_extent, user_params)
+                elif variable == "tcool":
+                    file_data_2d = extract_tcool_slice(user_params)
+                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
+                    plot_stitched_data(stitch_data, stitch_extent, user_params)
+            else:
+                file_data_2d = extract_athenak_slice(user_params)
+                stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
+                plot_stitched_data(stitch_data, stitch_extent, user_params)
             # print(file_data_2d['df_quantities'].head)
             # plot_athenak_combined_2(file_data_2d,user_params)
             # plot_individual_meshblocks(df_2d,user_params)       
@@ -38,23 +54,62 @@ def run(analysis_type, user_params):
                 if variable.startswith('derived:'):
                     variable=variable.split(":", 1)[1].strip()
                     if variable == "temp":
-                        df3D = extract_temp_data(user_params)
-                        profile = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        df3D            = extract_temp_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='volume')
                         plot_spherical_volume_weighted_avg_profile(profile, user_params)
                     elif variable == "velr":
-                        df3D = extract_velr_data(user_params)
-                        profile = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        df3D            = extract_velr_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile, user_params)
+                    elif variable == "mass_flux":
+                        df3D            = extract_mass_flux_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='mass')
                         plot_spherical_mass_weighted_avg_profile(profile, user_params)
                     elif variable == "cooling_rate":
-                        df3D = extract_cooling_rate_data(user_params)
-                        profile = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        df3D            = extract_cooling_rate_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='volume')
                         plot_spherical_volume_weighted_avg_profile(profile,user_params)
                     elif variable == "tcool":
-                        df3D = extract_cool_time_data(user_params)
-                        profile = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        df3D            = extract_t_cool_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='mass')
                         plot_spherical_mass_weighted_avg_profile(profile,user_params)
+                    elif variable == "tff":
+                        df3D            = extract_t_free_fall_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile, user_params)
+                    elif variable == "tin":
+                        df3D            = extract_t_in_data(user_params)
+                        profile         = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile, user_params)
+                    elif variable == "time_scales":
+                        df3D_t_cool     = extract_t_cool_data(user_params)
+                        profile_t_cool  = compute_radial_profile(df3D_t_cool, user_params, weight_type='mass')
+                        t_cool_data     = {
+                            'df3D'      :df3D_t_cool,
+                            'profile'   :profile_t_cool,
+                            'label'     :r'cooling time (Myr)',
+                            'color'     :'blue'
+                        }
+                        df3D_t_ff       = extract_t_free_fall_data(user_params)
+                        profile_t_ff    = compute_radial_profile(df3D_t_ff, user_params, weight_type='mass')
+                        t_ff_data       = {
+                            'df3D'      :df3D_t_ff,
+                            'profile'   :profile_t_ff,
+                            'label'     :r'Free Fall time (Myr)',
+                            'color'     :'green'
+                        }
+                        df3D_t_in       = extract_t_in_data(user_params)
+                        profile_t_in    = compute_radial_profile(df3D_t_in, user_params, weight_type='mass')
+                        t_in_data       ={
+                            'df3D'      :df3D_t_in,
+                            'profile'   :profile_t_in,
+                            'label'     :r'In Fall time (Myr)',
+                            'color'     :'red'
+                        }
+                        time_scales     = [t_cool_data, t_ff_data, t_in_data]
+                        plot_time_scales_profile(time_scales, user_params)
                 else:
-                    df3D = extract_athenak_3D_block(user_params)
+                    df3D    = extract_athenak_3D_block(user_params)
                     profile = compute_radial_profile(df3D, user_params, weight_type='volume')
                     plot_spherical_volume_weighted_avg_profile(profile, user_params)
                 
@@ -68,35 +123,103 @@ def run(analysis_type, user_params):
                     plot_x_profile(df,user_params)
                     
         elif analysis_type=="comparative":
-            rad_user_params = rad_build_params(user_params)
+            rad_user_params     = rad_build_params(user_params)
             if user_params['profile_variable']=='avg':
-                variable = user_params["variable"]
+                variable        = user_params["variable"]
                 if variable.startswith('derived:'):
-                    variable=variable.split(":", 1)[1].strip()
+                    variable    = variable.split(":", 1)[1].strip()
                     if variable == "temp":
-                        df3D    = extract_temp_data(user_params)
-                        raddf3D = extract_temp_data(rad_user_params) 
-                        avg_profile_no_rad = compute_radial_profile(df3D, user_params, weight_type='volume')
-                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='volume')
+                        df3D                = extract_temp_data(user_params)
+                        raddf3D             = extract_temp_data(rad_user_params) 
+                        avg_profile_no_rad  = compute_radial_profile(df3D, user_params, weight_type='volume')
+                        avg_profile_rad     = compute_radial_profile(raddf3D, user_params, weight_type='volume')
                         plot_spherical_volume_weighted_avg_profile(avg_profile_no_rad, user_params)
                         plot_spherical_volume_weighted_avg_profile(avg_profile_rad, rad_user_params)
                         plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)
                     elif variable == "velr":
-                        df3D = extract_velr_data(user_params)
-                        raddf3D = extract_velr_data(rad_user_params)
-                        avg_profile_no_rad = compute_radial_profile(df3D, user_params, weight_type='mass')
-                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        df3D                = extract_velr_data(user_params)
+                        raddf3D             = extract_velr_data(rad_user_params)
+                        avg_profile_no_rad  = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        avg_profile_rad     = compute_radial_profile(raddf3D, user_params, weight_type='mass')
                         plot_spherical_mass_weighted_avg_profile(avg_profile_no_rad, user_params)
                         plot_spherical_mass_weighted_avg_profile(avg_profile_rad, rad_user_params)
-                        plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)                       
+                        plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)
+                    elif variable == "mass_flux":
+                        df3D                = extract_mass_flux_data(user_params)
+                        raddf3D             = extract_mass_flux_data(rad_user_params)
+                        avg_profile_no_rad  = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        avg_profile_rad     = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(avg_profile_no_rad, user_params)
+                        plot_spherical_mass_weighted_avg_profile(avg_profile_rad, rad_user_params)
+                        plot_comparative_profile(avg_profile_no_rad, avg_profile_rad, user_params)                      
                     elif variable == "cooling_rate":
-                        raddf3D = extract_cooling_rate_data(rad_user_params)
-                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='volume')
+                        raddf3D             = extract_cooling_rate_data(rad_user_params)
+                        avg_profile_rad     = compute_radial_profile(raddf3D, user_params, weight_type='volume')
                         plot_spherical_volume_weighted_avg_profile(avg_profile_rad,rad_user_params)
                     elif variable == "tcool":
-                        raddf3D = extract_cool_time_data(rad_user_params)
-                        avg_profile_rad = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        raddf3D             = extract_t_cool_data(rad_user_params)
+                        avg_profile_rad     = compute_radial_profile(raddf3D, user_params, weight_type='mass')
                         plot_spherical_mass_weighted_avg_profile(avg_profile_rad,rad_user_params)
+                    elif variable == "tff":
+                        df3D                = extract_t_free_fall_data(user_params)
+                        profile_no_rad      = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        raddf3D             = extract_t_free_fall_data(rad_user_params)
+                        profile_rad         = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile_no_rad, user_params)
+                        plot_spherical_mass_weighted_avg_profile(profile_rad, rad_user_params)
+                        plot_comparative_profile(profile_no_rad, profile_rad, user_params)
+                    elif variable == "tin":
+                        df3D                = extract_t_in_data(user_params)
+                        profile_no_rad      = compute_radial_profile(df3D, user_params, weight_type='mass')
+                        raddf3D             = extract_t_in_data(rad_user_params)
+                        profile_rad         = compute_radial_profile(raddf3D, user_params, weight_type='mass')
+                        plot_spherical_mass_weighted_avg_profile(profile_no_rad, user_params)
+                        plot_spherical_mass_weighted_avg_profile(profile_rad, rad_user_params)
+                        plot_comparative_profile(profile_no_rad, profile_rad, user_params)
+                    elif variable == "time_scales":
+                        raddf3D_t_cool      = extract_t_cool_data(rad_user_params)
+                        rad_profile_t_cool  = compute_radial_profile(raddf3D_t_cool, user_params)
+                        rad_t_cool_data     ={
+                            'df3D'      : raddf3D_t_cool,
+                            'profile'   : rad_profile_t_cool,
+                            'label'     : r'Cooling Time',
+                            'color'     : 'blue',
+                            'style'     : 'solid'
+                        }
+                        df3D_t_ff           = extract_t_free_fall_data(user_params)
+                        profile_t_ff        = compute_radial_profile(df3D_t_ff, user_params, weight_type='mass')
+                        t_ff_data           = {
+                            'df3D'      :df3D_t_ff,
+                            'profile'   :profile_t_ff,
+                            'label'     :r'Free Fall time',
+                            'color'     :'green',
+                            'style'     :'solid'
+                        }
+                        df3D_t_in           = extract_t_in_data(user_params)
+                        profile_t_in        = compute_radial_profile(df3D_t_in, user_params, weight_type='mass')
+                        t_in_data           = {
+                            'df3D'      :df3D_t_in,
+                            'profile'   :profile_t_in,
+                            'label'     :r'In Fall time (Without Rad Cooling)',
+                            'color'     :'red',
+                            'style'     :'dotted'
+                        }
+                        rad_df3D_t_in       = extract_t_in_data(rad_user_params)
+                        rad_profile_t_in    = compute_radial_profile(rad_df3D_t_in, user_params, weight_type='mass')
+                        rad_t_in_data       = {
+                            'df3D'      :rad_df3D_t_in,
+                            'profile'   :rad_profile_t_in,
+                            'label'     :r'In Fall time (With Radiative Cooling)',
+                            'color'     :'red',
+                            'style'     :'solid'
+                        }
+                        rad_time_scales     = [rad_t_cool_data, t_ff_data, rad_t_in_data]
+                        no_rad_time_scales  = [t_ff_data, t_in_data]
+                        time_scales = [rad_t_cool_data, t_ff_data, t_in_data, rad_t_in_data]
+                        plot_time_scales_profile(rad_time_scales, rad_user_params)
+                        plot_time_scales_profile(no_rad_time_scales, user_params)
+                        plot_comparative_time_scales(time_scales, user_params)
+                        
                 else:
                     df3D = extract_athenak_3D_block(user_params)
                     raddf3D = extract_athenak_3D_block(rad_user_params)

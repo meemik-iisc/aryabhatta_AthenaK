@@ -409,3 +409,78 @@ def plot_spherical_mass_weighted_avg_profile(profile, user_params):
     print(f"✓ 3D Mass-weighted profile saved at {fname}")
     
     return profile
+
+def plot_time_scales_profile(timescales, user_params):
+     # ===== Create figure =====
+    fig, ax = plt.subplots(figsize=(12, 7))
+    all_profiles = []
+    axes_scale = user_params.get('axes_scale', 1.0)
+    for time_scale in timescales:
+        time_scale_profile  = time_scale['profile']
+        time_scale_label    = time_scale['label']
+        time_scale_color    = time_scale['color']
+        # Process radii for plotting (apply log scale if needed)
+        if user_params.get('norm') == "log":
+            if user_params['xlabel'].endswith("[log]"):
+                r_plot      = np.log10(axes_scale * time_scale_profile['r_centers'] + 1e-30)
+            else:
+                r_plot      = axes_scale * time_scale_profile['r_centers']
+            # Log scale for y-axis
+            profile_plot    = np.log10(time_scale_profile['profile'] + 1e-30)
+            std_plot        = time_scale_profile['std'] / (time_scale_profile['profile'] * np.log(10))
+        else:
+            r_plot          = axes_scale * time_scale_profile['r_centers']
+            profile_plot    = time_scale_profile['profile']
+            std_plot        = time_scale_profile['std']
+        all_profiles.append(profile_plot)
+        # Plot
+        ax.plot(r_plot, profile_plot, 
+                color       = time_scale_color, 
+                linestyle   = '-',  # SOLID
+                linewidth   = 2.5,
+                marker      = 'o',
+                markersize  = 4,
+                label       = time_scale_label,
+                zorder      = 3)
+    
+        # Add shaded region
+        ax.fill_between(r_plot, 
+                         profile_plot - std_plot,
+                         profile_plot + std_plot,
+                         color = time_scale_color, 
+                         alpha = 0.1,
+                         zorder = 1)    
+    # Set y-axis limits
+    clim = user_params.get('clim', [None, None])
+    all_profiles_list = np.concatenate(all_profiles)
+    y_min = clim[0] if clim[0] is not None else np.nanmin(all_profiles_list)
+    y_max = clim[1] if clim[1] is not None else np.nanmax(all_profiles_list)
+    ax.set_ylim([y_min, y_max])
+    
+    # Labels and grid
+    ax.set_xlabel(user_params.get('xlabel', r'$r$'), fontsize=12)
+    ax.set_ylabel(user_params.get('cmap_label', 'Value'), fontsize=12)
+    ax.grid(alpha=0.3)
+    ax.legend(fontsize=11, loc='best')
+    
+    # Create output directory
+    variable = user_params.get('variable', 'unknown')
+    if variable.startswith("derived:"):
+        var_name = variable.split(":", 1)[1].strip()
+        out_dir = Path(user_params['output_path']) / "spherical_profile_3d" / var_name
+    else:
+        out_dir = Path(user_params['output_path']) / "spherical_profile_3d" / variable
+    
+    os.makedirs(out_dir, exist_ok=True)
+    
+    # Save figure
+    if user_params.get('loop_bin', False):
+        fname = os.path.join(out_dir, f"t_{user_params.get('slice_number', 0)}.png")
+    else:
+        fname = os.path.join(out_dir, 'spherical_profile_3d_mass_weighted.png')
+    
+    plt.tight_layout()
+    plt.savefig(fname, bbox_inches="tight", dpi=150)
+    plt.close()
+    
+    print(f"✓ 3D Mass-weighted profile saved at {fname}")

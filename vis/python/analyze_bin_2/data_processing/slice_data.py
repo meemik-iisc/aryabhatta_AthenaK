@@ -1,7 +1,8 @@
 import struct
 import numpy as np
 import pandas as pd
-from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm
+from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm,rho_cgs,pres_cgs,s_Myr
+from utils.helpers import cool_lambda
 
 def extract_athenak_slice(user_params):
     """
@@ -240,6 +241,38 @@ def extract_radial_vel_slice(user_params):
         "block_shape": velx_data_df['block_shape']
     }
 
+def extract_cooling_rate_slice(user_params):
+    rho_params = user_params.copy()
+    rho_params.update(variable='dens')
+    rho_data_df = extract_athenak_slice(rho_params)
+    rho_data = rho_data_df['df_quantities']
+    rho_data_cgs = rho_data*rho_cgs
+    n_data_cgs = rho_data_cgs/(mu*mp_cgs)
+    temp_data_cgs = extract_temp_slice(user_params)['df_quantities']
+    cool_lambda_cgs = cool_lambda(temp_data_cgs)
+    cool_rate_cgs = n_data_cgs*n_data_cgs*cool_lambda_cgs
+    return {
+        "df_quantities": cool_rate_cgs,
+        "df_extents": rho_data_df['df_extents'],
+        "num_blocks": rho_data_df['num_blocks'],
+        "block_shape": rho_data_df['block_shape']
+    }
+    
+def extract_tcool_slice(user_params):
+    eint_params = user_params.copy()
+    eint_params.update(variable='eint')
+    eint_data_df = extract_athenak_slice(eint_params)
+    eint_data = eint_data_df['df_quantities']
+    pres_data_cgs = eint_data*(gamma-1)*pres_cgs
+    cool_rate_cgs = extract_cooling_rate_slice(user_params)['df_quantities']
+    tcool_cgs = (gamma*pres_data_cgs)/((gamma-1)*cool_rate_cgs)
+    tcool_Myr = tcool_cgs/s_Myr
+    return {
+        "df_quantities": tcool_Myr,
+        "df_extents": eint_data_df['df_extents'],
+        "num_blocks": eint_data_df['num_blocks'],
+        "block_shape": eint_data_df['block_shape']
+    }
 
 def stitch_meshblocks_to_global(data_dict, user_params):
     """
