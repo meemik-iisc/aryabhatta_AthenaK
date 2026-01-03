@@ -20,8 +20,8 @@ time_label = "Myr"
 dens_var={
     'cmap':"PiYG",
     'norm':"log",
-    'vmin':None,
-    'vmax':None,
+    # 'vmin':None,
+    # 'vmax':None,
     'vmin':1.0e-3,
     'vmax':1.0e2,
     'x1min':None,
@@ -32,9 +32,9 @@ dens_var={
 pres_var={
     'cmap':"viridis",
     'norm':"log",
-    'vmin':None,
-    'vmax':None,
-    'vmin':1e-5,
+    # 'vmin':None,
+    # 'vmax':None,
+    'vmin':1e-7,
     'vmax':1e-1,
     'x1min':None,
     'x1max':None,
@@ -44,11 +44,12 @@ pres_var={
 velr_var={
     # 'cmap':"seismic",
     'cmap':"Reds",
-    'norm':None,
-    'vmin':None,
-    'vmax':None,
-    'vmin':0.0,
-    'vmax':70.0,
+    # 'norm':None,
+    'norm':"log",
+    # 'vmin':None,
+    # 'vmax':None,
+    'vmin':1e-3,
+    'vmax':1e3,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -57,10 +58,11 @@ velr_var={
 velx_var={
     'cmap':"seismic",
     'norm':None,
-    'vmin':None,
-    'vmax':None,
-    'vmin':-0.06,
-    'vmax':0.06,
+    # 'norm':"twoLog",
+    # 'vmin':None,
+    # 'vmax':None,
+    'vmin':-1e3,
+    'vmax':1e3,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -163,9 +165,10 @@ for idx,bf in enumerate(bin_files):
 
 
     # Create combined 4x1 subplot: dens, pgas, velr, temp
-    fig, axes = plt.subplots(2, 2, figsize=(12, 12))
-    plot_order = ['dens', 'pgas', 'velr', 'temp']
-    titles = ['Density', 'Pressure', 'Radial Velocity', 'Temperature']
+    fig, axes = plt.subplots(4, 1, figsize=(12, 18))
+    # plot_order = ['dens', 'pgas', 'velr', 'temp']
+    plot_order = ['dens', 'pgas', 'velx', 'temp']
+    titles = ['Density', 'Pressure', 'X Velocity', 'Temperature']
     for ax, key, title in zip(axes.flatten(), plot_order, titles):
         img_path = folders[key if key != 'pgas' else 'pres'] / f"{basename}_{key}.png"
         if img_path.exists():
@@ -178,6 +181,7 @@ for idx,bf in enumerate(bin_files):
     combo_file = folders['data'] / f"{basename}_combined.png"
     fig.tight_layout()
     fig.savefig(combo_file, dpi=300)
+    print(f"Saved Combined file {combo_file}")
     plt.close(fig)
 
 # Function to create movie from image sequence

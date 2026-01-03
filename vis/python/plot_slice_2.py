@@ -134,6 +134,7 @@ from matplotlib.colors import SymLogNorm
 dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
 pres_label  = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
 velr_label   = r"$|v_r|\ [\mathrm{km/s}]$"
+velx_label   = r"$v_x\ [\mathrm{km/s}]$"
 temp_label  = r" T (K)"
 
 
@@ -166,9 +167,10 @@ def main(**kwargs):
     R_bondi=1.25
     axes_scale = 1.0
     font_size = 14
-    fig_size = (8,6)
+    fig_size = (12,4)
     temp_norm =1.0
     velr_scale = 1000
+    velx_scale = 1000
     dens_scale = 1.0
     pres_scale = 1.0    
     
@@ -1113,6 +1115,8 @@ def main(**kwargs):
             quantity = dens_scale*quantities[variable_name]
         elif kwargs['variable']=='eint':
             quantity = pres_scale*quantities[variable_name]
+        elif kwargs['variable']=='velx':
+            quantity = velx_scale*quantities[variable_name]
         else:
             quantity = quantities[variable_name]
 
@@ -1463,7 +1467,7 @@ def set_labels(general_rel_v):
     labels['eint'] = pres_label
     labels['velr'] = velr_label
     if general_rel_v:
-        labels['velx'] = r"$v_x\ [10^3\ \mathrm{km/s}]$"
+        labels['velx'] = velx_label
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"
         labels['velz'] = r"$v_z\ [10^3\ \mathrm{km/s}]$"
     else:

@@ -1,0 +1,111 @@
+
+Root grid = 2 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 64
+Number of logical  levels of refinement = 2 (3 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 64
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=3.981979e+02 cycle=0 time=0.000000e+00 dt=2.723191e-02
+elapsed=9.382667e+02 cycle=1000 time=3.300849e+00 dt=2.688867e-03
+elapsed=1.464445e+03 cycle=2000 time=6.290916e+00 dt=3.256558e-03
+elapsed=2.007720e+03 cycle=3000 time=9.367499e+00 dt=2.385221e-03
+elapsed=2.947022e+03 cycle=4000 time=1.210438e+01 dt=3.389323e-03
+elapsed=3.451968e+03 cycle=5000 time=1.556543e+01 dt=3.460642e-03
+elapsed=3.959831e+03 cycle=6000 time=1.873579e+01 dt=2.868453e-03
+elapsed=4.859258e+03 cycle=7000 time=2.203702e+01 dt=3.554748e-03
+elapsed=5.361957e+03 cycle=8000 time=2.577925e+01 dt=3.630842e-03
+elapsed=5.866448e+03 cycle=9000 time=2.935531e+01 dt=3.641856e-03
+elapsed=6.808510e+03 cycle=10000 time=3.295535e+01 dt=3.461297e-03
+elapsed=7.314999e+03 cycle=11000 time=3.649333e+01 dt=3.621404e-03
+elapsed=8.216252e+03 cycle=12000 time=4.024044e+01 dt=3.723857e-03
+elapsed=8.718066e+03 cycle=13000 time=4.395905e+01 dt=3.843897e-03
+elapsed=9.221100e+03 cycle=14000 time=4.775432e+01 dt=3.876283e-03
+elapsed=1.016375e+04 cycle=15000 time=5.168528e+01 dt=4.004302e-03
+elapsed=1.070166e+04 cycle=16000 time=5.570123e+01 dt=3.866682e-03
+elapsed=1.124295e+04 cycle=17000 time=5.961146e+01 dt=3.971795e-03
+elapsed=1.216372e+04 cycle=18000 time=6.368386e+01 dt=4.200128e-03
+elapsed=1.267672e+04 cycle=19000 time=6.790116e+01 dt=4.171191e-03
+elapsed=1.360274e+04 cycle=20000 time=7.203810e+01 dt=4.178214e-03
+elapsed=1.413475e+04 cycle=21000 time=7.619624e+01 dt=4.213708e-03
+elapsed=1.503198e+04 cycle=22000 time=8.039394e+01 dt=4.157369e-03
+elapsed=1.558082e+04 cycle=23000 time=8.461247e+01 dt=4.249338e-03
+elapsed=1.614030e+04 cycle=24000 time=8.890660e+01 dt=4.321831e-03
+elapsed=1.709294e+04 cycle=25000 time=9.325617e+01 dt=4.398621e-03
+elapsed=1.759947e+04 cycle=26000 time=9.768774e+01 dt=4.395622e-03
+
+Terminating on time limit
+time=1.000000e+02 cycle=26519
+tlim=1.000000e+02 nlim=-1
+
+MeshBlock-cycles = 1697216
+cpu time used  = 1.789454e+04
+zone-cycles/cpu_second = 2.486317e+07
+particle-updates/cpu_second = 0.000000e+00
