@@ -290,31 +290,22 @@ namespace{
         int nmb = pm->pmb_pack->nmb_thispack;
         int nvar = u0_.extent_int(1);
 
-        Real const &gm1 = pbh->gamma_gas - 1;
         Real v_wind     = pbh->v_wind;  // Set wind speed here
-        Real rho_cgm    = pbh->rho_cgm;
-        Real cs_cgm     = pbh->cs_cgm;
-        Real pres_cgm   = rho_cgm*cs_cgm*cs_cgm; 
+
         // ConsToPrim over all X1 ghost zones
         pm->pmb_pack->phydro->peos->ConsToPrim(u0_,w0_,false,is-ng,is,0,(n2-1),0,(n3-1));
         pm->pmb_pack->phydro->peos->ConsToPrim(u0_,w0_,false,ie,ie+ng,0,(n2-1),0,(n3-1));
 
         // Set X1-BCs on w0
-        // par_for("outflow_wind_x1", DevExeSpace(),0,(nmb-1),0,(nvar-1),0,(n3-1),0,(n2-1),
-        par_for("outflow_wind_x1", DevExeSpace(),0,(nmb-1),0,(n3-1),0,(n2-1),
-        KOKKOS_LAMBDA(int m, int k, int j) {
+        par_for("outflow_wind_x1", DevExeSpace(),0,(nmb-1),0,(nvar-1),0,(n3-1),0,(n2-1),
+        KOKKOS_LAMBDA(int m,int n, int k, int j) {
             if (mb_bcs.d_view(m,BoundaryFace::outer_x1) == BoundaryFlag::user) {
                 for (int i=0; i<ng; ++i) {
-                    u0_(m,IDN,k,j,ie+i+1) = rho_cgm;
-                    u0_(m,IM1,k,j,ie+i+1) = -1*rho_cgm*v_wind;
-                    u0_(m,IM2,k,j,ie+i+1) = 0.0;
-                    u0_(m,IM3,k,j,ie+i+1) = 0.0;
-                    u0_(m,IEN,k,j,ie+i+1) = pres_cgm/gm1 + 0.5*w0_(m, IDN, k, j, ie)*(SQR(w0_(m,IVX,k,j,ie))+SQR(w0_(m,IVY,k,j,ie))+SQR(w0_(m,IVZ,k,j,ie)));
-                    // if (n==(IVX)) {
-                    //     w0_(m,n,k,j,ie+i+1) = -v_wind;
-                    // } else {
-                    //     w0_(m,n,k,j,ie+i+1) = w0_(m,n,k,j,ie);
-                    // }
+                    if (n==(IVX)) {
+                        w0_(m,n,k,j,ie+i+1) = -v_wind;
+                    } else {
+                        w0_(m,n,k,j,ie+i+1) = w0_(m,n,k,j,ie);
+                    }
                 }
             }
         });

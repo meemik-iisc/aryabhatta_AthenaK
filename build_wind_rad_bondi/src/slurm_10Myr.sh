@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name="10Myr_wind_rad_bondi_accr"
+#SBATCH --job-name="10Myr_dens_wind_rad_bondi_accr"
 #SBATCH --mail-type=END
 #SBATCH --mail-user=meemikroy@iisc.ac.in
 #SBATCH -p normal
@@ -18,6 +18,6 @@ module purge
 module load openmpi/4.1.1
 
 # Run your MPI application
-mpirun -np 64 ./athena -i /scratch/meemik/athenak/inputs/hydro/wind_rad_bondi/wind_rad_bondi_10Myr.athinput -d windRadBondi10MyrAccrOut2
+mpirun -np 64 ./athena -i /scratch/meemik/athenak/inputs/hydro/wind_rad_bondi/wind_rad_bondi_10Myr.athinput -d densWindRadBondi10MyrAccrOut2
 # mpirun -np 4 --mca orte_base_help_aggregate 0 --mca orte_debug_daemons 1 ../athena -i /scratch/meemik/athenak/inputs/hydro/conical_jet/res_128.athinput -d conicalJetAmbHalfOut
 
