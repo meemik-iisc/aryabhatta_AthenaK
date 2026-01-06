@@ -76,3 +76,13 @@ Setup complete, executing task list(s)...
 elapsed=4.286503e+02 cycle=0 time=0.000000e+00 dt=2.723191e-02
 elapsed=2.208978e+03 cycle=1000 time=3.259303e+00 dt=2.743022e-03
 elapsed=3.836751e+03 cycle=2000 time=6.127681e+00 dt=3.014937e-03
+elapsed=5.216757e+03 cycle=3000 time=8.924806e+00 dt=2.462145e-03
+
+Terminating on time limit
+time=1.000000e+01 cycle=3432
+tlim=1.000000e+01 nlim=-1
+
+MeshBlock-cycles = 219648
+cpu time used  = 5.774682e+03
+zone-cycles/cpu_second = 9.971009e+06
+particle-updates/cpu_second = 0.000000e+00

@@ -70,3 +70,100 @@ Number of parallel ranks = 64
   Rank = 63: 1 MeshBlocks, cost = 1
 Load Balancing:
   Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=4.286805e+02 cycle=0 time=0.000000e+00 dt=2.723191e-02
+elapsed=9.432560e+02 cycle=1000 time=3.259303e+00 dt=2.743022e-03
+elapsed=1.456529e+03 cycle=2000 time=6.127681e+00 dt=3.014937e-03
+elapsed=1.961128e+03 cycle=3000 time=8.924806e+00 dt=2.462145e-03
+elapsed=2.912262e+03 cycle=4000 time=1.143460e+01 dt=2.544691e-03
+elapsed=3.424851e+03 cycle=5000 time=1.397496e+01 dt=2.551965e-03
+elapsed=3.938662e+03 cycle=6000 time=1.677170e+01 dt=2.809731e-03
+elapsed=4.450194e+03 cycle=7000 time=1.945646e+01 dt=2.742651e-03
+elapsed=5.356167e+03 cycle=8000 time=2.226216e+01 dt=2.879658e-03
+elapsed=5.863789e+03 cycle=9000 time=2.521047e+01 dt=2.937062e-03
+elapsed=6.365173e+03 cycle=10000 time=2.817469e+01 dt=2.989829e-03
+elapsed=7.269141e+03 cycle=11000 time=3.124484e+01 dt=3.094383e-03
+elapsed=7.778864e+03 cycle=12000 time=3.428984e+01 dt=3.002398e-03
+elapsed=8.293122e+03 cycle=13000 time=3.733872e+01 dt=2.850875e-03
+elapsed=8.807181e+03 cycle=14000 time=3.900800e+01 dt=1.177538e-03
+elapsed=9.771615e+03 cycle=15000 time=4.006898e+01 dt=9.305411e-04
+elapsed=1.029040e+04 cycle=16000 time=4.101938e+01 dt=1.050512e-03
+elapsed=1.080431e+04 cycle=17000 time=4.204443e+01 dt=9.941847e-04
+elapsed=1.132010e+04 cycle=18000 time=4.307400e+01 dt=1.070331e-03
+elapsed=1.183893e+04 cycle=19000 time=4.426458e+01 dt=1.348961e-03
+elapsed=1.235095e+04 cycle=20000 time=4.565586e+01 dt=1.175751e-03
+elapsed=1.285970e+04 cycle=21000 time=4.659247e+01 dt=7.465470e-04
+elapsed=1.338509e+04 cycle=22000 time=4.733577e+01 dt=8.691324e-04
+elapsed=1.391635e+04 cycle=23000 time=4.845918e+01 dt=1.458761e-03
+elapsed=1.443916e+04 cycle=24000 time=4.984552e+01 dt=1.131604e-03
+elapsed=1.541498e+04 cycle=25000 time=5.091255e+01 dt=1.111540e-03
+elapsed=1.591833e+04 cycle=26000 time=5.214995e+01 dt=1.474172e-03
+elapsed=1.642884e+04 cycle=27000 time=5.391665e+01 dt=2.073485e-03
+elapsed=1.694166e+04 cycle=28000 time=5.612667e+01 dt=2.009960e-03
+elapsed=1.747065e+04 cycle=29000 time=5.782685e+01 dt=1.155490e-03
+elapsed=1.798675e+04 cycle=30000 time=5.879892e+01 dt=8.476180e-04
+elapsed=1.849001e+04 cycle=31000 time=5.959006e+01 dt=7.914110e-04
+elapsed=1.944858e+04 cycle=32000 time=6.029935e+01 dt=6.445459e-04
+elapsed=1.996918e+04 cycle=33000 time=6.098547e+01 dt=7.797005e-04
+elapsed=2.049204e+04 cycle=34000 time=6.175369e+01 dt=7.381087e-04
+elapsed=2.100133e+04 cycle=35000 time=6.250042e+01 dt=7.492726e-04
+elapsed=2.151142e+04 cycle=36000 time=6.325775e+01 dt=7.377931e-04
+elapsed=2.201684e+04 cycle=37000 time=6.403538e+01 dt=8.506616e-04
+elapsed=2.251917e+04 cycle=38000 time=6.483677e+01 dt=7.571122e-04
+elapsed=2.302512e+04 cycle=39000 time=6.559032e+01 dt=7.342651e-04
+elapsed=2.353022e+04 cycle=40000 time=6.630500e+01 dt=6.724727e-04
+elapsed=2.403363e+04 cycle=41000 time=6.703838e+01 dt=7.914623e-04
+elapsed=2.453449e+04 cycle=42000 time=6.783214e+01 dt=7.765508e-04
+elapsed=2.503447e+04 cycle=43000 time=6.862627e+01 dt=7.735559e-04
+elapsed=2.553481e+04 cycle=44000 time=6.942889e+01 dt=7.775030e-04
+elapsed=2.646769e+04 cycle=45000 time=7.022083e+01 dt=7.854248e-04
+elapsed=2.698196e+04 cycle=46000 time=7.097908e+01 dt=7.376068e-04
+elapsed=2.749581e+04 cycle=47000 time=7.171185e+01 dt=7.396349e-04
+elapsed=2.800682e+04 cycle=48000 time=7.245108e+01 dt=7.331424e-04
+elapsed=2.850641e+04 cycle=49000 time=7.320705e+01 dt=7.460950e-04
+elapsed=2.900888e+04 cycle=50000 time=7.389052e+01 dt=6.234947e-04
+elapsed=2.951660e+04 cycle=51000 time=7.450569e+01 dt=6.352879e-04
+elapsed=3.001729e+04 cycle=52000 time=7.520273e+01 dt=7.017479e-04
+elapsed=3.051653e+04 cycle=53000 time=7.589285e+01 dt=6.803556e-04
+elapsed=3.101379e+04 cycle=54000 time=7.652526e+01 dt=6.301682e-04
+elapsed=3.151221e+04 cycle=55000 time=7.717888e+01 dt=7.318520e-04
+elapsed=3.200917e+04 cycle=56000 time=7.799134e+01 dt=7.796309e-04
+elapsed=3.251828e+04 cycle=57000 time=7.882075e+01 dt=8.657866e-04
+elapsed=3.302118e+04 cycle=58000 time=7.971430e+01 dt=8.740577e-04
+elapsed=3.395035e+04 cycle=59000 time=8.060045e+01 dt=8.595323e-04
+elapsed=3.445328e+04 cycle=60000 time=8.143472e+01 dt=8.485039e-04
+elapsed=3.496167e+04 cycle=61000 time=8.230551e+01 dt=8.502980e-04
+elapsed=3.547258e+04 cycle=62000 time=8.314627e+01 dt=8.165991e-04
+elapsed=3.597536e+04 cycle=63000 time=8.397798e+01 dt=8.243597e-04
+elapsed=3.647690e+04 cycle=64000 time=8.479737e+01 dt=8.284559e-04
+elapsed=3.697682e+04 cycle=65000 time=8.560558e+01 dt=8.153796e-04
+elapsed=3.747680e+04 cycle=66000 time=8.642459e+01 dt=8.361352e-04
+elapsed=3.797766e+04 cycle=67000 time=8.727932e+01 dt=8.847968e-04
+elapsed=3.847815e+04 cycle=68000 time=8.817814e+01 dt=9.135969e-04
+elapsed=3.897966e+04 cycle=69000 time=8.910753e+01 dt=9.180496e-04
+elapsed=3.948030e+04 cycle=70000 time=8.995634e+01 dt=7.992874e-04
+elapsed=4.041058e+04 cycle=71000 time=9.064185e+01 dt=6.297844e-04
+elapsed=4.091131e+04 cycle=72000 time=9.125060e+01 dt=6.350559e-04
+elapsed=4.141135e+04 cycle=73000 time=9.191349e+01 dt=7.005395e-04
+elapsed=4.191372e+04 cycle=74000 time=9.257031e+01 dt=6.081612e-04
+elapsed=4.241378e+04 cycle=75000 time=9.321745e+01 dt=7.171323e-04
+elapsed=4.291410e+04 cycle=76000 time=9.389954e+01 dt=6.699819e-04
+elapsed=4.341504e+04 cycle=77000 time=9.460018e+01 dt=7.085244e-04
+elapsed=4.391541e+04 cycle=78000 time=9.530405e+01 dt=7.110991e-04
+elapsed=4.441547e+04 cycle=79000 time=9.602513e+01 dt=7.252702e-04
+elapsed=4.491473e+04 cycle=80000 time=9.674461e+01 dt=7.191113e-04
+elapsed=4.541395e+04 cycle=81000 time=9.747227e+01 dt=7.376232e-04
+elapsed=4.591338e+04 cycle=82000 time=9.821907e+01 dt=7.509561e-04
+elapsed=4.641234e+04 cycle=83000 time=9.897473e+01 dt=7.575818e-04
+elapsed=4.691159e+04 cycle=84000 time=9.973930e+01 dt=7.709183e-04
+
+Terminating on time limit
+time=1.000000e+02 cycle=84336
+tlim=1.000000e+02 nlim=-1
+
+MeshBlock-cycles = 5397504
+cpu time used  = 4.708022e+04
+zone-cycles/cpu_second = 3.005346e+07
+particle-updates/cpu_second = 0.000000e+00
