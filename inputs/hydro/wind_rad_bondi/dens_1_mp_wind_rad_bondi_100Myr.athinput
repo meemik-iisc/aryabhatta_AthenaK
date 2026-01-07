@@ -10,8 +10,8 @@ basename  = wind_rad_bondi_accr          # problem ID: basename of output filena
 <mesh>
 nghost    = 4                   # Number of ghost cells
 nx1       = 128                 # Number of zones in X1-direction
-x1min     = -10.0                # minimum value of X1
-x1max     = 1.5                 # maximum value of X1
+x1min     = -10.0               # minimum value of X1
+x1max     = 3.0                 # maximum value of X1
 ix1_bc    = outflow             # inner-X1 boundary flag
 ox1_bc    = user                # outer-X1 boundary flag
 
@@ -38,7 +38,7 @@ refinement = static             # type of refinement
 <refinement1>
 level = 1
 x1min = -10.0
-x1max = 1.5
+x1max = 3.0
 x2min = -0.5
 x2max = 0.5
 x3min = -0.5
@@ -51,7 +51,7 @@ evolution  = dynamic            # dynamic/kinematic/static
 integrator = rk2                # time integration algorithm
 cfl_number = 0.3                # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim       = -1                 # cycle limit
-tlim       = 1.0e1              # time limit(10 Myr)
+tlim       = 1.0e2              # time limit(100 Myr)
 ndiag      = 1000               # cycles between diagostic output
 
 <hydro>
@@ -74,7 +74,7 @@ CONST_kB_cgs= 1.38e-16          #erg/K (cgs)
 CONST_mp    = 1.67e-24          #g (cgs) 
 CONST_mu    = 1.0               #Mean molecular Weight
 r_vir       = 1                 #kpc  
-rho_vir     = 10                #10 mp/cs_cgm    
+rho_vir     = 1                 #1 mp/cs_cgm    
 M_bh        = 0.811             #2e7 M_solar 
 v_wind      = 1                 #1000km/s
 rho_cgm     = 1e-3              #1e-3 mp/cc     
@@ -84,13 +84,13 @@ epsilon     = 1e-5              #kpc (0.1R_bondi)
 
 <output1>
 file_type   = hst               # History data dump
-dt          = 1.0e-1            # time increment between outputs
+dt          = 1.0               # time increment between outputs
 
 <output2>
 file_type   = bin               # Binary data dump
 variable    = hydro_w           # variables to be output
-dt          = 1.0               # time increment between outputs (10 output files)
+dt          = 1.0e1             # time increment between outputs (10 output files)
 
 <output3>
 file_type   = rst               # Restart file
-dt          = 1.0
+dt          = 1.0e1
