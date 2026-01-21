@@ -130,6 +130,8 @@ import numpy as np
 import matplotlib
 from matplotlib.colors import TwoSlopeNorm
 from matplotlib.colors import SymLogNorm
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+# from matplotlib.transforms import TransformedBbox, Affine2D
 
 dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
 pres_label  = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
@@ -167,7 +169,8 @@ def main(**kwargs):
     R_bondi=1.25
     axes_scale = 1.0
     font_size = 14
-    fig_size = (12,4)
+    fig_size = (18.0,2.0)
+    # fig_size = (13.0,3.0)
     temp_norm =1.0
     velr_scale = 1000
     velx_scale = 1000
@@ -1192,14 +1195,15 @@ def main(**kwargs):
     #                vmax=vmax, interpolation='none', origin='lower',
     #                extent=scaled_extents[block_num])
     ims = []
+    
     for block_num in range(num_blocks_used):
         im = ax.imshow(quantity[block_num], cmap=kwargs['cmap'], norm=norm, vmin=vmin,
                     vmax=vmax, interpolation='none', origin='lower', aspect='auto',
                     extent=scaled_extents[block_num])
         ims.append(im)
-        
+    
     # Make colorbar
-    cb = fig.colorbar(im, ax=ax)  # im is the last image (default in your code)
+    cb = fig.colorbar(im, ax =ax, fraction=0.05, pad=0.01)  # im is the last image (default in your code)
     cb.set_label(label, fontsize=font_size)
     if kwargs['norm'] == 'twoSlope':
         cb.set_ticks(all_ticks)
@@ -1350,7 +1354,18 @@ def main(**kwargs):
 
     # Adjust layout
     # plt.tight_layout(pad=0.5, w_pad=0.2, h_pad=0.2)
+    # plt.subplots_adjust(left=0.05, right=0.99)
     plt.tight_layout()
+    
+    # fig.canvas.draw()  # Render to get accurate bbox
+    # renderer = fig.canvas.get_renderer()
+    # bbox_raw = ax.get_tightbbox(renderer)
+
+    # # Convert to inches
+    # bbox_inches = TransformedBbox(bbox_raw, Affine2D().scale(1/fig.dpi))
+    # w_in, h_in = bbox_inches.width, bbox_inches.height
+
+    # print(f"Required size for this subplot: {w_in:.2f} x {h_in:.2f} inches")
     # fig.subplots_adjust(left=0.05, right=1.1, top=0.9, bottom=0.15) 
 
     # Save or display figure

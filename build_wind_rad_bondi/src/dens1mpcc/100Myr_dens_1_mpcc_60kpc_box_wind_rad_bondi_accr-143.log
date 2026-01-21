@@ -1,0 +1,231 @@
+
+Root grid = 2 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 288
+Number of logical  levels of refinement = 4 (5 levels total)
+Number of physical levels of refinement = 3 (4 levels total)
+  Physical level = 1 (logical level = 2): 48 MeshBlocks, cost = 48
+  Physical level = 2 (logical level = 3): 112 MeshBlocks, cost = 112
+  Physical level = 3 (logical level = 4): 128 MeshBlocks, cost = 128
+Number of parallel ranks = 144
+  Rank = 0: 2 MeshBlocks, cost = 2
+  Rank = 1: 2 MeshBlocks, cost = 2
+  Rank = 2: 2 MeshBlocks, cost = 2
+  Rank = 3: 2 MeshBlocks, cost = 2
+  Rank = 4: 2 MeshBlocks, cost = 2
+  Rank = 5: 2 MeshBlocks, cost = 2
+  Rank = 6: 2 MeshBlocks, cost = 2
+  Rank = 7: 2 MeshBlocks, cost = 2
+  Rank = 8: 2 MeshBlocks, cost = 2
+  Rank = 9: 2 MeshBlocks, cost = 2
+  Rank = 10: 2 MeshBlocks, cost = 2
+  Rank = 11: 2 MeshBlocks, cost = 2
+  Rank = 12: 2 MeshBlocks, cost = 2
+  Rank = 13: 2 MeshBlocks, cost = 2
+  Rank = 14: 2 MeshBlocks, cost = 2
+  Rank = 15: 2 MeshBlocks, cost = 2
+  Rank = 16: 2 MeshBlocks, cost = 2
+  Rank = 17: 2 MeshBlocks, cost = 2
+  Rank = 18: 2 MeshBlocks, cost = 2
+  Rank = 19: 2 MeshBlocks, cost = 2
+  Rank = 20: 2 MeshBlocks, cost = 2
+  Rank = 21: 2 MeshBlocks, cost = 2
+  Rank = 22: 2 MeshBlocks, cost = 2
+  Rank = 23: 2 MeshBlocks, cost = 2
+  Rank = 24: 2 MeshBlocks, cost = 2
+  Rank = 25: 2 MeshBlocks, cost = 2
+  Rank = 26: 2 MeshBlocks, cost = 2
+  Rank = 27: 2 MeshBlocks, cost = 2
+  Rank = 28: 2 MeshBlocks, cost = 2
+  Rank = 29: 2 MeshBlocks, cost = 2
+  Rank = 30: 2 MeshBlocks, cost = 2
+  Rank = 31: 2 MeshBlocks, cost = 2
+  Rank = 32: 2 MeshBlocks, cost = 2
+  Rank = 33: 2 MeshBlocks, cost = 2
+  Rank = 34: 2 MeshBlocks, cost = 2
+  Rank = 35: 2 MeshBlocks, cost = 2
+  Rank = 36: 2 MeshBlocks, cost = 2
+  Rank = 37: 2 MeshBlocks, cost = 2
+  Rank = 38: 2 MeshBlocks, cost = 2
+  Rank = 39: 2 MeshBlocks, cost = 2
+  Rank = 40: 2 MeshBlocks, cost = 2
+  Rank = 41: 2 MeshBlocks, cost = 2
+  Rank = 42: 2 MeshBlocks, cost = 2
+  Rank = 43: 2 MeshBlocks, cost = 2
+  Rank = 44: 2 MeshBlocks, cost = 2
+  Rank = 45: 2 MeshBlocks, cost = 2
+  Rank = 46: 2 MeshBlocks, cost = 2
+  Rank = 47: 2 MeshBlocks, cost = 2
+  Rank = 48: 2 MeshBlocks, cost = 2
+  Rank = 49: 2 MeshBlocks, cost = 2
+  Rank = 50: 2 MeshBlocks, cost = 2
+  Rank = 51: 2 MeshBlocks, cost = 2
+  Rank = 52: 2 MeshBlocks, cost = 2
+  Rank = 53: 2 MeshBlocks, cost = 2
+  Rank = 54: 2 MeshBlocks, cost = 2
+  Rank = 55: 2 MeshBlocks, cost = 2
+  Rank = 56: 2 MeshBlocks, cost = 2
+  Rank = 57: 2 MeshBlocks, cost = 2
+  Rank = 58: 2 MeshBlocks, cost = 2
+  Rank = 59: 2 MeshBlocks, cost = 2
+  Rank = 60: 2 MeshBlocks, cost = 2
+  Rank = 61: 2 MeshBlocks, cost = 2
+  Rank = 62: 2 MeshBlocks, cost = 2
+  Rank = 63: 2 MeshBlocks, cost = 2
+  Rank = 64: 2 MeshBlocks, cost = 2
+  Rank = 65: 2 MeshBlocks, cost = 2
+  Rank = 66: 2 MeshBlocks, cost = 2
+  Rank = 67: 2 MeshBlocks, cost = 2
+  Rank = 68: 2 MeshBlocks, cost = 2
+  Rank = 69: 2 MeshBlocks, cost = 2
+  Rank = 70: 2 MeshBlocks, cost = 2
+  Rank = 71: 2 MeshBlocks, cost = 2
+  Rank = 72: 2 MeshBlocks, cost = 2
+  Rank = 73: 2 MeshBlocks, cost = 2
+  Rank = 74: 2 MeshBlocks, cost = 2
+  Rank = 75: 2 MeshBlocks, cost = 2
+  Rank = 76: 2 MeshBlocks, cost = 2
+  Rank = 77: 2 MeshBlocks, cost = 2
+  Rank = 78: 2 MeshBlocks, cost = 2
+  Rank = 79: 2 MeshBlocks, cost = 2
+  Rank = 80: 2 MeshBlocks, cost = 2
+  Rank = 81: 2 MeshBlocks, cost = 2
+  Rank = 82: 2 MeshBlocks, cost = 2
+  Rank = 83: 2 MeshBlocks, cost = 2
+  Rank = 84: 2 MeshBlocks, cost = 2
+  Rank = 85: 2 MeshBlocks, cost = 2
+  Rank = 86: 2 MeshBlocks, cost = 2
+  Rank = 87: 2 MeshBlocks, cost = 2
+  Rank = 88: 2 MeshBlocks, cost = 2
+  Rank = 89: 2 MeshBlocks, cost = 2
+  Rank = 90: 2 MeshBlocks, cost = 2
+  Rank = 91: 2 MeshBlocks, cost = 2
+  Rank = 92: 2 MeshBlocks, cost = 2
+  Rank = 93: 2 MeshBlocks, cost = 2
+  Rank = 94: 2 MeshBlocks, cost = 2
+  Rank = 95: 2 MeshBlocks, cost = 2
+  Rank = 96: 2 MeshBlocks, cost = 2
+  Rank = 97: 2 MeshBlocks, cost = 2
+  Rank = 98: 2 MeshBlocks, cost = 2
+  Rank = 99: 2 MeshBlocks, cost = 2
+  Rank = 100: 2 MeshBlocks, cost = 2
+  Rank = 101: 2 MeshBlocks, cost = 2
+  Rank = 102: 2 MeshBlocks, cost = 2
+  Rank = 103: 2 MeshBlocks, cost = 2
+  Rank = 104: 2 MeshBlocks, cost = 2
+  Rank = 105: 2 MeshBlocks, cost = 2
+  Rank = 106: 2 MeshBlocks, cost = 2
+  Rank = 107: 2 MeshBlocks, cost = 2
+  Rank = 108: 2 MeshBlocks, cost = 2
+  Rank = 109: 2 MeshBlocks, cost = 2
+  Rank = 110: 2 MeshBlocks, cost = 2
+  Rank = 111: 2 MeshBlocks, cost = 2
+  Rank = 112: 2 MeshBlocks, cost = 2
+  Rank = 113: 2 MeshBlocks, cost = 2
+  Rank = 114: 2 MeshBlocks, cost = 2
+  Rank = 115: 2 MeshBlocks, cost = 2
+  Rank = 116: 2 MeshBlocks, cost = 2
+  Rank = 117: 2 MeshBlocks, cost = 2
+  Rank = 118: 2 MeshBlocks, cost = 2
+  Rank = 119: 2 MeshBlocks, cost = 2
+  Rank = 120: 2 MeshBlocks, cost = 2
+  Rank = 121: 2 MeshBlocks, cost = 2
+  Rank = 122: 2 MeshBlocks, cost = 2
+  Rank = 123: 2 MeshBlocks, cost = 2
+  Rank = 124: 2 MeshBlocks, cost = 2
+  Rank = 125: 2 MeshBlocks, cost = 2
+  Rank = 126: 2 MeshBlocks, cost = 2
+  Rank = 127: 2 MeshBlocks, cost = 2
+  Rank = 128: 2 MeshBlocks, cost = 2
+  Rank = 129: 2 MeshBlocks, cost = 2
+  Rank = 130: 2 MeshBlocks, cost = 2
+  Rank = 131: 2 MeshBlocks, cost = 2
+  Rank = 132: 2 MeshBlocks, cost = 2
+  Rank = 133: 2 MeshBlocks, cost = 2
+  Rank = 134: 2 MeshBlocks, cost = 2
+  Rank = 135: 2 MeshBlocks, cost = 2
+  Rank = 136: 2 MeshBlocks, cost = 2
+  Rank = 137: 2 MeshBlocks, cost = 2
+  Rank = 138: 2 MeshBlocks, cost = 2
+  Rank = 139: 2 MeshBlocks, cost = 2
+  Rank = 140: 2 MeshBlocks, cost = 2
+  Rank = 141: 2 MeshBlocks, cost = 2
+  Rank = 142: 2 MeshBlocks, cost = 2
+  Rank = 143: 2 MeshBlocks, cost = 2
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=5.689934e+02 cycle=61000 time=4.034686e+01 dt=6.793205e-04
+elapsed=1.660810e+03 cycle=62000 time=4.101517e+01 dt=6.600706e-04
+elapsed=2.750601e+03 cycle=63000 time=4.164365e+01 dt=6.175123e-04
+elapsed=3.849473e+03 cycle=64000 time=4.224480e+01 dt=6.743371e-04
+elapsed=4.950921e+03 cycle=65000 time=4.289677e+01 dt=6.503238e-04
+elapsed=6.054809e+03 cycle=66000 time=4.352521e+01 dt=6.250653e-04
+elapsed=7.152072e+03 cycle=67000 time=4.415687e+01 dt=6.161145e-04
+elapsed=8.254150e+03 cycle=68000 time=4.478287e+01 dt=6.189053e-04
+elapsed=9.358476e+03 cycle=69000 time=4.542124e+01 dt=6.594380e-04
+elapsed=1.045752e+04 cycle=70000 time=4.605608e+01 dt=6.739163e-04
+elapsed=1.155821e+04 cycle=71000 time=4.672876e+01 dt=6.727828e-04
+elapsed=1.265925e+04 cycle=72000 time=4.737565e+01 dt=6.430687e-04
+elapsed=1.375871e+04 cycle=73000 time=4.803917e+01 dt=6.118115e-04
+elapsed=1.486250e+04 cycle=74000 time=4.871625e+01 dt=6.909501e-04
+elapsed=1.596763e+04 cycle=75000 time=4.941870e+01 dt=6.737633e-04
+elapsed=1.862208e+04 cycle=76000 time=5.008489e+01 dt=6.321132e-04
+elapsed=1.972349e+04 cycle=77000 time=5.079201e+01 dt=7.157030e-04
+elapsed=2.082065e+04 cycle=78000 time=5.147603e+01 dt=6.636932e-04
+elapsed=2.192604e+04 cycle=79000 time=5.215109e+01 dt=6.805587e-04
+elapsed=2.303317e+04 cycle=80000 time=5.277786e+01 dt=6.160170e-04
+elapsed=2.413571e+04 cycle=81000 time=5.340425e+01 dt=6.380689e-04
+elapsed=2.523402e+04 cycle=82000 time=5.405837e+01 dt=6.941760e-04
+elapsed=2.633185e+04 cycle=83000 time=5.471161e+01 dt=5.839116e-04
+elapsed=2.743164e+04 cycle=84000 time=5.537227e+01 dt=7.018359e-04
+elapsed=2.853705e+04 cycle=85000 time=5.604077e+01 dt=6.382986e-04
+elapsed=2.964725e+04 cycle=86000 time=5.670184e+01 dt=6.457418e-04
+elapsed=3.075921e+04 cycle=87000 time=5.738697e+01 dt=6.949243e-04
+elapsed=3.186555e+04 cycle=88000 time=5.809947e+01 dt=7.314930e-04
+elapsed=3.297319e+04 cycle=89000 time=5.881522e+01 dt=7.417637e-04
+elapsed=3.407864e+04 cycle=90000 time=5.955574e+01 dt=7.728295e-04
+elapsed=3.679250e+04 cycle=91000 time=6.029930e+01 dt=7.263227e-04
+elapsed=3.789211e+04 cycle=92000 time=6.104335e+01 dt=7.265530e-04
+elapsed=3.899238e+04 cycle=93000 time=6.178724e+01 dt=7.065963e-04
+elapsed=4.009553e+04 cycle=94000 time=6.252414e+01 dt=7.437834e-04
+elapsed=4.119630e+04 cycle=95000 time=6.324720e+01 dt=7.272720e-04
+elapsed=4.229377e+04 cycle=96000 time=6.396662e+01 dt=6.928564e-04
+elapsed=4.338660e+04 cycle=97000 time=6.467199e+01 dt=7.241904e-04
+elapsed=4.447852e+04 cycle=98000 time=6.537410e+01 dt=7.176766e-04
+elapsed=4.556945e+04 cycle=99000 time=6.609960e+01 dt=7.477624e-04
+elapsed=4.665879e+04 cycle=100000 time=6.680022e+01 dt=6.667554e-04
+elapsed=4.775043e+04 cycle=101000 time=6.747815e+01 dt=7.338617e-04
+elapsed=4.884816e+04 cycle=102000 time=6.819222e+01 dt=7.010515e-04
+elapsed=4.995103e+04 cycle=103000 time=6.888050e+01 dt=6.790881e-04
+elapsed=5.105077e+04 cycle=104000 time=6.955311e+01 dt=6.920089e-04
+elapsed=5.372925e+04 cycle=105000 time=7.022341e+01 dt=6.568235e-04
+elapsed=5.482392e+04 cycle=106000 time=7.091352e+01 dt=7.098310e-04
+elapsed=5.591880e+04 cycle=107000 time=7.160819e+01 dt=6.860184e-04
+elapsed=5.701337e+04 cycle=108000 time=7.230825e+01 dt=7.039338e-04
+elapsed=5.810764e+04 cycle=109000 time=7.299135e+01 dt=6.807951e-04
+elapsed=5.919973e+04 cycle=110000 time=7.366150e+01 dt=6.707504e-04
+elapsed=6.029285e+04 cycle=111000 time=7.432958e+01 dt=6.780012e-04
+elapsed=6.138467e+04 cycle=112000 time=7.501970e+01 dt=7.015294e-04
+elapsed=6.247393e+04 cycle=113000 time=7.571177e+01 dt=7.090742e-04
+elapsed=6.356782e+04 cycle=114000 time=7.642828e+01 dt=7.099931e-04
+elapsed=6.466646e+04 cycle=115000 time=7.713690e+01 dt=7.017470e-04
+elapsed=6.577149e+04 cycle=116000 time=7.781936e+01 dt=6.684060e-04
+elapsed=6.687851e+04 cycle=117000 time=7.850391e+01 dt=7.235876e-04
+elapsed=6.797799e+04 cycle=118000 time=7.920728e+01 dt=6.838458e-04
+elapsed=6.907228e+04 cycle=119000 time=7.986928e+01 dt=6.591634e-04
+elapsed=7.172663e+04 cycle=120000 time=8.055840e+01 dt=6.959331e-04
+elapsed=7.282348e+04 cycle=121000 time=8.124630e+01 dt=6.774542e-04
+elapsed=7.392672e+04 cycle=122000 time=8.192644e+01 dt=6.738505e-04
+elapsed=7.502221e+04 cycle=123000 time=8.261736e+01 dt=6.951234e-04
+elapsed=7.611964e+04 cycle=124000 time=8.331399e+01 dt=7.060484e-04
+elapsed=7.721549e+04 cycle=125000 time=8.400117e+01 dt=6.625895e-04
+elapsed=7.831392e+04 cycle=126000 time=8.468453e+01 dt=6.810911e-04
+elapsed=7.940981e+04 cycle=127000 time=8.538228e+01 dt=7.113876e-04
+elapsed=8.050530e+04 cycle=128000 time=8.608051e+01 dt=6.659397e-04
+elapsed=8.160320e+04 cycle=129000 time=8.674017e+01 dt=6.718282e-04
+elapsed=8.270596e+04 cycle=130000 time=8.743837e+01 dt=6.883765e-04
+elapsed=8.380143e+04 cycle=131000 time=8.811576e+01 dt=6.962348e-04
+elapsed=8.489787e+04 cycle=132000 time=8.879793e+01 dt=6.895347e-04
+elapsed=8.600426e+04 cycle=133000 time=8.948690e+01 dt=6.839667e-04

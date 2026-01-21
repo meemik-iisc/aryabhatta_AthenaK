@@ -15,6 +15,8 @@ if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
 dt=10.0
+fig_size = (16.5, 10)
+# fig_size = (10.0, 12)
 time_label = "Myr"
 #Plotting variables
 dens_var={
@@ -24,7 +26,7 @@ dens_var={
     # 'vmax':None,
     'vmin':1.0e-3,
     'vmax':1.0e2,
-    'x1min':-10.0,
+    'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
@@ -36,7 +38,7 @@ pres_var={
     # 'vmax':None,
     'vmin':1e-7,
     'vmax':1e-1,
-    'x1min':-10.0,
+    'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
@@ -50,7 +52,7 @@ velr_var={
     # 'vmax':None,
     'vmin':1e-3,
     'vmax':1e3,
-    'x1min':-10.0,
+    'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
@@ -63,7 +65,7 @@ velx_var={
     # 'vmax':None,
     'vmin':-1e3,
     'vmax':1e3,
-    'x1min':-10.0,
+    'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
@@ -76,7 +78,7 @@ temp_var={
     # 'vmax':None,
     'vmin':1e4,
     'vmax':1e6,
-    'x1min':-10.0,
+    'x1min':None,
     'x1max':None,
     'x2min':None,
     'x2max':None,
@@ -165,7 +167,7 @@ for idx,bf in enumerate(bin_files):
 
 
     # Create combined 4x1 subplot: dens, pgas, velr, temp
-    fig, axes = plt.subplots(4, 1, figsize=(12, 18))
+    fig, axes = plt.subplots(4, 1, figsize=fig_size)
     # plot_order = ['dens', 'pgas', 'velr', 'temp']
     plot_order = ['dens', 'pgas', 'velx', 'temp']
     titles = ['Density', 'Pressure', 'X Velocity', 'Temperature']

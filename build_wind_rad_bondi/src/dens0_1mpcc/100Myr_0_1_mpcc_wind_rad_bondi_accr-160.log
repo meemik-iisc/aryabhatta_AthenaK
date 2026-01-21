@@ -1,0 +1,100 @@
+=== Job started on Wednesday 14 January 2026 02:04:03 PM IST ===
+Job ID: 160
+Number of tasks: 64
+Nodes allocated: cn[01-03]
+Working directory: /scratch/meemik/athenak/build_wind_rad_bondi/src/dens0_1mpcc
+Launching Athena with 64 MPI processes...
+
+
+Root grid = 2 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 64
+Number of logical  levels of refinement = 2 (3 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 64
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=4.280134e+02 cycle=0 time=0.000000e+00 dt=2.723191e-02
+elapsed=9.896926e+02 cycle=1000 time=3.902159e+00 dt=2.826755e-03
+elapsed=1.519254e+03 cycle=2000 time=6.796610e+00 dt=3.230309e-03
+elapsed=2.472727e+03 cycle=3000 time=1.004023e+01 dt=3.218841e-03
+elapsed=2.982408e+03 cycle=4000 time=1.287641e+01 dt=3.113103e-03
+elapsed=3.491400e+03 cycle=5000 time=1.611380e+01 dt=3.218879e-03
+elapsed=4.001618e+03 cycle=6000 time=1.952443e+01 dt=3.512269e-03
+elapsed=4.894780e+03 cycle=7000 time=2.292251e+01 dt=3.498171e-03
+elapsed=5.404844e+03 cycle=8000 time=2.645379e+01 dt=3.363132e-03
+elapsed=5.920082e+03 cycle=9000 time=2.999932e+01 dt=3.821795e-03
+elapsed=6.905087e+03 cycle=10000 time=3.383491e+01 dt=3.852802e-03
+elapsed=7.418292e+03 cycle=11000 time=3.761906e+01 dt=3.729416e-03
+elapsed=8.385180e+03 cycle=12000 time=4.123794e+01 dt=3.484782e-03
+elapsed=8.890604e+03 cycle=13000 time=4.481623e+01 dt=3.500696e-03
+elapsed=9.396614e+03 cycle=14000 time=4.841093e+01 dt=3.627214e-03
+elapsed=1.033034e+04 cycle=15000 time=5.203643e+01 dt=3.494041e-03
+elapsed=1.084297e+04 cycle=16000 time=5.565418e+01 dt=3.495417e-03
+elapsed=1.135227e+04 cycle=17000 time=5.914601e+01 dt=3.663981e-03

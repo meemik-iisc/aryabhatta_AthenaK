@@ -1,0 +1,214 @@
+=== Job started on Wednesday 14 January 2026 05:19:25 PM IST ===
+Job ID: 162
+Number of tasks: 120
+Nodes allocated: cn[01-05]
+Working directory: /scratch/meemik/athenak/build_wind_rad_bondi/src/dens0_1mpcc
+Launching Athena with 120 MPI processes...
+
+
+Root grid = 2 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 120
+Number of logical  levels of refinement = 3 (4 levels total)
+Number of physical levels of refinement = 2 (3 levels total)
+  Physical level = 1 (logical level = 2): 56 MeshBlocks, cost = 56
+  Physical level = 2 (logical level = 3): 64 MeshBlocks, cost = 64
+Number of parallel ranks = 120
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+  Rank = 64: 1 MeshBlocks, cost = 1
+  Rank = 65: 1 MeshBlocks, cost = 1
+  Rank = 66: 1 MeshBlocks, cost = 1
+  Rank = 67: 1 MeshBlocks, cost = 1
+  Rank = 68: 1 MeshBlocks, cost = 1
+  Rank = 69: 1 MeshBlocks, cost = 1
+  Rank = 70: 1 MeshBlocks, cost = 1
+  Rank = 71: 1 MeshBlocks, cost = 1
+  Rank = 72: 1 MeshBlocks, cost = 1
+  Rank = 73: 1 MeshBlocks, cost = 1
+  Rank = 74: 1 MeshBlocks, cost = 1
+  Rank = 75: 1 MeshBlocks, cost = 1
+  Rank = 76: 1 MeshBlocks, cost = 1
+  Rank = 77: 1 MeshBlocks, cost = 1
+  Rank = 78: 1 MeshBlocks, cost = 1
+  Rank = 79: 1 MeshBlocks, cost = 1
+  Rank = 80: 1 MeshBlocks, cost = 1
+  Rank = 81: 1 MeshBlocks, cost = 1
+  Rank = 82: 1 MeshBlocks, cost = 1
+  Rank = 83: 1 MeshBlocks, cost = 1
+  Rank = 84: 1 MeshBlocks, cost = 1
+  Rank = 85: 1 MeshBlocks, cost = 1
+  Rank = 86: 1 MeshBlocks, cost = 1
+  Rank = 87: 1 MeshBlocks, cost = 1
+  Rank = 88: 1 MeshBlocks, cost = 1
+  Rank = 89: 1 MeshBlocks, cost = 1
+  Rank = 90: 1 MeshBlocks, cost = 1
+  Rank = 91: 1 MeshBlocks, cost = 1
+  Rank = 92: 1 MeshBlocks, cost = 1
+  Rank = 93: 1 MeshBlocks, cost = 1
+  Rank = 94: 1 MeshBlocks, cost = 1
+  Rank = 95: 1 MeshBlocks, cost = 1
+  Rank = 96: 1 MeshBlocks, cost = 1
+  Rank = 97: 1 MeshBlocks, cost = 1
+  Rank = 98: 1 MeshBlocks, cost = 1
+  Rank = 99: 1 MeshBlocks, cost = 1
+  Rank = 100: 1 MeshBlocks, cost = 1
+  Rank = 101: 1 MeshBlocks, cost = 1
+  Rank = 102: 1 MeshBlocks, cost = 1
+  Rank = 103: 1 MeshBlocks, cost = 1
+  Rank = 104: 1 MeshBlocks, cost = 1
+  Rank = 105: 1 MeshBlocks, cost = 1
+  Rank = 106: 1 MeshBlocks, cost = 1
+  Rank = 107: 1 MeshBlocks, cost = 1
+  Rank = 108: 1 MeshBlocks, cost = 1
+  Rank = 109: 1 MeshBlocks, cost = 1
+  Rank = 110: 1 MeshBlocks, cost = 1
+  Rank = 111: 1 MeshBlocks, cost = 1
+  Rank = 112: 1 MeshBlocks, cost = 1
+  Rank = 113: 1 MeshBlocks, cost = 1
+  Rank = 114: 1 MeshBlocks, cost = 1
+  Rank = 115: 1 MeshBlocks, cost = 1
+  Rank = 116: 1 MeshBlocks, cost = 1
+  Rank = 117: 1 MeshBlocks, cost = 1
+  Rank = 118: 1 MeshBlocks, cost = 1
+  Rank = 119: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=8.531670e+02 cycle=0 time=0.000000e+00 dt=1.361596e-02
+elapsed=1.492433e+03 cycle=1000 time=2.262887e+00 dt=1.590727e-03
+elapsed=2.126023e+03 cycle=2000 time=3.848471e+00 dt=1.373167e-03
+elapsed=2.752394e+03 cycle=3000 time=5.103374e+00 dt=1.455110e-03
+elapsed=3.368325e+03 cycle=4000 time=6.603940e+00 dt=1.576472e-03
+elapsed=3.977933e+03 cycle=5000 time=8.256201e+00 dt=1.719080e-03
+elapsed=4.585027e+03 cycle=6000 time=9.787946e+00 dt=1.420266e-03
+elapsed=5.970999e+03 cycle=7000 time=1.118418e+01 dt=1.542334e-03
+elapsed=6.580733e+03 cycle=8000 time=1.268723e+01 dt=1.504962e-03
+elapsed=7.186253e+03 cycle=9000 time=1.425361e+01 dt=1.594597e-03
+elapsed=7.797981e+03 cycle=10000 time=1.581203e+01 dt=1.443237e-03
+elapsed=8.420008e+03 cycle=11000 time=1.721857e+01 dt=1.383178e-03
+elapsed=9.030807e+03 cycle=12000 time=1.872197e+01 dt=1.558168e-03
+elapsed=1.047187e+04 cycle=13000 time=2.028772e+01 dt=1.506377e-03
+elapsed=1.107565e+04 cycle=14000 time=2.175396e+01 dt=1.540403e-03
+elapsed=1.168637e+04 cycle=15000 time=2.330097e+01 dt=1.379349e-03
+elapsed=1.230000e+04 cycle=16000 time=2.480937e+01 dt=1.478573e-03
+elapsed=1.291119e+04 cycle=17000 time=2.629406e+01 dt=1.496674e-03
+elapsed=1.353035e+04 cycle=18000 time=2.769712e+01 dt=1.316713e-03
+elapsed=1.414938e+04 cycle=19000 time=2.908737e+01 dt=1.367206e-03
+elapsed=1.561314e+04 cycle=20000 time=3.041860e+01 dt=1.427604e-03
+elapsed=1.621223e+04 cycle=21000 time=3.198026e+01 dt=1.564970e-03
+elapsed=1.682048e+04 cycle=22000 time=3.356752e+01 dt=1.596197e-03
+elapsed=1.743275e+04 cycle=23000 time=3.516865e+01 dt=1.669710e-03
+elapsed=1.803851e+04 cycle=24000 time=3.678421e+01 dt=1.643916e-03
+elapsed=1.864008e+04 cycle=25000 time=3.833775e+01 dt=1.568912e-03
+elapsed=1.925227e+04 cycle=26000 time=3.998487e+01 dt=1.658644e-03
+elapsed=2.073986e+04 cycle=27000 time=4.156521e+01 dt=1.511590e-03
+elapsed=2.133320e+04 cycle=28000 time=4.308720e+01 dt=1.502266e-03
+elapsed=2.192095e+04 cycle=29000 time=4.466611e+01 dt=1.593142e-03
+elapsed=2.251999e+04 cycle=30000 time=4.622777e+01 dt=1.571029e-03
+elapsed=2.311922e+04 cycle=31000 time=4.778991e+01 dt=1.500897e-03
+elapsed=2.370783e+04 cycle=32000 time=4.937599e+01 dt=1.576564e-03
+elapsed=2.508841e+04 cycle=33000 time=5.090247e+01 dt=1.525985e-03
+elapsed=2.566978e+04 cycle=34000 time=5.248433e+01 dt=1.613384e-03
+elapsed=2.625664e+04 cycle=35000 time=5.400654e+01 dt=1.636212e-03
+elapsed=2.684030e+04 cycle=36000 time=5.559797e+01 dt=1.571886e-03
+elapsed=2.742352e+04 cycle=37000 time=5.714190e+01 dt=1.473718e-03
+elapsed=2.800963e+04 cycle=38000 time=5.864505e+01 dt=1.593171e-03
+elapsed=2.945028e+04 cycle=39000 time=6.027344e+01 dt=1.640800e-03
+elapsed=3.004553e+04 cycle=40000 time=6.184498e+01 dt=1.412726e-03
+elapsed=3.063036e+04 cycle=41000 time=6.329210e+01 dt=1.573178e-03
+elapsed=3.122739e+04 cycle=42000 time=6.485161e+01 dt=1.620682e-03
+elapsed=3.181971e+04 cycle=43000 time=6.644375e+01 dt=1.436724e-03
+elapsed=3.240384e+04 cycle=44000 time=6.794943e+01 dt=1.569864e-03
+elapsed=3.299025e+04 cycle=45000 time=6.943421e+01 dt=1.499691e-03
+elapsed=3.434780e+04 cycle=46000 time=7.103427e+01 dt=1.605294e-03
+elapsed=3.493998e+04 cycle=47000 time=7.261347e+01 dt=1.508934e-03
+elapsed=3.552972e+04 cycle=48000 time=7.409605e+01 dt=1.562555e-03
+elapsed=3.612920e+04 cycle=49000 time=7.562805e+01 dt=1.536239e-03
+elapsed=3.672704e+04 cycle=50000 time=7.724788e+01 dt=1.731429e-03
+elapsed=3.732943e+04 cycle=51000 time=7.898130e+01 dt=1.803808e-03
+elapsed=3.877955e+04 cycle=52000 time=8.071230e+01 dt=1.659470e-03
+elapsed=3.936540e+04 cycle=53000 time=8.243737e+01 dt=1.797656e-03
+elapsed=3.995257e+04 cycle=54000 time=8.419999e+01 dt=1.668564e-03
+elapsed=4.054485e+04 cycle=55000 time=8.587893e+01 dt=1.764906e-03
+elapsed=4.113659e+04 cycle=56000 time=8.751280e+01 dt=1.587757e-03
+elapsed=4.173395e+04 cycle=57000 time=8.921725e+01 dt=1.697308e-03
+elapsed=4.321583e+04 cycle=58000 time=9.099126e+01 dt=1.796717e-03
+elapsed=4.381167e+04 cycle=59000 time=9.271379e+01 dt=1.744054e-03
+elapsed=4.440676e+04 cycle=60000 time=9.448208e+01 dt=1.706378e-03
+elapsed=4.501082e+04 cycle=61000 time=9.635652e+01 dt=2.048037e-03
+elapsed=4.561276e+04 cycle=62000 time=9.831673e+01 dt=1.878227e-03
+
+Terminating on time limit
+time=1.000000e+02 cycle=62819
+tlim=1.000000e+02 nlim=-1
+
+MeshBlock-cycles = 7538280
+cpu time used  = 4.604430e+04
+zone-cycles/cpu_second = 4.291769e+07
+particle-updates/cpu_second = 0.000000e+00
+
+=== Job finished on Thursday 15 January 2026 06:21:02 AM IST ===
