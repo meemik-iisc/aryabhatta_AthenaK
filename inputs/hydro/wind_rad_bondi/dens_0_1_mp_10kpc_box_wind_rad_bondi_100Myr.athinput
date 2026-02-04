@@ -69,7 +69,7 @@ time_cgs    = 3.0857e+13        # 0.97 Myr; v0 = 1000 km/s
 <problem>
 user_srcs   = True              #Set to True to enable User Source Terms
 CONST_G     = 1.06e-4           #1/(rho0*t0^2)     
-CONST_K     = 4.41e-4           #(g^(-2/3)cm^4s^(-2))
+CONST_K     = 3.84e-4           #(g^(-2/3)cm^4s^(-2))
 CONST_kB_cgs= 1.38e-16          #erg/K (cgs)    
 CONST_mp    = 1.67e-24          #g (cgs) 
 CONST_mu    = 1.0               #Mean molecular Weight

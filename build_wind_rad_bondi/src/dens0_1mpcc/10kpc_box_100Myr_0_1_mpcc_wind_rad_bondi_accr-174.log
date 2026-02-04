@@ -1,0 +1,120 @@
+=== Job started on Wednesday 21 January 2026 01:28:00 PM IST ===
+Job ID: 174
+Number of tasks: 64
+Nodes allocated: cn[04-06]
+Working directory: /scratch/meemik/athenak/build_wind_rad_bondi/src/dens0_1mpcc
+Launching Athena with 64 MPI processes...
+
+
+Root grid = 2 x 2 x 2 MeshBlocks
+Total number of MeshBlocks = 64
+Number of logical  levels of refinement = 2 (3 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 64
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+  Rank = 16: 1 MeshBlocks, cost = 1
+  Rank = 17: 1 MeshBlocks, cost = 1
+  Rank = 18: 1 MeshBlocks, cost = 1
+  Rank = 19: 1 MeshBlocks, cost = 1
+  Rank = 20: 1 MeshBlocks, cost = 1
+  Rank = 21: 1 MeshBlocks, cost = 1
+  Rank = 22: 1 MeshBlocks, cost = 1
+  Rank = 23: 1 MeshBlocks, cost = 1
+  Rank = 24: 1 MeshBlocks, cost = 1
+  Rank = 25: 1 MeshBlocks, cost = 1
+  Rank = 26: 1 MeshBlocks, cost = 1
+  Rank = 27: 1 MeshBlocks, cost = 1
+  Rank = 28: 1 MeshBlocks, cost = 1
+  Rank = 29: 1 MeshBlocks, cost = 1
+  Rank = 30: 1 MeshBlocks, cost = 1
+  Rank = 31: 1 MeshBlocks, cost = 1
+  Rank = 32: 1 MeshBlocks, cost = 1
+  Rank = 33: 1 MeshBlocks, cost = 1
+  Rank = 34: 1 MeshBlocks, cost = 1
+  Rank = 35: 1 MeshBlocks, cost = 1
+  Rank = 36: 1 MeshBlocks, cost = 1
+  Rank = 37: 1 MeshBlocks, cost = 1
+  Rank = 38: 1 MeshBlocks, cost = 1
+  Rank = 39: 1 MeshBlocks, cost = 1
+  Rank = 40: 1 MeshBlocks, cost = 1
+  Rank = 41: 1 MeshBlocks, cost = 1
+  Rank = 42: 1 MeshBlocks, cost = 1
+  Rank = 43: 1 MeshBlocks, cost = 1
+  Rank = 44: 1 MeshBlocks, cost = 1
+  Rank = 45: 1 MeshBlocks, cost = 1
+  Rank = 46: 1 MeshBlocks, cost = 1
+  Rank = 47: 1 MeshBlocks, cost = 1
+  Rank = 48: 1 MeshBlocks, cost = 1
+  Rank = 49: 1 MeshBlocks, cost = 1
+  Rank = 50: 1 MeshBlocks, cost = 1
+  Rank = 51: 1 MeshBlocks, cost = 1
+  Rank = 52: 1 MeshBlocks, cost = 1
+  Rank = 53: 1 MeshBlocks, cost = 1
+  Rank = 54: 1 MeshBlocks, cost = 1
+  Rank = 55: 1 MeshBlocks, cost = 1
+  Rank = 56: 1 MeshBlocks, cost = 1
+  Rank = 57: 1 MeshBlocks, cost = 1
+  Rank = 58: 1 MeshBlocks, cost = 1
+  Rank = 59: 1 MeshBlocks, cost = 1
+  Rank = 60: 1 MeshBlocks, cost = 1
+  Rank = 61: 1 MeshBlocks, cost = 1
+  Rank = 62: 1 MeshBlocks, cost = 1
+  Rank = 63: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=3.368728e+02 cycle=0 time=0.000000e+00 dt=2.723191e-02
+elapsed=8.524194e+02 cycle=1000 time=3.903945e+00 dt=2.824614e-03
+elapsed=1.366182e+03 cycle=2000 time=6.797264e+00 dt=3.225211e-03
+elapsed=2.273659e+03 cycle=3000 time=1.003051e+01 dt=3.249888e-03
+elapsed=2.786600e+03 cycle=4000 time=1.289582e+01 dt=3.136585e-03
+elapsed=3.305377e+03 cycle=5000 time=1.610891e+01 dt=3.347931e-03
+elapsed=3.816826e+03 cycle=6000 time=1.959716e+01 dt=3.502531e-03
+elapsed=4.718064e+03 cycle=7000 time=2.324312e+01 dt=3.966097e-03
+elapsed=5.221550e+03 cycle=8000 time=2.708587e+01 dt=3.818258e-03
+elapsed=6.126326e+03 cycle=9000 time=3.097398e+01 dt=3.836400e-03
+elapsed=6.631882e+03 cycle=10000 time=3.476947e+01 dt=3.731378e-03
+elapsed=7.133793e+03 cycle=11000 time=3.852023e+01 dt=3.765262e-03
+elapsed=8.006626e+03 cycle=12000 time=4.232151e+01 dt=3.794667e-03
+elapsed=8.513136e+03 cycle=13000 time=4.603491e+01 dt=3.745802e-03
+elapsed=9.020981e+03 cycle=14000 time=4.972172e+01 dt=3.794482e-03
+elapsed=9.892012e+03 cycle=15000 time=5.353828e+01 dt=3.856881e-03
+elapsed=1.039765e+04 cycle=16000 time=5.739470e+01 dt=3.816782e-03
+elapsed=1.133045e+04 cycle=17000 time=6.102747e+01 dt=3.444495e-03
+elapsed=1.183227e+04 cycle=18000 time=6.476681e+01 dt=4.098106e-03
+elapsed=1.234074e+04 cycle=19000 time=6.888743e+01 dt=4.187296e-03
+elapsed=1.324234e+04 cycle=20000 time=7.295700e+01 dt=3.993775e-03
+elapsed=1.374688e+04 cycle=21000 time=7.705512e+01 dt=4.163600e-03
+elapsed=1.464956e+04 cycle=22000 time=8.122282e+01 dt=4.133310e-03
+elapsed=1.515839e+04 cycle=23000 time=8.518577e+01 dt=4.084784e-03
+elapsed=1.566756e+04 cycle=24000 time=8.952066e+01 dt=4.554980e-03
+elapsed=1.653702e+04 cycle=25000 time=9.414033e+01 dt=4.509797e-03
+elapsed=1.703997e+04 cycle=26000 time=9.861894e+01 dt=4.613120e-03
+
+Terminating on time limit
+time=1.000000e+02 cycle=26298
+tlim=1.000000e+02 nlim=-1
+
+MeshBlock-cycles = 1683072
+cpu time used  = 1.728081e+04
+zone-cycles/cpu_second = 2.553162e+07
+particle-updates/cpu_second = 0.000000e+00
+
+=== Job finished on Wednesday 21 January 2026 06:21:38 PM IST ===

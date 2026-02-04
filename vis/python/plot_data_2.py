@@ -15,8 +15,10 @@ if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
 dt=10.0
-fig_size = (16.5, 10)
+# fig_size = (16.5, 10)
 # fig_size = (10.0, 12)
+fig_size = (10.0, 16)
+
 time_label = "Myr"
 #Plotting variables
 dens_var={

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --job-name="60kpc_box_100Myr_0_1_mpcc_wind_rad_bondi_accr"
+#SBATCH --job-name="10kpc_box_100Myr_0_1_mpcc_wind_rad_bondi_accr"
 #SBATCH -p normal
 #SBATCH -t 03-00:00:00  # dd-hh:mm:ss
-#SBATCH -n 128
+#SBATCH -n 64
 #SBATCH --output=%x-%j.log
 #SBATCH --error=%x-%j.err.log
 #SBATCH --export=ALL
@@ -26,7 +26,7 @@ echo ""
 
 # Run your MPI application
 # mpirun -np $SLURM_NTASKS ../athena -i /scratch/meemik/athenak/inputs/hydro/wind_rad_bondi/dens_0_1_mp_30kpc_box_wind_rad_bondi_100Myr.athinput -d box30kpcdens0_1mpccWindRadBondi100MyrOut
-mpirun -np $SLURM_NTASKS ../athena -i /scratch/meemik/athenak/inputs/hydro/wind_rad_bondi/dens_0_1_mp_60kpc_box_wind_rad_bondi_100Myr.athinput -d dens0_1mpcc60kpcBoxWindRadBondi100MyrOut
+mpirun -np $SLURM_NTASKS ../athena -i /scratch/meemik/athenak/inputs/hydro/wind_rad_bondi/dens_0_1_mp_10kpc_box_wind_rad_bondi_100Myr.athinput -d adiaBox10kpcdens0_1mpccWindRadBondi100MyrOut
 
 echo ""
 echo "=== Job finished on $(date) ==="

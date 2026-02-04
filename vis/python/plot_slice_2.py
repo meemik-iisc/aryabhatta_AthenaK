@@ -169,8 +169,10 @@ def main(**kwargs):
     R_bondi=1.25
     axes_scale = 1.0
     font_size = 14
-    fig_size = (18.0,2.0)
+    # fig_size = (18.0,2.0)
     # fig_size = (13.0,3.0)
+    fig_size = (13.0,4.0)
+    
     temp_norm =1.0
     velr_scale = 1000
     velx_scale = 1000
