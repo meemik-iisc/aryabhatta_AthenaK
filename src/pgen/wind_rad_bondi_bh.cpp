@@ -122,7 +122,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
                 Real dens = Rho_bondi(rad, pbh->epsilon, pbh->CONST_G, pbh->M_bh, pbh->CONST_K, pbh->gamma_gas, pbh->rho_vir, pbh->r_vir);
                 Real pres = pbh->CONST_K*std::pow(dens,pbh->gamma_gas);
                 u0(m,IDN,k,j,i) = dens;
-                u0(m,IM1,k,j,i) = -1*dens*pbh->v_wind;
+                u0(m,IM1,k,j,i) = -1*u0(m,IDN,k,j,i)*pbh->v_wind;
                 u0(m,IM2,k,j,i) = 0.0;
                 u0(m,IM3,k,j,i) = 0.0;
                 u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
@@ -130,20 +130,11 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
             else{
                 Real pres = pbh->rho_cgm*SQR(pbh->cs_cgm);
                 u0(m,IDN,k,j,i) = pbh->rho_cgm;
-                u0(m,IM1,k,j,i) = -1*pbh->rho_cgm*pbh->v_wind;
+                u0(m,IM1,k,j,i) = -1*u0(m,IDN,k,j,i)*pbh->v_wind;
                 u0(m,IM2,k,j,i) = 0.0;
                 u0(m,IM3,k,j,i) = 0.0;
                 u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
             }
-
-            // //Initialize pressure and density profile
-            // Real pres = pbh->d_amb*SQR(pbh->cs_amb); //jet has same pressure as ambient medium
-            // // std::cout << "pres= " << pres << "\n";
-            // u0(m,IDN,k,j,i) = pbh->d_amb;
-            // u0(m,IM1,k,j,i) = 0.0;
-            // u0(m,IM2,k,j,i) = 0.0;
-            // u0(m,IM3,k,j,i) = 0.0;
-            // u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
         });
         return;
     }
@@ -263,13 +254,13 @@ namespace{
             Real rad = sqrt(SQR(x1v)+SQR(x2v)+SQR(x3v));
 
             Real grad_phi_by_r = (pbh->CONST_G*pbh->M_bh)/(pow((SQR(rad)+SQR(pbh->epsilon)),1.5));
+            Real rho = w0(m,IDN,k,j,i);
 
-            u0(m,IM1,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x1v;
-            u0(m,IM2,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x2v;
-            u0(m,IM3,k,j,i) -= (u0(m,IDN,k,j,i)*grad_phi_by_r*bdt)*x3v;
+            u0(m,IM1,k,j,i) -= rho*grad_phi_by_r*bdt*x1v;
+            u0(m,IM2,k,j,i) -= rho*grad_phi_by_r*bdt*x2v;
+            u0(m,IM3,k,j,i) -= rho*grad_phi_by_r*bdt*x3v;
             Real p_dot_r = (u0(m,IM1,k,j,i)*x1v)+(u0(m,IM2,k,j,i)*x2v)+(u0(m,IM3,k,j,i)*x3v);
-            u0(m,IEN,k,j,i) -=p_dot_r*grad_phi_by_r*bdt;
-
+            u0(m,IEN,k,j,i) -= p_dot_r*grad_phi_by_r*bdt;
         });
         return;
     }

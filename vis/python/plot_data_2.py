@@ -17,7 +17,7 @@ if not input_dir.is_dir():
 dt=10.0
 # fig_size = (16.5, 10)
 # fig_size = (10.0, 12)
-fig_size = (10.0, 16)
+fig_size = (5.0, 8)
 
 time_label = "Myr"
 #Plotting variables
