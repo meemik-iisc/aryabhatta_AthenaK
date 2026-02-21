@@ -170,8 +170,8 @@ def main(**kwargs):
     axes_scale = 1.0
     font_size = 14
     # fig_size = (18.0,2.0)
-    # fig_size = (13.0,4.0)
-    fig_size = (9.0,4.0)
+    fig_size = (13.0,4.0)
+    # fig_size = (9.0,4.0)
     
     
     temp_norm =1.0

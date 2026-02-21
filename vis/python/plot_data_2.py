@@ -14,10 +14,10 @@ input_dir = Path(input("Enter path to binary folder: "))
 if not input_dir.is_dir():
     raise NotADirectoryError(f"{input_dir} is not a directory")
 #Timestep interval
-dt=10.0
+dt=1.0
 # fig_size = (16.5, 10)
-# fig_size = (10.0, 12)
-fig_size = (5.0, 8)
+fig_size = (13.0, 16)
+# fig_size = (5.0, 8)
 
 time_label = "Myr"
 #Plotting variables
@@ -65,8 +65,8 @@ velx_var={
     # 'norm':"twoLog",
     # 'vmin':None,
     # 'vmax':None,
-    'vmin':-1e3,
-    'vmax':1e3,
+    'vmin':-5e3,
+    'vmax':5e3,
     'x1min':None,
     'x1max':None,
     'x2min':None,
@@ -79,7 +79,7 @@ temp_var={
     # 'vmin':None,
     # 'vmax':None,
     'vmin':1e4,
-    'vmax':1e6,
+    'vmax':1e9,
     'x1min':None,
     'x1max':None,
     'x2min':None,
