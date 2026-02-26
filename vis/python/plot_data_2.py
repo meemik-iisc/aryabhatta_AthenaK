@@ -27,7 +27,7 @@ dens_var={
     # 'vmin':None,
     # 'vmax':None,
     'vmin':1.0e-3,
-    'vmax':1.0e2,
+    'vmax':1.0,
     'x1min':None,
     'x1max':None,
     'x2min':None,

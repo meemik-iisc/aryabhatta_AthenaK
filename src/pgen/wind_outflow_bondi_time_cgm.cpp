@@ -40,7 +40,7 @@ namespace {
                                        
     struct pgen_bh{
         Real CONST_G, CONST_kB_cgs, CONST_mp, CONST_mu, gamma_gas,
-        rho0_cgm, cs_cgm, r0_cgm, alpha_cgm,
+        rho0_cgm, cs_cgm, t0_cgm, alpha_cgm,
         M_bh, v_bh, epsilon,
         M_dot_w, v_w, r_inj,
         length_cgs, mass_cgs, time_cgs, temp_floor;
@@ -71,7 +71,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
 
     pbh->rho0_cgm       = pin->GetReal("problem","rho0_cgm");    
     pbh->cs_cgm         = pin->GetReal("problem","cs_cgm");
-    pbh->r0_cgm         = pin->GetReal("problem", "r0_cgm");
+    pbh->t0_cgm         = pin->GetReal("problem", "t0_cgm");
     pbh->alpha_cgm      = pin->GetReal("problem", "alpha_cgm");
 
     pbh->M_bh           = pin->GetReal("problem","M_bh");
@@ -336,13 +336,26 @@ namespace{
         int nvar = u0_.extent_int(1);
 
         Real time           = pm->pmb_pack->pmesh->time;
-        Real r_cgm_t        = pbh->v_bh*time;
-        if (r_cgm_t < pbh->r0_cgm) r_cgm_t = pbh->r0_cgm; 
-        Real fac            = std::pow((r_cgm_t/pbh->r0_cgm),(-1*pbh->alpha_cgm));
-        Real rho_cgm_t      = pbh->rho0_cgm*fac;
-        Real pres_cgm_t    = rho_cgm_t*SQR(pbh->cs_cgm);
-        // std::cout << "time= " << time << "\n"; //Code Units
+        Real rho_cgm_t;
+        if (time < pbh->t0_cgm){
+            rho_cgm_t = pbh->rho0_cgm;
+        }
+        else{
+            Real fac            = std::pow((time/pbh->t0_cgm),(-1*pbh->alpha_cgm));
+            rho_cgm_t      = pbh->rho0_cgm*fac;
+        }
+        Real pres_cgm_t     = rho_cgm_t*SQR(pbh->cs_cgm);
+        // std::cout << "time= " << time <<"\t rho = "<<rho_cgm_t<<"\t pres = "<<pres_cgm_t<<"\n"; //Code Units
         // Real v_bh     = pbh->v_bh;  // Set wind speed here
+
+        // // Copy to device-visible scalars for the lambda
+        // Real rho_cgm_t_loc  = rho_cgm_t;
+        // Real pres_cgm_t_loc = pres_cgm_t;
+        // Copy to device-visible scalars for the lambda
+        Real rho_cgm_t_loc  = pbh->rho0_cgm;
+        Real pres_cgm_t_loc = pbh->rho0_cgm*SQR(pbh->cs_cgm);
+        Real v_bh_loc       = pbh->v_bh;
+
 
         // ConsToPrim over all X1 ghost zones
         pm->pmb_pack->phydro->peos->ConsToPrim(u0_, w0_, false, is-ng, ie+ng, 0, n2-1, 0, n3-1);
@@ -355,7 +368,7 @@ namespace{
                     int ig = ie + i + 1;
 
                     // Density
-                    w0_(m, IDN, k, j, ig) = rho_cgm_t;
+                    w0_(m, IDN, k, j, ig) = pbh->rho0_cgm;
 
                     // Velocity: inflow with -v_bh along x
                     w0_(m, IVX, k, j, ig) = -1*pbh->v_bh;
@@ -363,7 +376,7 @@ namespace{
                     w0_(m, IVZ, k, j, ig) = 0.0;
 
                     // Pressure = rho_cgm * cs_cgm^2
-                    w0_(m, IPR, k, j, ig) = pres_cgm_t;
+                    w0_(m, IPR, k, j, ig) = pbh->rho0_cgm*SQR(pbh->cs_cgm);
                 }
             }
         });

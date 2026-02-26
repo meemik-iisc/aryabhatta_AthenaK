@@ -74,7 +74,7 @@ CONST_mp    = 1.67e-24          #g (cgs)
 CONST_mu    = 1.0               #Mean molecular Weight
 rho0_cgm    = 1.0e-2            #1e-2 mp/cc     
 cs_cgm      = 0.1               #100km/s=>(T_cgm = 1e6K)
-r0_cgm      = 10                #10kpc
+t0_cgm      = 10                #10Myr
 alpha_cgm   = 1.3  
 M_bh        = 0.811             #2e7 M_solar 
 v_bh        = 1.0               #1000km/s
