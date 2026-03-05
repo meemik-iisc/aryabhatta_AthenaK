@@ -132,13 +132,15 @@ from matplotlib.colors import TwoSlopeNorm
 from matplotlib.colors import SymLogNorm
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 # from matplotlib.transforms import TransformedBbox, Affine2D
+from ism_cooling import ISMCoolFn
 
-dens_label  = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
-pres_label  = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
-velr_label   = r"$|v_r|\ [\mathrm{km/s}]$"
-velx_label   = r"$v_x\ [\mathrm{km/s}]$"
-temp_label  = r" T (K)"
-
+dens_label      = r"$\rho\ \left[\mathrm{m_p/cm^3}\right]$"
+pres_label      = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
+velr_label      = r"$|v_r|\ [\mathrm{km/s}]$"
+velx_label      = r"$v_x\ [\mathrm{km/s}]$"
+temp_label      = r" T (K)"
+tcool_label    = r'$t_{\mathrm{cool}}\ \left[\mathrm{Myr}\right]$'
+Edotrad_label     = r"$n^2\,\Lambda(T)$" 
 
 # Main function
 def main(**kwargs):
@@ -178,7 +180,8 @@ def main(**kwargs):
     velr_scale = 1000
     velx_scale = 1000
     dens_scale = 1.0
-    pres_scale = 1.0    
+    pres_scale = 1.0
+    s_Myr = 3.154e13 #seconds to Myrs    
     
     # Adjust user inputs
     if kwargs['dimension'] == '1':
@@ -299,7 +302,7 @@ def main(**kwargs):
             raise RuntimeError('Unable to find number of ghost cells in input file.')
 
         # Extract adiabatic index from input file metadata
-        names = ('pgas', 'pgas_rho', 'T','velr', 'prad_pgas', 'sigmah_rel', 'va_rel', 'wgas',
+        names = ('pgas', 'pgas_rho', 'T','velr','t_cool', 'E_dot_rad', 'prad_pgas', 'sigmah_rel', 'va_rel', 'wgas',
                  'wgasrad', 'Begas', 'Begasrad', 'cons_hydro_rel_t', 'cons_hydro_rel_x',
                  'cons_hydro_rel_y', 'cons_hydro_rel_z')
         if kwargs['variable'] in ['derived:' + name for name in names]:
@@ -319,7 +322,8 @@ def main(**kwargs):
                 raise RuntimeError('Unable to find adiabatic index in input file.')
 
         # Extract molecular weight from input file metadata
-        if kwargs['variable'] == 'derived:T':
+        mu_names = ['T','t_cool','E_dot_rad']
+        if kwargs['variable'] in ['derived:' + mu_name for mu_name in mu_names]:
             try:
                 mu = float(input_data['units']['mu'])
             except:  # noqa: E722
@@ -347,7 +351,7 @@ def main(**kwargs):
                 raise RuntimeError('Unable to find scattering opacity in input file.')
 
         # Extract length unit from input file metadata
-        names = ('T', 'tau_a', 'tau_s', 'tau_t')
+        names = ('T', 't_cool', 'E_dot_rad', 'tau_a', 'tau_s', 'tau_t')
         names_alt = ('kappa_a', 'kappa_t', 'alpha_a', 'alpha_t')
         if (kwargs['variable'] in ['derived:' + name for name in names]
             or (kwargs['variable'] in ['derived:' + name for name in names_alt]
@@ -366,7 +370,8 @@ def main(**kwargs):
 
         # Extract time unit from input file metadata
         names = ('kappa_a', 'kappa_t', 'alpha_a', 'alpha_t', 'tau_a', 'tau_t')
-        if (kwargs['variable'] == 'derived:T'
+        time_names = ['T','t_cool','E_dot_rad']
+        if (kwargs['variable'] in ['derived:' + time_name for time_name in time_names]
             or (kwargs['variable'] in ['derived:' + name for name in names]
                 and power_opacity)):
             if input_data['coord']['general_rel'] == 'true':
@@ -376,7 +381,12 @@ def main(**kwargs):
                     time_cgs = float(input_data['units']['time_cgs'])
                 except:  # noqa: E722
                     raise RuntimeError('Unable to find time unit in input file.')
-
+        mass_names = ['T','t_cool','E_dot_rad']
+        if kwargs['variable'] in ['derived:' + mass_name for mass_name in mass_names]:
+            try:
+                    mass_cgs = float(input_data['units']['mass_cgs'])
+            except:  # noqa: E722
+                raise RuntimeError('Unable to find mass unit in input file.')
         # Extract density unit from input file metadata
         names = ('alpha_a', 'alpha_s', 'alpha_t', 'tau_a', 'tau_s', 'tau_t')
         names_alt = ('kappa_a', 'kappa_t')
@@ -592,7 +602,7 @@ def main(**kwargs):
         quantities[name] = np.array(quantities[name])
 
     # Calculate gas pressure or related quantity
-    names = ('pgas', 'pgas_rho', 'T', 'prad_pgas', 'velr')
+    names = ('pgas', 'pgas_rho', 'T', 'prad_pgas', 'velr', 't_cool', 'E_dot_rad')
     if kwargs['variable'] in ['derived:' + name for name in names]:
         pgas = (gamma_adi - 1.0) * quantities['eint']
         if kwargs['variable'] == 'derived:pgas':
@@ -608,6 +618,26 @@ def main(**kwargs):
             vz = quantities['velz']
             velr = np.sqrt(vx**2+vy**2+vz**2)
             quantity = velr*velr_scale
+        elif kwargs['variable'] == 'derived:E_dot_rad':
+            dens = quantities['dens']
+            temp = (mu * amu_cgs / kb_cgs * (length_cgs / time_cgs) ** 2 * pgas
+                        / quantities['dens'])/ temp_norm
+            Lambda = ISMCoolFn(temp)
+            quantity = ((dens**2)*Lambda)/((mu**2)*(amu_cgs**2))
+        elif kwargs['variable'] == 'derived:t_cool':
+            dens        = quantities['dens']
+            dens_code   = (mass_cgs)/(length_cgs**3)
+            v_code      = (length_cgs/time_cgs)
+            pres_code   = dens_code*(v_code**2)
+            dens_cgs     = dens*dens_code
+            pres_cgs    = pgas*pres_code
+            temp_cgs    = (mu * amu_cgs / kb_cgs * (length_cgs / time_cgs) ** 2 * pgas
+                        / quantities['dens'])/ temp_norm
+            Lambda_cgs  = ISMCoolFn(temp_cgs)
+            t_cool_s    = (gamma_adi*pres_cgs*(mu**2)*(amu_cgs**2))/((gamma_adi-1)*(dens_cgs**2)*Lambda_cgs)
+            t_cool_Myr  = t_cool_s/s_Myr
+            quantity    = t_cool_Myr          
+            
         else:
             prad = quantities['r00_ff'] / 3.0
             quantity = prad / pgas
@@ -1382,7 +1412,7 @@ def main(**kwargs):
 def set_derived_dependencies():
     derived_dependencies = {}
     derived_dependencies['pgas'] = ('eint',)
-    names = ('pgas_rho', 'T')
+    names = ('pgas_rho', 'T', 't_cool', 'E_dot_rad')
     for name in names:
         derived_dependencies[name] = ('dens', 'eint')
     derived_dependencies['prad_pgas'] = ('eint', 'r00_ff')
@@ -1484,6 +1514,8 @@ def set_labels(general_rel_v):
     labels['dens'] = dens_label
     labels['eint'] = pres_label
     labels['velr'] = velr_label
+    labels['t_cool'] = tcool_label
+    labels['E_dot_rad'] = Edotrad_label
     if general_rel_v:
         labels['velx'] = velx_label
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"

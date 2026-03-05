@@ -16,6 +16,6 @@ module purge
 module load openmpi/4.1.1
 
 # Run your MPI application
-mpirun -np 64 ./athena -i /scratch/meemik/athenak/inputs/hydro/wind_outflow_time_cgm/time_cgm_wind_outflow_rad_bondi_vw_1e4kms_10kpc_box_10Myr.athinput -d timeCGMwindOutflowBox1e4kms10kpcRadBondi10MyrOut
+mpirun -np 64 ./athena -i /scratch/meemik/athenak/inputs/hydro/wind_outflow_time_cgm/time_cgm_dens_6e3_wind_outflow_rad_bondi_vw_1e4kms_10kpc_box_10Myr.athinput -d timeCGMdens6e3windOutflowBox1e4kms10kpcRadBondi10MyrOut
 # mpirun -np 4 --mca orte_base_help_aggregate 0 --mca orte_debug_daemons 1 ../athena -i /scratch/meemik/athenak/inputs/hydro/conical_jet/res_128.athinput -d conicalJetAmbHalfOut
 

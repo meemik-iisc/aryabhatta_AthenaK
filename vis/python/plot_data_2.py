@@ -16,7 +16,7 @@ if not input_dir.is_dir():
 #Timestep interval
 dt=1.0
 # fig_size = (16.5, 10)
-fig_size = (13.0, 16)
+fig_size = (13.0, 20)
 # fig_size = (5.0, 8)
 
 time_label = "Myr"
@@ -85,15 +85,29 @@ temp_var={
     'x2min':None,
     'x2max':None,
 } 
+tcool_var={
+    'cmap':"plasma",
+    # 'cmap':"coolwarm",
+    'norm':"log",
+    'vmin':None,
+    'vmax':None,
+    # 'vmin':1e4,
+    # 'vmax':1e9,
+    'x1min':None,
+    'x1max':None,
+    'x2min':None,
+    'x2max':None,
+}
 
 # Prepare output directories
 out_root = input_dir.parent / (input_dir.name + '_outputs')
 folders = {
     'dens': out_root / 'dens',
     'pres': out_root / 'pres',
-    'velr': out_root / 'velr',
+    # 'velr': out_root / 'velr',
     'velx': out_root / 'velx',
     'temp': out_root / 'temp',
+    't_cool': out_root / 't_cool',
     'data': out_root / 'data'
 }
 for folder in folders.values():
@@ -114,9 +128,10 @@ if not bin_files:
 quantities = {
     'dens': folders['dens'],
     'pgas': folders['pres'],
-    'velr': folders['velr'],
+    # 'velr': folders['velr'],
     'velx': folders['velx'],
-    'temp': folders['temp']
+    'temp': folders['temp'],
+    't_cool': folders['t_cool']
 }
 
 def plot_data(bf,qty,out_file,qtyvar,dim='z'):
@@ -139,6 +154,7 @@ def plot_data(bf,qty,out_file,qtyvar,dim='z'):
     subprocess.run(cmd, check=True)
 
 
+
 # Process each .bin file and generate plots
 for idx,bf in enumerate(bin_files):
     timestep=idx*dt
@@ -156,8 +172,8 @@ for idx,bf in enumerate(bin_files):
     
 
     # Plot radial velocity
-    velr_out = folders['velr'] / f"{basename}_velr.png"
-    plot_data(bf,'derived:velr',velr_out,velr_var)
+    # velr_out = folders['velr'] / f"{basename}_velr.png"
+    # plot_data(bf,'derived:velr',velr_out,velr_var)
 
     # Plot velocity x
     velx_out = folders['velx'] / f"{basename}_velx.png"
@@ -167,12 +183,16 @@ for idx,bf in enumerate(bin_files):
     temp_out = folders['temp'] / f"{basename}_temp.png"
     plot_data(bf,'derived:T',temp_out,temp_var)
 
+    #Plot cooling time
+    t_cool_out = folders['t_cool'] / f"{basename}_t_cool.png"
+    plot_data(bf,'derived:t_cool',t_cool_out,tcool_var)
 
-    # Create combined 4x1 subplot: dens, pgas, velr, temp
-    fig, axes = plt.subplots(4, 1, figsize=fig_size)
+
+    # Create combined 5x1 subplot: dens, pgas, velr, temp
+    fig, axes = plt.subplots(5, 1, figsize=fig_size)
     # plot_order = ['dens', 'pgas', 'velr', 'temp']
-    plot_order = ['dens', 'pgas', 'velx', 'temp']
-    titles = ['Density', 'Pressure', 'X Velocity', 'Temperature']
+    plot_order = ['dens', 'pgas', 'velx', 'temp','t_cool']
+    titles = ['Density', 'Pressure', 'X Velocity', 'Temperature', 'Cooling Time']
     for ax, key, title in zip(axes.flatten(), plot_order, titles):
         img_path = folders[key if key != 'pgas' else 'pres'] / f"{basename}_{key}.png"
         if img_path.exists():
@@ -187,51 +207,6 @@ for idx,bf in enumerate(bin_files):
     fig.savefig(combo_file, dpi=300)
     print(f"Saved Combined file {combo_file}")
     plt.close(fig)
-
-# Function to create movie from image sequence
-# def create_movie(img_folder, pattern, output_path, fps=2):
-#     images = []
-#     for img_file in sorted(img_folder.glob(pattern)):
-#         images.append(imageio.imread(str(img_file)))
-#     if images:
-#         writer = imageio.get_writer(str(output_path), fps=fps)
-#         for img in images:
-#             writer.append_data(img)
-#         writer.close()
-
-# def create_movie(img_folder, pattern, output_path, fps=2, t_step=0.1, t_unit='Myr'):
-#     images = []
-#     font = ImageFont.load_default()  # For better look, use truetype font
     
-#     sorted_imgs = sorted(img_folder.glob(pattern))
-    
-#     for i, img_file in enumerate(sorted_imgs):
-#         t_val = i * t_step
-#         timestamp = f"t = {t_val:.1f} {t_unit}"
-        
-#         # Open image and convert to RGB
-#         img = Image.open(img_file).convert("RGB")
-#         draw = ImageDraw.Draw(img)
-        
-#         # Draw time label
-#         draw.text((10, 10), timestamp, font=font, fill=(0, 0, 0))
-        
-#         # Convert PIL image to numpy array
-#         img_np = np.array(img)
-#         images.append(img_np)
-
-#     # Write MP4 movie
-#     if images:
-#         imageio.mimsave(output_path, images, fps=fps)
-
-# # Generate movies for each quantity
-# for qty, folder in quantities.items():
-#     movie_path = out_root / f"{qty}.mp4"
-#     create_movie(folder, f"*_{qty}.png", movie_path)
-
-# # Generate movie for combined data plots
-# combo_folder = folders['data']
-# combo_movie = out_root / 'combined.mp4'
-# create_movie(combo_folder, "*_combined.png", combo_movie)
 
 print(f"All slices, combined plots, and movies saved under {out_root}")
