@@ -101,3 +101,12 @@ elapsed=1.699134e+04 cycle=24000 time=8.782063e+00 dt=3.658282e-04
 elapsed=1.798584e+04 cycle=25000 time=9.147891e+00 dt=3.658282e-04
 elapsed=1.855302e+04 cycle=26000 time=9.513719e+00 dt=3.658282e-04
 elapsed=1.912598e+04 cycle=27000 time=9.879547e+00 dt=3.658282e-04
+
+Terminating on time limit
+time=1.000000e+01 cycle=27330
+tlim=1.000000e+01 nlim=-1
+
+MeshBlock-cycles = 1749120
+cpu time used  = 1.928618e+04
+zone-cycles/cpu_second = 2.377461e+07
+particle-updates/cpu_second = 0.000000e+00

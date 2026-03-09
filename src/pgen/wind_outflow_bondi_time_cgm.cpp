@@ -281,6 +281,10 @@ namespace{
         int nmb1 = pmbp->nmb_thispack - 1;
         auto size = pmbp->pmb->mb_size;
 
+        // number of hydro vars and passive scalars
+        int nfluid   = pmbp->phydro->nhydro;
+        int nscalars = pmbp->phydro->nscalars;
+
         Real const &gm1 = pbh->gamma_gas - 1;
 
         par_for("outflow", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
@@ -314,6 +318,11 @@ namespace{
                 u0(m,IM2,k,j,i) += (S_rho*v_inj*x2v/rad)*bdt;
                 u0(m,IM3,k,j,i) += (S_rho*v_inj*x3v/rad)*bdt;
                 u0(m,IEN,k,j,i) += S_e*bdt;
+
+                // scalar tag: 1 inside injection region
+                for (int n = nfluid; n < nfluid + nscalars; ++n) {
+                    u0(m,n,k,j,i) = 1.0;
+                }
             }
         });
         return;
