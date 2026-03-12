@@ -42,7 +42,6 @@ def build_user_params(meta: dict) -> dict:
         p['input_files'] = input_files_sorted
     else:
         p['bin_path'] = inp / p['input_file']
-        from vis.python.analyze_bin_2.utils.io_utils import extract_slice_number
         p['slice_number'] = extract_slice_number(p['input_file'])
 
     import os

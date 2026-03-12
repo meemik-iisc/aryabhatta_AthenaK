@@ -79,6 +79,7 @@ def extract_athenak_slice(user_params):
                 input_data[section][k.strip()] = v.split('#')[0].strip()
         
         num_ghost = int(input_data['mesh']['nghost'])
+        print(variable_names_base)
         num_variables_base = len(variable_names_base)
         quantities_list = []
         extents_list = []

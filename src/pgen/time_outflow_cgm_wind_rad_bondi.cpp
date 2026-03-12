@@ -42,7 +42,7 @@ namespace {
         Real CONST_G, CONST_kB_cgs, CONST_mp, CONST_mu, gamma_gas,
         rho0_cgm, cs_cgm, t0_cgm, alpha_cgm,
         M_bh, v_bh, epsilon,
-        M_dot_w, v_w, r_inj, t_inj,
+        M_dot_w, v_w, r_inj, t_on, t_duty,
         length_cgs, mass_cgs, time_cgs, temp_floor;
     };
         pgen_bh* pbh = new pgen_bh();
@@ -61,6 +61,9 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     int &js = indcs.js; int &je = indcs.je;
     int &ks = indcs.ks; int &ke = indcs.ke;
     auto &size = pmbp->pmb->mb_size;
+
+    int nfluid   = pmbp->phydro->nhydro;   
+    int nscalars = pmbp->phydro->nscalars;
 
     // get initial parameters from input file
     pbh->CONST_G        = pin->GetReal("problem","CONST_G");    
@@ -81,7 +84,8 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     pbh->M_dot_w        = pin->GetReal("problem","M_dot_w");
     pbh->v_w            = pin->GetReal("problem","v_w");
     pbh->r_inj          = pin->GetReal("problem","r_inj");
-    pbh->r_inj          = pin->GetReal("problem","r_inj");
+    pbh->t_on           = pin->GetReal("problem","t_on");
+    pbh->t_duty           = pin->GetReal("problem","t_duty");
 
     pbh->temp_floor     = pin->GetOrAddReal("problem", "temp_floor", 1.0e4 );
     pbh->length_cgs     = pin->GetReal("units", "length_cgs");
@@ -124,6 +128,8 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
                 u0(m,IM2,k,j,i) = (rho_w*v_inj*x2v)/rad;
                 u0(m,IM3,k,j,i) = (rho_w*v_inj*x3v)/rad;
                 u0(m,IEN,k,j,i) = pres_w/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+                //Add outflow tracer
+                u0(m, nfluid, k, j, i) = 1.0;
             }
             else{
                 Real pres = pbh->rho0_cgm*SQR(pbh->cs_cgm);
@@ -132,6 +138,8 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
                 u0(m,IM2,k,j,i) = 0.0;
                 u0(m,IM3,k,j,i) = 0.0;
                 u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+                //Add tracer = 0 outside
+                u0(m, nfluid, k, j, i) = 0.0;
             }
 
             // //Initialize pressure and density profile
@@ -288,6 +296,10 @@ namespace{
         int nscalars = pmbp->phydro->nscalars;
 
         Real const &gm1 = pbh->gamma_gas - 1;
+        // Burst condition
+        Real period         = pbh->t_on / pbh->t_duty;  // full cycle length
+        Real t_mod          = fmod(time, period);        // time within current cycle
+        bool is_burst_on    = (t_mod < pbh->t_on); // ON if first t_on fraction
 
         par_for("outflow", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
@@ -314,7 +326,7 @@ namespace{
             Real S_rho  = pbh->M_dot_w/Vol_inj;
             Real S_e    = (S_rho*SQR(v_inj))*(0.5+(1/(pbh->gamma_gas*gm1)));
 
-            if(time<pbh->t_inj){
+            if(is_burst_on){
                 if (rad<pbh->r_inj){
                     u0(m,IDN,k,j,i) += S_rho*bdt;
                     u0(m,IM1,k,j,i) += (S_rho*v_inj*x1v/rad)*bdt;
@@ -322,10 +334,8 @@ namespace{
                     u0(m,IM3,k,j,i) += (S_rho*v_inj*x3v/rad)*bdt;
                     u0(m,IEN,k,j,i) += S_e*bdt;
 
-                    // scalar tag: 1 inside injection region
-                    for (int n = nfluid; n < nfluid + nscalars; ++n) {
-                        u0(m,n,k,j,i) = 1.0;
-                    }
+                    //Add tracer
+                    u0(m, nfluid, k, j, i) = 1.0;
                 }
             }
         });
@@ -349,6 +359,8 @@ namespace{
         int nvar = u0_.extent_int(1);
 
         Real time           = pm->pmb_pack->pmesh->time;
+        int nfluid_bc = pm->pmb_pack->phydro->nhydro;
+        int nscalars_bc = pm->pmb_pack->phydro->nscalars;
         Real rho_cgm_t;
         if (time < pbh->t0_cgm){
             rho_cgm_t = pbh->rho0_cgm;
@@ -390,6 +402,10 @@ namespace{
 
                     // Pressure = rho_cgm * cs_cgm^2
                     w0_(m, IPR, k, j, ig) = pbh->rho0_cgm*SQR(pbh->cs_cgm);
+                    //Add tracer = 0
+                    if (nscalars_bc > 0) {
+                        w0_(m, nfluid_bc, k, j, ig) = 0.0;  // tracer=0 for CGM inflow
+                    }
                 }
             }
         });

@@ -45,8 +45,8 @@ config = {
             'quantity': 'velx',
             'cmap': 'seismic',
             'norm': None,            # Linear
-            'vmin': -5e3, 
-            'vmax': 5e3
+            'vmin': -1e4, 
+            'vmax': 1e4
         },
         'temp': {
             'label': 'Temperature',
@@ -65,11 +65,22 @@ config = {
             'norm': 'log',
             'vmin': 1, 
             'vmax': 1e6
+        },
+        'tracer': {
+            'label': 'Outflow Tracer',
+            'folder_key': 'tracer',
+            'quantity': 's_00',
+            'cmap': 'bwr',
+            'norm': None,
+            # 'vmin': 0.0, 
+            # 'vmax': 1.0
+            'vmin': None, 
+            'vmax': None
         }
     },
     
     # Combined plot order (top to bottom)
-    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
+    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
 }
 
 # ============================================================================

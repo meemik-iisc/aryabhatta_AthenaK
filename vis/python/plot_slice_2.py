@@ -139,8 +139,9 @@ pres_label      = r"$P_{gas}\ (10^{-8}\, \mathrm{dyne/cm^2}$)"
 velr_label      = r"$|v_r|\ [\mathrm{km/s}]$"
 velx_label      = r"$v_x\ [\mathrm{km/s}]$"
 temp_label      = r" T (K)"
-tcool_label    = r'$t_{\mathrm{cool}}\ \left[\mathrm{Myr}\right]$'
-Edotrad_label     = r"$n^2\,\Lambda(T)$" 
+tcool_label     = r'$t_{\mathrm{cool}}\ \left[\mathrm{Myr}\right]$'
+tracer_label    = r'Tracer'
+Edotrad_label   = r"$n^2\,\Lambda(T)$" 
 
 # Main function
 def main(**kwargs):
@@ -181,6 +182,8 @@ def main(**kwargs):
     velx_scale = 1000
     dens_scale = 1.0
     pres_scale = 1.0
+    # tracer_scale = 1.0
+    tracer_scale = 1.0/6.0
     s_Myr = 3.154e13 #seconds to Myrs    
     
     # Adjust user inputs
@@ -1153,6 +1156,8 @@ def main(**kwargs):
             quantity = pres_scale*quantities[variable_name]
         elif kwargs['variable']=='velx':
             quantity = velx_scale*quantities[variable_name]
+        elif kwargs['variable']=='s_00':
+            quantity = tracer_scale*quantities[variable_name]
         else:
             quantity = quantities[variable_name]
 
@@ -1516,6 +1521,7 @@ def set_labels(general_rel_v):
     labels['velr'] = velr_label
     labels['t_cool'] = tcool_label
     labels['E_dot_rad'] = Edotrad_label
+    labels['s_00'] = tracer_label
     if general_rel_v:
         labels['velx'] = velx_label
         labels['vely'] = r"$v_y\ [10^3\ \mathrm{km/s}]$"
