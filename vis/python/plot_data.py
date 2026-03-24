@@ -15,7 +15,10 @@ config = {
     'plot_dimension': 'z',
     
     # Figure sizes
-    'fig_size_single': (13.0, 20),  # Combined subplot
+    # 'fig_size_single': (22.0, 24),  # Combined subplot
+    'fig_size_single': (13.0, 24),  # Combined subplot
+    # 'fig_size_single': (7.0, 15.0),  # Combined subplot
+    
     
     # Plot variables (name → settings)
     'plot_vars': {
@@ -72,15 +75,17 @@ config = {
             'quantity': 's_00',
             'cmap': 'bwr',
             'norm': None,
-            # 'vmin': 0.0, 
-            # 'vmax': 1.0
-            'vmin': None, 
-            'vmax': None
+            'vmin': 0.0, 
+            'vmax': 1.0
+            # 'vmin': None, 
+            # 'vmax': None
         }
     },
     
     # Combined plot order (top to bottom)
     'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
+    # 'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
+    
 }
 
 # ============================================================================

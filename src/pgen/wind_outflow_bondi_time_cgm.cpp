@@ -182,7 +182,9 @@ namespace{
         Real rho_unit           = pbh->mass_cgs/(std::pow(pbh->length_cgs,3.0));
         Real v_unit             = pbh->length_cgs/pbh->time_cgs;
         Real temp_unit          = pbh->CONST_mu*pbh->CONST_mp/(pbh->CONST_kB_cgs);
-        Real cooling_rate_unit  = pbh->mass_cgs/(pbh->length_cgs*std::pow(pbh->time_cgs,3.0));
+        Real energy_unit        = pbh->mass_cgs * SQR(v_unit);
+        Real vol_unit           = pow(pbh->length_cgs, 3.0);
+        Real cooling_rate_unit  = energy_unit / (vol_unit * pbh->time_cgs);
         Real pres_unit          = rho_unit*v_unit*v_unit;
         // std::cout<<"rho_unit = "<<rho_unit<<"v_unit = "<<v_unit<<"temp_unit = "<<temp_unit<<"pres_unit = "<<pres_unit<<" cool_rate_unit = "<<cooling_rate_unit<<std::endl;
 
@@ -210,16 +212,22 @@ namespace{
             
             //Calculate temperature in CGS
             Real dens_cgs   = w0(m, IDN, k, j, i)*rho_unit;
-            Real pres_cgs   = w0(m, IEN, k, j, i)*gm1*pres_unit;
+            Real pres_cgs   = w0(m, IPR, k, j, i)*pres_unit;
             Real temp_cgs   = (pres_cgs/dens_cgs)*temp_unit;
             Real n_cgs      = dens_cgs/(pbh->CONST_mu*pbh->CONST_mp);
             //Put a hard temperature floor
             if (temp_cgs<pbh->temp_floor){
                 Real pres_floor_cgs     = (dens_cgs*pbh->CONST_kB_cgs*pbh->temp_floor)/(pbh->CONST_mu*pbh->CONST_mp);
                 Real pres_floor_code    = pres_floor_cgs/pres_unit;
+                w0(m,IPR,k,j,i)         = pres_floor_code;
                 // std::cout<<"Temp less than 1e4K, temp_cgs = "<<temp_cgs<<" pres_cgs = "<<pres_cgs<<" dens_cgs = "<<dens_cgs<<" pres_floor = "<<pres_floor_cgs<<std::endl;
-                u0(m, IEN, k, j, i)     = pres_floor_code/gm1 +0.5*w0(m, IDN, k, j, i)*(SQR(w0(m,IVX,k,j,i))+SQR(w0(m,IVY,k,j,i))+SQR(w0(m,IVZ,k,j,i)));
-                // std::cout<<"I Energy = "<<u0(m, IEN, k, j, i)<<std::endl;
+                Real vx     = w0(m,IVX,k,j,i);
+                Real vy     = w0(m,IVY,k,j,i);
+                Real vz     = w0(m,IVZ,k,j,i);
+                Real rho    = w0(m,IDN,k,j,i);
+
+                Real kin    = 0.5 * rho * (SQR(vx) + SQR(vy) + SQR(vz));
+                u0(m,IEN,k,j,i) = pres_floor_code/gm1 + kin;
             }else{
                 //Add Radiative cooling if temp>temp_floor
                 Real lambda_cgs         = ISMCoolFn(temp_cgs);

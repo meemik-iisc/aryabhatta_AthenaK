@@ -115,23 +115,30 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
 
             Real rad = sqrt(SQR(x1v)+SQR(x2v)+SQR(x3v));
 
-            if (rad<pbh->r_vir){
-                Real dens = Rho_bondi(rad, pbh->epsilon, pbh->CONST_G, pbh->M_bh, pbh->CONST_K, pbh->gamma_gas, pbh->rho_vir, pbh->r_vir);
-                Real pres = pbh->CONST_K*std::pow(dens,pbh->gamma_gas);
-                u0(m,IDN,k,j,i) = dens;
-                u0(m,IM1,k,j,i) = 0.0;
-                u0(m,IM2,k,j,i) = 0.0;
-                u0(m,IM3,k,j,i) = 0.0;
-                u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
-            }
-            else{
-                Real pres = pbh->rho_cgm*SQR(pbh->cs_cgm);
-                u0(m,IDN,k,j,i) = pbh->rho_cgm;
-                u0(m,IM1,k,j,i) = 0.0;
-                u0(m,IM2,k,j,i) = 0.0;
-                u0(m,IM3,k,j,i) = 0.0;
-                u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
-            }
+            Real pres = pbh->rho_cgm*SQR(pbh->cs_cgm);
+            u0(m,IDN,k,j,i) = pbh->rho_cgm;
+            u0(m,IM1,k,j,i) = 0.0;
+            u0(m,IM2,k,j,i) = 0.0;
+            u0(m,IM3,k,j,i) = 0.0;
+            u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+
+            // if (rad<pbh->r_vir){
+            //     Real dens = Rho_bondi(rad, pbh->epsilon, pbh->CONST_G, pbh->M_bh, pbh->CONST_K, pbh->gamma_gas, pbh->rho_vir, pbh->r_vir);
+            //     Real pres = pbh->CONST_K*std::pow(dens,pbh->gamma_gas);
+            //     u0(m,IDN,k,j,i) = dens;
+            //     u0(m,IM1,k,j,i) = 0.0;
+            //     u0(m,IM2,k,j,i) = 0.0;
+            //     u0(m,IM3,k,j,i) = 0.0;
+            //     u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+            // }
+            // else{
+            //     Real pres = pbh->rho_cgm*SQR(pbh->cs_cgm);
+            //     u0(m,IDN,k,j,i) = pbh->rho_cgm;
+            //     u0(m,IM1,k,j,i) = 0.0;
+            //     u0(m,IM2,k,j,i) = 0.0;
+            //     u0(m,IM3,k,j,i) = 0.0;
+            //     u0(m,IEN,k,j,i) = pres/gm1 + 0.5*(SQR(u0(m,IM1,k,j,i))+SQR(u0(m,IM2,k,j,i))+SQR(u0(m,IM3,k,j,i)))/u0(m,IDN,k,j,i);
+            // }
 
             // //Initialize pressure and density profile
             // Real pres = pbh->d_amb*SQR(pbh->cs_amb); //jet has same pressure as ambient medium
@@ -176,7 +183,7 @@ namespace{
         Real temp_unit          = pbh->CONST_mu*pbh->CONST_mp/(pbh->CONST_kB_cgs);
         Real cooling_rate_unit  = pbh->mass_cgs/(pbh->length_cgs*std::pow(pbh->time_cgs,3.0));
         Real pres_unit          = rho_unit*v_unit*v_unit;
-        std::cout<<"rho_unit = "<<rho_unit<<"v_unit = "<<v_unit<<"temp_unit = "<<temp_unit<<"pres_unit = "<<pres_unit<<" cool_rate_unit = "<<cooling_rate_unit<<std::endl;
+        // std::cout<<"rho_unit = "<<rho_unit<<"v_unit = "<<v_unit<<"temp_unit = "<<temp_unit<<"pres_unit = "<<pres_unit<<" cool_rate_unit = "<<cooling_rate_unit<<std::endl;
 
         par_for("ism_cooling", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
@@ -216,7 +223,7 @@ namespace{
                 //Add Radiative cooling if temp>temp_floor
                 Real lambda_cgs         = ISMCoolFn(temp_cgs);
                 Real cooling_rate_cgs   = SQR(n_cgs)*lambda_cgs;
-                std::cout<<"T>1e4, temp_cgs = "<<temp_cgs<<" lambda_cgs = "<<lambda_cgs<<" cool_rate_cgs = "<<cooling_rate_cgs<<std::endl;
+                // std::cout<<"T>1e4, temp_cgs = "<<temp_cgs<<" lambda_cgs = "<<lambda_cgs<<" cool_rate_cgs = "<<cooling_rate_cgs<<std::endl;
                 //Convert to code units
                 Real cooling_rate_code  = cooling_rate_cgs/cooling_rate_unit;
                 //Update internal Energy

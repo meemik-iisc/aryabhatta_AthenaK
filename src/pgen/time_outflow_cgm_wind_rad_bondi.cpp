@@ -180,6 +180,8 @@ namespace{
         int nmb1 = pmbp->nmb_thispack - 1;
         auto size = pmbp->pmb->mb_size;
 
+        // int nfluid   = pmbp->phydro->nhydro;
+
         Real const &gm1         = pbh->gamma_gas - 1;
         Real rho_unit           = pbh->mass_cgs/(std::pow(pbh->length_cgs,3.0));
         Real v_unit             = pbh->length_cgs/pbh->time_cgs;
@@ -190,6 +192,9 @@ namespace{
 
         par_for("ism_cooling", DevExeSpace(), 0, nmb1, ks, ke, js, je, is, ie,
         KOKKOS_LAMBDA(const int m, const int k, const int j, const int i) {
+            
+            // Real tracer = w0(m, nfluid, k, j, i);
+            // if (tracer < 1.0e-6) return;  // CGM: no cooling
 
             Real &x1min = size.d_view(m).x1min;
             Real &x1max = size.d_view(m).x1max;
