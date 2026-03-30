@@ -26,3 +26,15 @@ Load Balancing:
 Setup complete, executing task list(s)...
 
 elapsed=2.923199e+00 cycle=0 time=0.000000e+00 dt=5.645059e-03
+elapsed=4.923058e+02 cycle=1000 time=3.289663e+00 dt=3.237376e-03
+elapsed=9.816913e+02 cycle=2000 time=6.288381e+00 dt=2.911611e-03
+elapsed=1.503132e+03 cycle=3000 time=9.215067e+00 dt=2.927060e-03
+
+Terminating on time limit
+time=1.000000e+01 cycle=3269
+tlim=1.000000e+01 nlim=-1
+
+MeshBlock-cycles = 52304
+cpu time used  = 1.654505e+03
+zone-cycles/cpu_second = 8.287180e+06
+particle-updates/cpu_second = 0.000000e+00
