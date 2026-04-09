@@ -175,7 +175,9 @@ def main(**kwargs):
     # fig_size = (18.0,2.0)
     # fig_size = (21.0,4.0)
     # fig_size = (7.0,3.0)
+    # fig_size = (10.0,5.0)
     fig_size = (13.0,3.0)
+    
     
     
     temp_norm =1.0

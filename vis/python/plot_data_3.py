@@ -18,8 +18,8 @@ config = {
     # Figure sizes
     # 'fig_size_single': (22.0, 24),  # Combined subplot
     # 'fig_size_single': (13.0, 15.0),  # Combined subplot
-    'fig_size_single': (13.0, 18.0),  # Combined subplot
-     # 'fig_size_single': (7.0, 15.0),  # Combined subplot
+    # 'fig_size_single': (10.0, 30.0),  # Combined subplot
+     'fig_size_single': (13.0, 18.0),  # Combined subplot
     
     
     # Plot variables (name → settings)
@@ -30,8 +30,8 @@ config = {
             'quantity': 'dens',
             'cmap': 'Greens',
             'norm': 'log',
-            'vmin': 1.0e-4, 
-            'vmax': 1.0e-2
+            'vmin': 1.0e-5, 
+            'vmax': 1.0
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -41,7 +41,7 @@ config = {
             'quantity': 'eint',      # Derived from internal energy
             'cmap': 'viridis',
             'norm': 'log',
-            'vmin': 1e-5, 
+            'vmin': 1e-6, 
             'vmax': 1e-1
             # 'vmin': None, 
             # 'vmax': None
@@ -53,8 +53,8 @@ config = {
             'cmap': 'seismic',
             # 'cmap': 'Blues_r',
             'norm': None,            # Linear
-            'vmin': -2000, 
-            'vmax': 2000
+            'vmin': -5000, 
+            'vmax': 5000
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -75,8 +75,8 @@ config = {
             'quantity': 'derived:t_cool',
             'cmap': 'turbo',
             'norm': 'log',
-            'vmin': 1.0, 
-            'vmax': 1e5
+            'vmin': 1.0e-3, 
+            'vmax': 1e6
             # 'vmin': None, 
             # 'vmax': None
         },

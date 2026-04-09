@@ -58,7 +58,7 @@ config = {
             'cmap': 'coolwarm',
             'norm': 'log',
             'vmin': 1e4, 
-            'vmax': 1e9
+            'vmax': 1e7
         },
         't_cool': {
             'label': 'Cooling Time',
@@ -66,8 +66,8 @@ config = {
             'quantity': 'derived:t_cool',
             'cmap': 'turbo',
             'norm': 'log',
-            'vmin': 1, 
-            'vmax': 1e6
+            'vmin': 1e-6, 
+            'vmax': 1e2
         },
         'tracer': {
             'label': 'Outflow Tracer',

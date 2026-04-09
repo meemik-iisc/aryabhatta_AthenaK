@@ -33,7 +33,7 @@ namespace {
         Real CONST_G,
         CONST_kB_cgs, CONST_mp, CONST_mu, 
         M_bh, v_bh, epsilon,
-        r_b, CONST_K,
+        r_b, CONST_K, rho_b,
         rho_cgm, cs_cgm, gamma_gas, 
         length_cgs, mass_cgs, time_cgs, temp_floor;
         // rho_vir
@@ -56,9 +56,9 @@ namespace {
   }
     //Functions for Density Profile
     KOKKOS_INLINE_FUNCTION
-    static Real Rho_bondi(const Real r, const Real epsilon, const Real CONST_G, const Real M_bh, const Real CONST_K, const Real gamma_gas, const Real r_b, const Real rho_cgm) {
+    static Real Rho_bondi(const Real r, const Real epsilon, const Real CONST_G, const Real M_bh, const Real CONST_K, const Real gamma_gas, const Real r_b, const Real rho_b) {
         Real const gm1 = gamma_gas-1;
-        Real term1 = std::pow(rho_cgm,gm1);
+        Real term1 = std::pow(rho_b,gm1);
         Real term2 = (gm1*(Phi_Bondi(r, epsilon, CONST_G, M_bh)-Phi_Bondi(r_b,epsilon,CONST_G,M_bh)))/(CONST_K*gamma_gas);
         return std::pow((term1-term2),(1/gm1));
     }
@@ -87,7 +87,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
     pbh.CONST_mp       = pin->GetReal("problem","CONST_mp");    
     pbh.CONST_mu       = pin->GetReal("problem","CONST_mu");
     pbh.r_b            = pin->GetReal("problem","r_b");
-    // pbh.rho_vir        = pin->GetReal("problem","rho_vir");    
+    pbh.rho_b          = pin->GetReal("problem","rho_b");    
     pbh.M_bh           = pin->GetReal("problem","M_bh");
     pbh.rho_cgm        = pin->GetReal("problem","rho_cgm");    
     pbh.cs_cgm         = pin->GetReal("problem","cs_cgm");
@@ -127,7 +127,7 @@ void ProblemGenerator::UserProblem(ParameterInput *pin, const bool restart) {
             Real rad = sqrt(SQR(x1v)+SQR(x2v)+SQR(x3v));
 
             if (rad<pbh.r_b){
-                Real dens = Rho_bondi(rad, pbh.epsilon, pbh.CONST_G, pbh.M_bh, pbh.CONST_K, pbh.gamma_gas, pbh.r_b, pbh.rho_cgm);
+                Real dens = Rho_bondi(rad, pbh.epsilon, pbh.CONST_G, pbh.M_bh, pbh.CONST_K, pbh.gamma_gas, pbh.r_b, pbh.rho_b);
                 Real pres = pbh.CONST_K*std::pow(dens,pbh.gamma_gas);
                 u0(m,IDN,k,j,i) = dens;
                 u0(m,IM1,k,j,i) = -1*dens*pbh.v_bh;

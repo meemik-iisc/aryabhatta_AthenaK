@@ -1,0 +1,46 @@
+### WARNING in /scratch/meemik/athenak/src/mesh/load_balance.cpp at line 81
+Number of MeshBlocks cannot be divided evenly by number of MPI ranks. This will result in poor load balancing.
+
+Root grid = 4 x 1 x 1 MeshBlocks
+Total number of MeshBlocks = 74
+Number of logical  levels of refinement = 4 (5 levels total)
+Number of physical levels of refinement = 2 (3 levels total)
+  Physical level = 0 (logical level = 2): 2 MeshBlocks, cost = 2
+  Physical level = 1 (logical level = 3): 8 MeshBlocks, cost = 8
+  Physical level = 2 (logical level = 4): 64 MeshBlocks, cost = 64
+Number of parallel ranks = 18
+  Rank = 0: 4 MeshBlocks, cost = 4
+  Rank = 1: 4 MeshBlocks, cost = 4
+  Rank = 2: 4 MeshBlocks, cost = 4
+  Rank = 3: 4 MeshBlocks, cost = 4
+  Rank = 4: 4 MeshBlocks, cost = 4
+  Rank = 5: 4 MeshBlocks, cost = 4
+  Rank = 6: 4 MeshBlocks, cost = 4
+  Rank = 7: 4 MeshBlocks, cost = 4
+  Rank = 8: 4 MeshBlocks, cost = 4
+  Rank = 9: 4 MeshBlocks, cost = 4
+  Rank = 10: 4 MeshBlocks, cost = 4
+  Rank = 11: 4 MeshBlocks, cost = 4
+  Rank = 12: 4 MeshBlocks, cost = 4
+  Rank = 13: 4 MeshBlocks, cost = 4
+  Rank = 14: 4 MeshBlocks, cost = 4
+  Rank = 15: 4 MeshBlocks, cost = 4
+  Rank = 16: 5 MeshBlocks, cost = 5
+  Rank = 17: 5 MeshBlocks, cost = 5
+Load Balancing:
+  Maximum normalized cost = 1.25, Average = 1.02778
+
+Setup complete, executing task list(s)...
+
+elapsed=1.335319e+01 cycle=0 time=0.000000e+00 dt=5.977817e-03
+elapsed=2.243281e+03 cycle=1000 time=4.138995e+00 dt=5.202353e-03
+elapsed=4.461872e+03 cycle=2000 time=9.392727e+00 dt=4.935111e-03
+
+Terminating on time limit
+time=1.000000e+01 cycle=2118
+tlim=1.000000e+01 nlim=-1
+
+MeshBlock-cycles = 156732
+cpu time used  = 4.714889e+03
+zone-cycles/cpu_second = 8.714172e+06
+particle-updates/cpu_second = 0.000000e+00
