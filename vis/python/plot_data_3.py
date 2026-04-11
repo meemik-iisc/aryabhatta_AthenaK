@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 # ============================================================================
 config = {
     # File processing
-    'dt': 1,                    # Timestep interval (code units)
+    'dt': 10,                    # Timestep interval (code units)
     'time_label': 'kyr',
     'plot_dimension': 'z',
     

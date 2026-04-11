@@ -184,7 +184,7 @@ def main(**kwargs):
     dens_scale = 1.0
     pres_scale = 1.0
     # tracer_scale = 1.0
-    tracer_scale = 1.0/0.04
+    tracer_scale = 1.0/35.0
     s_Myr = 3.154e13 #seconds to Myrs    
     
     # Adjust user inputs

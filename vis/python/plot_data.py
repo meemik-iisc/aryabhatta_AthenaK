@@ -41,6 +41,8 @@ config = {
             'norm': 'log',
             'vmin': 1e-7, 
             'vmax': 1e-1
+            # 'vmin': None, 
+            # 'vmax': None
         },
         'velx': {
             'label': 'X Velocity',
@@ -48,7 +50,7 @@ config = {
             'quantity': 'velx',
             'cmap': 'seismic',
             'norm': None,            # Linear
-            'vmin': -1e4, 
+            'vmin': -1e4,
             'vmax': 1e4
         },
         'temp': {
@@ -58,7 +60,9 @@ config = {
             'cmap': 'coolwarm',
             'norm': 'log',
             'vmin': 1e4, 
-            'vmax': 1e7
+            'vmax': 1e9
+            # 'vmin': None, 
+            # 'vmax': None
         },
         't_cool': {
             'label': 'Cooling Time',
@@ -66,8 +70,10 @@ config = {
             'quantity': 'derived:t_cool',
             'cmap': 'turbo',
             'norm': 'log',
-            'vmin': 1e-6, 
-            'vmax': 1e2
+            'vmin': 10, 
+            'vmax': 1e6
+            # 'vmin': None, 
+            # 'vmax': None
         },
         'tracer': {
             'label': 'Outflow Tracer',
