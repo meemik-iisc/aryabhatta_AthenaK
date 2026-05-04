@@ -2,7 +2,7 @@ import struct
 import numpy as np
 import pandas as pd
 from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm,rho_cgs,pres_cgs,s_Myr
-from utils.helpers import cool_lambda
+from utils.helpers import cool_lambda, mask_half
 
 def extract_athenak_slice(user_params):
     """
@@ -207,7 +207,19 @@ def extract_athenak_slice(user_params):
             "block_shape": (block_nx2, block_nx1)
         }
 
-        
+def extract_pres_slice(user_params):
+    eint_params = user_params.copy()
+    eint_params.update(variable = "eint")
+    eint_data_df = extract_athenak_slice(eint_params)
+    eint_data   = eint_data_df['df_quantities']
+    pres_data   = eint_data*(gamma-1)*pres_cgs
+    return {
+        "df_quantities": pres_data,
+        "df_extents": eint_data_df['df_extents'],
+        "num_blocks": eint_data_df['num_blocks'],
+        "block_shape": eint_data_df['block_shape']
+    }
+    
 def extract_temp_slice(user_params):
     rho_params = user_params.copy()
     rho_params.update(variable="dens")
@@ -329,3 +341,30 @@ def stitch_meshblocks_to_global(data_dict, user_params):
     
     global_extent = (x_min, x_max, y_min, y_max)
     return global_array, global_extent
+
+
+
+def get_stitched_slice_for_variable(user_params):
+    variable = user_params["variable"]
+    local_params = user_params.copy()
+    
+    derived_extractors = {
+        "pres": extract_pres_slice,
+        "temp": extract_temp_slice,
+        "cooling_rate": extract_cooling_rate_slice,
+        "tcool": extract_tcool_slice,
+    }
+
+    if variable.startswith("derived:"):
+        derived_name = variable.split(":", 1)[1].strip()
+        try:
+            extractor = derived_extractors[derived_name]
+            local_params["variable"] = derived_name
+        except KeyError:
+            raise ValueError(f"Unknown derived variable: {derived_name}")
+        file_data_2d = extractor(local_params)
+    else:
+        file_data_2d = extract_athenak_slice(local_params)
+
+    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d, local_params)
+    return stitch_data, stitch_extent, local_params

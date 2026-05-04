@@ -11,7 +11,81 @@ def parse_int_list(s: str) -> list[int]:
     except Exception:
         pass
     return [int(x) for x in s.split(',') if x.strip()]
+def parse_str_list(s: str) -> list[str]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        if isinstance(val, list) and all(isinstance(x, str) for x in val):
+            return val
+    except (ValueError, SyntaxError):
+        pass
+    return [x.strip() for x in s.split(",") if x.strip()]
 
+import ast
+
+def parse_str_pair_list(s: str) -> list[list[str]]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        # Case 1: single pair like ["dens", "eint"]
+        if (
+            isinstance(val, list)
+            and len(val) == 2
+            and all(isinstance(x, str) for x in val)
+        ):
+            return [val]
+        # Case 2: list of pairs like [["dens","eint"], ["derived:temp","derived:tcool"]]
+        if (
+            isinstance(val, list)
+            and all(
+                isinstance(inner, list)
+                and len(inner) == 2
+                and all(isinstance(x, str) for x in inner)
+                for inner in val
+            )
+        ):
+            return val
+    except (ValueError, SyntaxError):
+        pass
+
+    raise ValueError(
+        "Input must be either a string pair like ['dens','eint'] "
+        "or a list of string pairs like [['dens','eint'], ['temp','tcool']]"
+    )
+import ast
+
+def parse_float_pair_list(s: str) -> list[list[float]]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        # Case 1: single pair like [1.0, 2.0,3.0,4.0]
+        if (
+            isinstance(val, list)
+            and len(val) == 4
+            and all(isinstance(x, (int, float)) for x in val)
+        ):
+            return [[float(x) for x in val]]
+        # Case 2: list of pairs like [[1.0, 2.0,3.0,4.0], [1.0, 2.0,3.0,4.0]]
+        if (
+            isinstance(val, list)
+            and all(
+                isinstance(inner, list)
+                and len(inner) == 4
+                and all(isinstance(x, (int, float)) for x in inner)
+                for inner in val
+            )
+        ):
+            return [[float(x) for x in inner] for inner in val]
+
+    except (ValueError, SyntaxError):
+        pass
+
+    raise ValueError(
+        "Input must be either a float pair like [1.0, 2.0] "
+        "or a list of float pairs like [[1.0, 2.0], [3.0, 4.0]]"
+    )
+    
+    
 def prompt_params(meta: dict) -> dict:
     filled = {}
     for key, info in meta.items():

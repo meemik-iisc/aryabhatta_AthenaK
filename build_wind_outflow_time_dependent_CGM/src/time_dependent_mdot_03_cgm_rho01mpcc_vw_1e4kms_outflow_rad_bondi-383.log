@@ -1,0 +1,50 @@
+
+Root grid = 2 x 1 x 1 MeshBlocks
+Total number of MeshBlocks = 16
+Number of logical  levels of refinement = 2 (3 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 16
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=3.851905e+00 cycle=0 time=0.000000e+00 dt=6.810412e-04
+elapsed=4.772735e+02 cycle=1000 time=8.672983e-01 dt=8.101384e-04
+elapsed=9.518808e+02 cycle=2000 time=1.677717e+00 dt=8.100564e-04
+elapsed=1.426618e+03 cycle=3000 time=2.487910e+00 dt=8.102279e-04
+elapsed=1.902446e+03 cycle=4000 time=3.291844e+00 dt=7.917703e-04
+elapsed=2.381236e+03 cycle=5000 time=4.054770e+00 dt=7.269699e-04
+elapsed=2.860526e+03 cycle=6000 time=4.776080e+00 dt=7.045970e-04
+elapsed=3.345124e+03 cycle=7000 time=5.479454e+00 dt=7.058710e-04
+elapsed=3.831761e+03 cycle=8000 time=6.189231e+00 dt=7.126841e-04
+elapsed=4.319059e+03 cycle=9000 time=6.901906e+00 dt=7.126813e-04
+elapsed=4.815902e+03 cycle=10000 time=7.614576e+00 dt=7.126676e-04
+elapsed=5.317445e+03 cycle=11000 time=8.327244e+00 dt=7.126680e-04
+elapsed=5.820079e+03 cycle=12000 time=9.039912e+00 dt=7.126680e-04
+elapsed=6.320356e+03 cycle=13000 time=9.752580e+00 dt=7.126680e-04
+
+Terminating on time limit
+time=1.000000e+01 cycle=13348
+tlim=1.000000e+01 nlim=-1
+
+MeshBlock-cycles = 213568
+cpu time used  = 6.494259e+03
+zone-cycles/cpu_second = 8.620778e+06
+particle-updates/cpu_second = 0.000000e+00

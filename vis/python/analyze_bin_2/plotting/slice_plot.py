@@ -2,10 +2,13 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.cm import ScalarMappable
 import matplotlib.colors as plt_col
+from matplotlib.ticker import LogFormatterMathtext
 from pathlib import Path
 import os
 import numpy as np
-
+from utils.helpers import mask_half, build_split_params
+from utils.io_utils import extract_slice_number
+from data_processing.slice_data import get_stitched_slice_for_variable
 def set_normalization(user_params, vmin, vmax):
     if user_params['norm'] is None:
         return plt_col.Normalize(vmin, vmax)
@@ -197,3 +200,257 @@ def plot_individual_blocks(data_dict, user_params):
         else:
             plt.show()
 
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.cm import ScalarMappable
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+
+def _make_norm(user_params, data):
+    global_min = np.nanmin(data)
+    global_max = np.nanmax(data)
+    vmin = user_params["clim"][0] if user_params["clim"][0] is not None else global_min
+    vmax = user_params["clim"][1] if user_params["clim"][1] is not None else global_max
+    return set_normalization(user_params, vmin, vmax), vmin, vmax
+
+
+def draw_split_panel(
+    ax,
+    stitch_data_top, stitch_extent_top, user_params_top,
+    stitch_data_bot, stitch_extent_bot, user_params_bot,
+    add_colorbars=True, add_panel_title=True
+):
+    file_number = extract_slice_number(user_params_top["input_file"])
+
+    norm_top, vmin_top, vmax_top = _make_norm(user_params_top, stitch_data_top)
+    norm_bot, vmin_bot, vmax_bot = _make_norm(user_params_bot, stitch_data_bot)
+
+    cmap_top = plt.get_cmap(user_params_top["cmap"]).copy()
+    cmap_bot = plt.get_cmap(user_params_bot["cmap"]).copy()
+    cmap_top.set_bad(alpha=0)
+    cmap_bot.set_bad(alpha=0)
+
+    top_plot = mask_half(stitch_data_top, stitch_extent_top, keep="top")
+    bot_plot = mask_half(stitch_data_bot, stitch_extent_bot, keep="bottom")
+
+    ax.imshow(
+        top_plot,
+        origin="lower",
+        extent=stitch_extent_top,
+        cmap=cmap_top,
+        norm=norm_top,
+        aspect="auto"
+    )
+
+    ax.imshow(
+        bot_plot,
+        origin="lower",
+        extent=stitch_extent_bot,
+        cmap=cmap_bot,
+        norm=norm_bot,
+        aspect="auto"
+    )
+
+    ax.axhline(0, color="white", lw=1.0)
+    ax.set_xlabel(user_params_top["xlabel"], labelpad=2.0, fontsize=14)
+    ax.set_ylabel(user_params_top["ylabel"], labelpad=2.0, fontsize=14)
+    ax.set_aspect("equal")
+    if add_panel_title:
+        ax.set_title(f"t = {file_number} {user_params_top['time_label']}", fontsize=16)
+
+    if add_colorbars:
+        divider = make_axes_locatable(ax)
+        cax_col = divider.append_axes("right", size="4%", pad=0.03)
+        cax_col.set_axis_off()
+
+        cax_top = cax_col.inset_axes([0.20, 0.55, 0.45, 0.40])
+        cax_bot = cax_col.inset_axes([0.20, 0.00, 0.45, 0.40])
+
+        sm_top = ScalarMappable(norm=norm_top, cmap=cmap_top)
+        sm_top.set_array([])
+        cbar_top = ax.figure.colorbar(sm_top, cax=cax_top)
+        cbar_top.ax.set_title(user_params_top["cmap_label"], loc="left", pad=8)
+        cbar_top.set_ticks([vmin_top, np.sqrt(vmin_top*vmax_top), vmax_top])
+        cbar_top.formatter = LogFormatterMathtext()
+        cbar_top.update_ticks()
+        # cbar_top.set_ticklabels([f"{vmin_top:.2e}", f"{vmax_top:.2e}"])
+
+        sm_bot = ScalarMappable(norm=norm_bot, cmap=cmap_bot)
+        sm_bot.set_array([])
+        cbar_bot = ax.figure.colorbar(sm_bot, cax=cax_bot)
+        cbar_bot.ax.set_title(user_params_bot["cmap_label"], loc="left", pad=8)
+        cbar_bot.set_ticks([vmin_bot,np.sqrt(vmin_bot * vmax_bot), vmax_bot])
+        cbar_bot.formatter = LogFormatterMathtext()
+        cbar_bot.update_ticks()
+        # cbar_bot.set_ticklabels([f"{vmin_bot:.2e}", f"{vmax_bot:.2e}"])
+
+def plot_split_stitched_data(
+    stitch_data_top, stitch_extent_top, user_params_top,
+    stitch_data_bot, stitch_extent_bot, user_params_bot
+):
+    fig, ax = plt.subplots(figsize=user_params_top.get("figsize", (12, 6)))
+
+    draw_split_panel(
+        ax,
+        stitch_data_top, stitch_extent_top, user_params_top,
+        stitch_data_bot, stitch_extent_bot, user_params_bot,
+        add_colorbars=True, add_panel_title=True
+    )
+
+    out_dir = Path(user_params_top["output_path"]) / f"{user_params_top['variable']}_{user_params_bot['variable']}"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fname = f"{user_params_top['input_file']}.png"
+    out_path = out_dir / fname
+
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved plot to {out_path}")
+    
+def plot_combined_split_pairs(user_params, save_individual=True):
+    file_number = extract_slice_number(user_params["input_file"])
+    pairs = user_params["variable"]
+    ncolumns = len(pairs)
+    # If only one pair, just make the individual plot and skip the combined figure
+    if ncolumns == 1:
+        top_params = build_split_params(user_params, 0, 0)
+        bot_params = build_split_params(user_params, 0, 1)
+
+        top_data, top_extent, _ = get_stitched_slice_for_variable(top_params)
+        bot_data, bot_extent, _ = get_stitched_slice_for_variable(bot_params)
+
+        plot_split_stitched_data(
+            top_data, top_extent, top_params,
+            bot_data, bot_extent, bot_params
+        )
+        return
+    figsize_ind = user_params.get("figsize")
+    # figsize_combined = (figsize_ind[0]*ncolumns,figsize_ind[1])
+    figsize_combined = (21,figsize_ind[1])
+    fig, axes = plt.subplots(
+        nrows=1,
+        ncols=ncolumns,
+        figsize = figsize_combined,
+        squeeze=False
+    )
+    axes = axes.ravel()
+    fig.suptitle(f"t = {file_number} {user_params['time_label']}", fontsize=18, y=0.995)
+
+    for pair_idx, ax in enumerate(axes):
+        top_params = build_split_params(user_params, pair_idx, 0)
+        bot_params = build_split_params(user_params, pair_idx, 1)
+
+        top_data, top_extent,_ = get_stitched_slice_for_variable(top_params)
+        bot_data, bot_extent,_ = get_stitched_slice_for_variable(bot_params)
+
+        # save individual panel too
+        if save_individual:
+            plot_split_stitched_data(
+                top_data, top_extent, top_params,
+                bot_data, bot_extent, bot_params
+            )
+
+        # draw into the combined multi-panel figure
+        draw_split_panel(
+            ax,
+            top_data, top_extent, top_params,
+            bot_data, bot_extent, bot_params,
+            add_colorbars=True, add_panel_title= False
+        )
+
+        # ax.set_title(
+        #     f"{pairs[pair_idx][0]} / {pairs[pair_idx][1]}",
+        #     loc="left",
+        #     fontsize=14
+        # )
+
+    # plt.tight_layout(rect=[0, 0, 1, 0.97])
+    plt.tight_layout()
+
+    out_dir = Path(user_params["output_path"]) / "combined_pairs"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fname = f"{user_params['input_file']}_combined.png"
+    out_path = out_dir / fname
+
+    fig.savefig(out_path, dpi=300, bbox_inches="tight")
+    plt.close(fig)
+    print(f"Saved plot to {out_path}")
+
+# def plot_split_stitched_data(
+#     stitch_data_top, stitch_extent_top, user_params_top,
+#     stitch_data_bot, stitch_extent_bot, user_params_bot
+# ):
+#     file_number = extract_slice_number(user_params_top['input_file'])
+#     global_min_top = np.nanmin(stitch_data_top)
+#     global_max_top = np.nanmax(stitch_data_top)
+#     global_min_bot = np.nanmin(stitch_data_bot)
+#     global_max_bot = np.nanmax(stitch_data_bot)
+
+#     vmin_top = user_params_top["clim"][0] if user_params_top["clim"][0] is not None else global_min_top
+#     vmax_top = user_params_top["clim"][1] if user_params_top["clim"][1] is not None else global_max_top
+#     vmin_bot = user_params_bot["clim"][0] if user_params_bot["clim"][0] is not None else global_min_bot
+#     vmax_bot = user_params_bot["clim"][1] if user_params_bot["clim"][1] is not None else global_max_bot
+
+#     norm_top = set_normalization(user_params_top, vmin_top, vmax_top)
+#     norm_bot = set_normalization(user_params_bot, vmin_bot, vmax_bot)
+    
+#     cmap_top = plt.get_cmap(user_params_top["cmap"]).copy()
+#     cmap_bot = plt.get_cmap(user_params_bot["cmap"]).copy()
+#     cmap_top.set_bad(alpha=0)
+#     cmap_bot.set_bad(alpha=0)
+
+#     top_plot = mask_half(stitch_data_top, stitch_extent_top, keep="top")
+#     bot_plot = mask_half(stitch_data_bot, stitch_extent_bot, keep="bottom")
+#     fig, ax = plt.subplots(figsize=user_params_top.get("figsize", (12, 6)))
+
+#     im_top = ax.imshow(
+#         top_plot,
+#         origin="lower",
+#         extent=stitch_extent_top,
+#         cmap=cmap_top,
+#         norm=norm_top,
+#         aspect="auto"
+#     )
+
+#     im_bot = ax.imshow(
+#         bot_plot,
+#         origin="lower",
+#         extent=stitch_extent_bot,
+#         cmap=cmap_bot,
+#         norm=norm_bot,
+#         aspect="auto"
+#     )
+#     ax.axhline(0, color="white", lw=1.0)
+#     ax.set_xlabel(user_params_top["xlabel"], labelpad=2.0, fontsize=14)
+#     ax.set_ylabel(user_params_top["ylabel"], labelpad=2.0, fontsize=14)
+#     ax.set_aspect("equal")
+#     ax.set_title(f"t = {file_number} {user_params_top['time_label']}", fontsize=16)
+
+#     if "title" in user_params_top:
+#         ax.set_title(user_params_top["title"])
+
+#     # One shared right-side column
+#     divider = make_axes_locatable(ax)
+#     cax_col = divider.append_axes("right", size="4%", pad=0.03)
+#     cax_col.set_axis_off()
+#     cax_top = cax_col.inset_axes([0.20, 0.55, 0.45, 0.40])
+#     cax_bot = cax_col.inset_axes([0.20, 0.00, 0.45, 0.40])
+
+#     sm_top = ScalarMappable(norm=norm_top, cmap=user_params_top["cmap"])
+#     sm_top.set_array([])
+#     cbar_top = fig.colorbar(sm_top, cax=cax_top)
+#     cbar_top.ax.set_title(user_params_top["cmap_label"], loc="left", pad=8)
+
+#     sm_bot = ScalarMappable(norm=norm_bot, cmap=user_params_bot["cmap"])
+#     sm_bot.set_array([])
+#     cbar_bot = fig.colorbar(sm_bot, cax=cax_bot)
+#     cbar_bot.ax.set_title(user_params_bot["cmap_label"], loc="left", pad=8)
+
+#     out_dir = Path(user_params_top["output_path"]) / f"{user_params_top['variable']}_{user_params_bot['variable']}"
+#     out_dir.mkdir(parents=True, exist_ok=True)
+#     fname = f"{user_params_top['input_file']}.png"
+#     out_path = out_dir / fname
+
+#     fig.savefig(out_path, dpi=300, bbox_inches="tight")
+#     plt.close(fig)
+#     print(f"Saved plot to {out_path}")

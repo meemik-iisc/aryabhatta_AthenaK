@@ -11,8 +11,8 @@ from PIL import Image, ImageDraw, ImageFont
 # ============================================================================
 config = {
     # File processing
-    'dt': 10,                    # Timestep interval (code units)
-    'time_label': 'kyr',
+    'dt': 1,                    # Timestep interval (code units)
+    'time_label': 'Myr',
     'plot_dimension': 'z',
     
     # Figure sizes
@@ -31,7 +31,7 @@ config = {
             'cmap': 'Greens',
             'norm': 'log',
             'vmin': 1.0e-5, 
-            'vmax': 1.0
+            'vmax': 1.0e1
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -53,8 +53,8 @@ config = {
             'cmap': 'seismic',
             # 'cmap': 'Blues_r',
             'norm': None,            # Linear
-            'vmin': -5000, 
-            'vmax': 5000
+            'vmin': -1e3, 
+            'vmax': 1e3
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -65,7 +65,7 @@ config = {
             'cmap': 'coolwarm',
             'norm': 'log',
             'vmin': 1e4, 
-            'vmax': 1e9
+            'vmax': 1e6
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -81,7 +81,7 @@ config = {
             # 'vmax': None
         },
         'tracer': {
-            'label': 'Bubble Tracer',
+            'label': 'Outflow Tracer',
             'folder_key': 'tracer',
             'quantity': 's_00',
             'cmap': 'bwr',
@@ -218,7 +218,7 @@ def main():
     out_root = input_dir.parent / f"{input_dir.name}_outputs"
         
     # 3. Find plotter
-    plotter = Path(__file__).parent / 'plot_slice_3.py'
+    plotter = Path(__file__).parent / 'plot_slice_2.py'
     if not plotter.exists():
         raise FileNotFoundError(f"Missing {plotter}")
     

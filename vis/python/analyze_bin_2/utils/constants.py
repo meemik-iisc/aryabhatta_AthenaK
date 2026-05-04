@@ -11,9 +11,13 @@ Msolar_per_kpc_sq_per_yr    = 6.7e-18       #g cm^(-2)s^(-1)
 
 
 #Code units
-length_cgs                  = 3.086e+21     # 1 kpc  'L0'
-mass_cgs                    = 4.907e+40     # 1 (kpc^3)*(1mp/cm^3)   'L0^3*rho0'
-time_cgs                    = 3.0857e+13    # 0.97 Myr; v0 = 1000 km/s
+# length_cgs                  = 3.086e+21     # 1 kpc  'L0'
+# mass_cgs                    = 4.907e+40     # 1 (kpc^3)*(1mp/cm^3)   'L0^3*rho0'
+# time_cgs                    = 3.0857e+13    # 0.97 Myr; v0 = 1000 km/s
+
+length_cgs  = 3.086e+18         # 1 pc  'L0'
+mass_cgs    = 4.907e+31         # 1 (pc^3)*(1mp/cm^3)   'L0^3*rho0'
+time_cgs    = 3.0857e+10        # 1 kyr; v0 = 1000 km/s
 
 rho_cgs                     = mass_cgs/(length_cgs**3)
 v_cgs                       = length_cgs/time_cgs

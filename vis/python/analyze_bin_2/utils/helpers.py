@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib as mpl
+from matplotlib.colors import LinearSegmentedColormap
 
 def cool_lambda(T):
     """
@@ -48,3 +50,41 @@ def cool_lambda(T):
     
     return result
 
+
+
+def register_project_colormaps():
+    red_purple_blue = LinearSegmentedColormap.from_list(
+        "red_purple_blue",
+        [
+            (0.00, "#7d81ff"),  # vivid blue = minimum
+            (0.50, "#2d2dce"),  # blue-violet
+            # (0.75, "#6a00a8"),  # purple middle
+            # (0.72, "#a0005f"),  # red-purple transition
+            (0.75, "#d40000"),  # strong red
+            (1.00, "#ff2a00"),  # bright red-o  range = maximum
+        ],
+        N=256,
+    )
+    mpl.colormaps.register(red_purple_blue, force=True)
+
+def build_split_params(base_params, pair_idx, var_idx):
+    split_params = base_params.copy()
+    split_params["variable"] = base_params["variable"][pair_idx][var_idx]
+    split_params["cmap"] = base_params["cmap"][pair_idx][var_idx]
+    split_params["cmap_label"] = base_params["cmap_label"][pair_idx][var_idx]
+    split_params["norm"] = base_params["norm"][pair_idx][var_idx]
+    split_params["clim"] = base_params["clim"][pair_idx][2*var_idx:2*var_idx+2]
+    return split_params
+    
+def mask_half(array, extent, keep="top"):
+    x0, x1, y0, y1 = extent
+    ny, nx = array.shape
+    y = np.linspace(y0, y1, ny)
+    Y = np.repeat(y[:, None], nx, axis=1)
+
+    if keep == "top":
+        return np.ma.masked_where(Y < 0, array)
+    elif keep == "bottom":
+        return np.ma.masked_where(Y > 0, array)
+    else:
+        raise ValueError("keep must be 'top' or 'bottom'")

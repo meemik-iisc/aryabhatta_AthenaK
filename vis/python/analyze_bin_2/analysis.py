@@ -11,10 +11,11 @@ if parent_dir not in sys.path:
     
 import bin_convert
 from utils.io_utils import ensure_dir, extract_slice_number
+from utils.helpers import build_split_params
 from params import rad_build_params
-from data_processing.slice_data import extract_athenak_slice,extract_temp_slice,extract_cooling_rate_slice,extract_tcool_slice, stitch_meshblocks_to_global
+from data_processing.slice_data import extract_athenak_slice,extract_temp_slice,extract_cooling_rate_slice,extract_tcool_slice, stitch_meshblocks_to_global, get_stitched_slice_for_variable
 from data_processing.block_data import extract_athenak_3D_block, extract_temp_data, extract_velr_data, extract_cooling_rate_data, extract_t_cool_data, extract_t_free_fall_data, extract_t_in_data, extract_mass_flux_data, compute_radial_profile
-from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data 
+from plotting.slice_plot import plot_athenak_combined, plot_individual_blocks, plot_stitched_data, plot_split_stitched_data, plot_combined_split_pairs
 from plotting.plot_1d_profiles import plot_zh,plot_rc,plot_x_profile, plot_spherical_volume_weighted_avg_profile, plot_spherical_mass_weighted_avg_profile, plot_time_scales_profile
 from plotting.plot_comparative_profile import plot_comparative_profile, plot_comparative_time_scales
 from plotting.streamlines import plot_streamlines_from_dataframes
@@ -23,29 +24,18 @@ def run(analysis_type, user_params):
     ensure_dir(user_params['output_path'])
     def handle():
         if analysis_type=="slice":
-            variable = user_params["variable"]
-            if variable.startswith('derived:'):
-                variable=variable.split(":", 1)[1].strip()
-                if variable == "temp":
-                    file_data_2d = extract_temp_slice(user_params)
-                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
-                    plot_stitched_data(stitch_data, stitch_extent, user_params)
-                elif variable == "cooling_rate":
-                    file_data_2d = extract_cooling_rate_slice(user_params)
-                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
-                    plot_stitched_data(stitch_data, stitch_extent, user_params)
-                elif variable == "tcool":
-                    file_data_2d = extract_tcool_slice(user_params)
-                    stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
-                    plot_stitched_data(stitch_data, stitch_extent, user_params)
-            else:
-                file_data_2d = extract_athenak_slice(user_params)
-                stitch_data, stitch_extent = stitch_meshblocks_to_global(file_data_2d,user_params)
-                plot_stitched_data(stitch_data, stitch_extent, user_params)
+            
+            stitch_data, stitch_extent, local_params = get_stitched_slice_for_variable(variable, user_params)
+            plot_stitched_data(stitch_data, stitch_extent, local_params)
             # print(file_data_2d['df_quantities'].head)
             # plot_athenak_combined_2(file_data_2d,user_params)
             # plot_individual_meshblocks(df_2d,user_params)       
             # plot_slice(df_2d, user_params)1
+        elif analysis_type=="split_slice":
+            plot_combined_split_pairs(user_params, save_individual=True)
+            # if len(user_params["variable"])>1:
+            #     plot_combined_stitched_slice
+
 
         elif analysis_type=="profiles":
             if user_params['profile_variable']=='avg':
