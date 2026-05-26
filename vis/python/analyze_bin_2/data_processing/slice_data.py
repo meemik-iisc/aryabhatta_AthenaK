@@ -79,7 +79,7 @@ def extract_athenak_slice(user_params):
                 input_data[section][k.strip()] = v.split('#')[0].strip()
         
         num_ghost = int(input_data['mesh']['nghost'])
-        print(variable_names_base)
+        # print(variable_names_base)
         num_variables_base = len(variable_names_base)
         quantities_list = []
         extents_list = []
@@ -199,7 +199,7 @@ def extract_athenak_slice(user_params):
         
         quantities_stacked = [df.stack() for df in quantities_list]
         combined_df = pd.concat(quantities_stacked, keys=range(len(quantities_stacked)), names=['block', 'row', 'col'])
-        
+        print(quantities_stacked)
         return {
             "df_quantities": combined_df,
             "df_extents": df_extents,

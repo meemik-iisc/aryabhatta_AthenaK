@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 config = {
     # File processing
     'dt': 1,                    # Timestep interval (code units)
-    'time_label': 'Myr',
+    'time_label': 'kyr',
     'plot_dimension': 'z',
     
     # Figure sizes
@@ -30,8 +30,8 @@ config = {
             'quantity': 'dens',
             'cmap': 'Greens',
             'norm': 'log',
-            'vmin': 1.0e-5, 
-            'vmax': 1.0e1
+            'vmin': 1.0e-4, 
+            'vmax': 1.0
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -41,8 +41,8 @@ config = {
             'quantity': 'eint',      # Derived from internal energy
             'cmap': 'viridis',
             'norm': 'log',
-            'vmin': 1e-6, 
-            'vmax': 1e-1
+            'vmin': 1e-5, 
+            'vmax': 1.0
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -65,7 +65,7 @@ config = {
             'cmap': 'coolwarm',
             'norm': 'log',
             'vmin': 1e4, 
-            'vmax': 1e6
+            'vmax': 1e7
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -76,26 +76,26 @@ config = {
             'cmap': 'turbo',
             'norm': 'log',
             'vmin': 1.0e-3, 
-            'vmax': 1e6
+            'vmax': 1e3
             # 'vmin': None, 
             # 'vmax': None
         },
-        'tracer': {
-            'label': 'Outflow Tracer',
-            'folder_key': 'tracer',
-            'quantity': 's_00',
-            'cmap': 'bwr',
-            'norm': None,
-            'vmin': 0.0, 
-            'vmax': 1.0
-            # 'vmin': None, 
-            # 'vmax': None
-        }
+        # 'tracer': {
+        #     'label': 'Outflow Tracer',
+        #     'folder_key': 'tracer',
+        #     'quantity': 's_00',
+        #     'cmap': 'bwr',
+        #     'norm': None,
+        #     'vmin': 0.0, 
+        #     'vmax': 1.0
+        #     # 'vmin': None, 
+        #     # 'vmax': None
+        # }
     },
     
     # Combined plot order (top to bottom)
-    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
-    # 'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
+    # 'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
+    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
     
 }
 

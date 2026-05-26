@@ -1,0 +1,172 @@
+import ast
+from config import default_dict
+from pathlib import Path
+from utils.io_utils import extract_slice_number, sort_by_slice_number
+def parse_int_list(s: str) -> list[int]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        if isinstance(val, list) and all(isinstance(x, int) for x in val):
+            return val
+    except Exception:
+        pass
+    return [int(x) for x in s.split(',') if x.strip()]
+def parse_str_list(s: str) -> list[str]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        if isinstance(val, list) and all(isinstance(x, str) for x in val):
+            return val
+    except (ValueError, SyntaxError):
+        pass
+    return [x.strip() for x in s.split(",") if x.strip()]
+
+import ast
+
+def parse_str_pair_list(s: str) -> list[list[str]]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        # Case 1: single pair like ["dens", "eint"]
+        if (
+            isinstance(val, list)
+            and len(val) == 2
+            and all(isinstance(x, str) for x in val)
+        ):
+            return [val]
+        # Case 2: list of pairs like [["dens","eint"], ["derived:temp","derived:tcool"]]
+        if (
+            isinstance(val, list)
+            and all(
+                isinstance(inner, list)
+                and len(inner) == 2
+                and all(isinstance(x, str) for x in inner)
+                for inner in val
+            )
+        ):
+            return val
+    except (ValueError, SyntaxError):
+        pass
+
+    raise ValueError(
+        "Input must be either a string pair like ['dens','eint'] "
+        "or a list of string pairs like [['dens','eint'], ['temp','tcool']]"
+    )
+import ast
+
+def parse_float_pair_list(s: str) -> list[list[float]]:
+    s = s.strip()
+    try:
+        val = ast.literal_eval(s)
+        # Case 1: single pair like [1.0, 2.0,3.0,4.0]
+        if (
+            isinstance(val, list)
+            and len(val) == 4
+            and all(isinstance(x, (int, float)) for x in val)
+        ):
+            return [[float(x) for x in val]]
+        # Case 2: list of pairs like [[1.0, 2.0,3.0,4.0], [1.0, 2.0,3.0,4.0]]
+        if (
+            isinstance(val, list)
+            and all(
+                isinstance(inner, list)
+                and len(inner) == 4
+                and all(isinstance(x, (int, float)) for x in inner)
+                for inner in val
+            )
+        ):
+            return [[float(x) for x in inner] for inner in val]
+
+    except (ValueError, SyntaxError):
+        pass
+
+    raise ValueError(
+        "Input must be either a float pair like [1.0, 2.0] "
+        "or a list of float pairs like [[1.0, 2.0], [3.0, 4.0]]"
+    )
+    
+    
+def prompt_params(meta: dict) -> dict:
+    filled = {}
+    for key, info in meta.items():
+        prompt = f"{info['prompt']} [{info['default']}]: "
+        val = input(prompt).strip()
+        if not val:
+            filled[key] = info["default"]
+        else:
+            try:
+                filled[key] = info["type"](val)
+            except Exception:
+                filled[key] = val  # fallback to raw
+        print(f" → {key} = {filled[key]!r}")
+    return filled
+
+def build_user_params(meta: dict) -> dict:
+    p = prompt_params(meta)
+
+    inp = Path(p['input_folder'])
+    if not p['loop_bin']:
+        fn = input(f"Input file name [{default_dict['input_file']}]: ").strip() or default_dict['input_file']
+        p['input_file'] = fn
+        print(f" → input_file = {p['input_file']!r}")
+
+    if p['loop_bin']:
+        input_files = [f.name for f in inp.glob("*.bin")]
+        input_files_sorted = sort_by_slice_number(input_files)
+        p['input_files'] = input_files_sorted
+    else:
+        p['bin_path'] = inp / p['input_file']
+        p['slice_number'] = extract_slice_number(p['input_file'])
+
+    import os
+    p['output_path'] = os.path.join(os.path.dirname(p['input_folder']), "output_folder")
+    return p
+
+def rad_build_params(user_params_dict: dict)->dict:
+    rad_params_dict = user_params_dict.copy()
+    rad_input_folder = user_params_dict['rad_input_folder']
+    rad_input_path = Path(rad_input_folder)
+    rad_params_dict.update(input_folder = rad_input_folder)
+    if not user_params_dict['loop_bin']:
+        fn = input(f"Input Radiative file name [{default_dict['rad_input_file']}]: ").strip() or default_dict['rad_input_file']
+        rad_params_dict['input_file'] = fn
+        print(f" → rad_input_file = {user_params_dict['input_file']!r}")
+
+    if user_params_dict['loop_bin']:
+        rad_input_files = [f.name for f in rad_input_path.glob("*.bin")]
+        rad_input_files_sorted = sort_by_slice_number(rad_input_files)
+        rad_params_dict['input_files'] = rad_input_files_sorted
+        slice_number = user_params_dict['slice_number']
+        rad_params_dict['input_file'] = rad_input_files_sorted[slice_number]
+        rad_params_dict['bin_path'] = rad_input_path/rad_params_dict['input_file']
+    else:
+        rad_params_dict['bin_path'] = rad_input_path / rad_params_dict['input_file']
+
+    import os
+    rad_params_dict['output_path'] = os.path.join(os.path.dirname(rad_params_dict['input_folder']), "output_folder")
+    return rad_params_dict
+
+def build_tCGM_params(user_params_dict: dict)->dict:
+    tCGM_params_dict = user_params_dict.copy()
+    tCGM_input_folder = user_params_dict['tCGM_input_folder']
+    tCGM_input_path = Path(tCGM_input_folder)
+    tCGM_params_dict.update(input_folder = tCGM_input_folder)
+    tCGM_params_dict.update(color = user_params_dict['tCGM_color'])
+    if not user_params_dict['loop_bin']:
+        fn = input(f"Input tCGM file name [{default_dict['tCGM_input_file']}]: ").strip() or default_dict['tCGM_input_file']
+        tCGM_params_dict['input_file'] = fn
+        print(f" → tCGM_input_file = {user_params_dict['input_file']!r}")
+
+    if user_params_dict['loop_bin']:
+        tCGM_input_files = [f.name for f in tCGM_input_path.glob("*.bin")]
+        tCGM_input_files_sorted = sort_by_slice_number(tCGM_input_files)
+        tCGM_params_dict['input_files'] = tCGM_input_files_sorted
+        slice_number = user_params_dict['slice_number']
+        tCGM_params_dict['input_file'] = tCGM_input_files_sorted[slice_number]
+        tCGM_params_dict['bin_path'] = tCGM_input_path/tCGM_params_dict['input_file']
+    else:
+        tCGM_params_dict['bin_path'] = tCGM_input_path / tCGM_params_dict['input_file']
+
+    import os
+    tCGM_params_dict['output_path'] = os.path.join(os.path.dirname(tCGM_params_dict['input_folder']), "output_folder")
+    return tCGM_params_dict

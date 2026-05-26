@@ -111,10 +111,9 @@ def plot_stitched_data(global_array, global_extent, user_params):
     - Uses user colormap and normalization.
     - Sets axis labels and colorbar label.
     """
-    
     global_min = global_array.min()
     global_max = global_array.max()
-    
+    print(global_array)
     vmin = user_params['clim'][0] if user_params['clim'][0] is not None else global_min
     vmax = user_params['clim'][1] if user_params['clim'][1] is not None else global_max
     norm = set_normalization(user_params, vmin, vmax)
@@ -252,38 +251,75 @@ def draw_split_panel(
         aspect="auto"
     )
 
-    ax.axhline(0, color="white", lw=1.0)
-    ax.set_xlabel(user_params_top["xlabel"], labelpad=2.0, fontsize=14)
-    ax.set_ylabel(user_params_top["ylabel"], labelpad=2.0, fontsize=14)
+    # ax.axhline(0, color="white", lw=1.0)
+
+    ax.set_xlabel(user_params_top["xlabel"], labelpad=2.0, fontsize=20, fontweight="bold")
+    ax.set_ylabel(user_params_top["ylabel"], labelpad=2.0, fontsize=20, fontweight="bold")
+    ax.tick_params(axis="both", labelsize=18)
     ax.set_aspect("equal")
+    # for tick in ax.get_xticklabels():
+    #     tick.set_fontweight("bold")
+    # for tick in ax.get_yticklabels():
+    #     tick.set_fontweight("bold")
     if add_panel_title:
         ax.set_title(f"t = {file_number} {user_params_top['time_label']}", fontsize=16)
 
+    # if add_colorbars:
+    #     divider = make_axes_locatable(ax)
+    #     cax_col = divider.append_axes("right", size="4%", pad=0.03)
+    #     cax_col.set_axis_off()
+
+    #     cax_top = cax_col.inset_axes([0.20, 0.55, 0.45, 0.40])
+    #     cax_bot = cax_col.inset_axes([0.20, 0.00, 0.45, 0.40])
+
+    #     sm_top = ScalarMappable(norm=norm_top, cmap=cmap_top)
+    #     sm_top.set_array([])
+    #     cbar_top = ax.figure.colorbar(sm_top, cax=cax_top)
+    #     cbar_top.ax.set_title(user_params_top["cmap_label"], loc="left", pad=8)
+    #     cbar_top.set_ticks([vmin_top, np.sqrt(vmin_top*vmax_top), vmax_top])
+    #     cbar_top.formatter = LogFormatterMathtext()
+    #     cbar_top.update_ticks()
+    #     # cbar_top.set_ticklabels([f"{vmin_top:.2e}", f"{vmax_top:.2e}"])
+
+    #     sm_bot = ScalarMappable(norm=norm_bot, cmap=cmap_bot)
+    #     sm_bot.set_array([])
+    #     cbar_bot = ax.figure.colorbar(sm_bot, cax=cax_bot)
+    #     cbar_bot.ax.set_title(user_params_bot["cmap_label"], loc="left", pad=8)
+    #     cbar_bot.set_ticks([vmin_bot,np.sqrt(vmin_bot * vmax_bot), vmax_bot])
+    #     cbar_bot.formatter = LogFormatterMathtext()
+    #     cbar_bot.update_ticks()
+    #     # cbar_bot.set_ticklabels([f"{vmin_bot:.2e}", f"{vmax_bot:.2e}"])
     if add_colorbars:
         divider = make_axes_locatable(ax)
         cax_col = divider.append_axes("right", size="4%", pad=0.03)
         cax_col.set_axis_off()
 
-        cax_top = cax_col.inset_axes([0.20, 0.55, 0.45, 0.40])
-        cax_bot = cax_col.inset_axes([0.20, 0.00, 0.45, 0.40])
+        cax_top = cax_col.inset_axes([0.20, 0.55, 0.45, 0.45])
+        cax_bot = cax_col.inset_axes([0.20, 0.00, 0.45, 0.45])
 
         sm_top = ScalarMappable(norm=norm_top, cmap=cmap_top)
         sm_top.set_array([])
         cbar_top = ax.figure.colorbar(sm_top, cax=cax_top)
-        cbar_top.ax.set_title(user_params_top["cmap_label"], loc="left", pad=8)
-        cbar_top.set_ticks([vmin_top, np.sqrt(vmin_top*vmax_top), vmax_top])
+        cbar_top.set_label(user_params_top["cmap_label"], rotation=90, labelpad=10)
+        cbar_top.ax.yaxis.label.set_fontsize(24)
+        cbar_top.ax.yaxis.label.set_fontweight("bold")
+        cbar_top.set_ticks([vmin_top, np.sqrt(vmin_top * vmax_top), vmax_top])
+        for t in cbar_top.ax.get_yticklabels():
+            t.set_fontsize(18)
+            t.set_fontweight("bold")  
         cbar_top.formatter = LogFormatterMathtext()
         cbar_top.update_ticks()
-        # cbar_top.set_ticklabels([f"{vmin_top:.2e}", f"{vmax_top:.2e}"])
 
         sm_bot = ScalarMappable(norm=norm_bot, cmap=cmap_bot)
         sm_bot.set_array([])
         cbar_bot = ax.figure.colorbar(sm_bot, cax=cax_bot)
-        cbar_bot.ax.set_title(user_params_bot["cmap_label"], loc="left", pad=8)
-        cbar_bot.set_ticks([vmin_bot,np.sqrt(vmin_bot * vmax_bot), vmax_bot])
+        cbar_bot.set_label(user_params_bot["cmap_label"], rotation=90, labelpad=10, fontweight="bold", fontsize=24)
+        cbar_bot.set_ticks([vmin_bot, np.sqrt(vmin_bot * vmax_bot), vmax_bot])
+        for t in cbar_bot.ax.get_yticklabels():
+            t.set_fontsize(18)
+            t.set_fontweight("bold")
         cbar_bot.formatter = LogFormatterMathtext()
         cbar_bot.update_ticks()
-        # cbar_bot.set_ticklabels([f"{vmin_bot:.2e}", f"{vmax_bot:.2e}"])
 
 def plot_split_stitched_data(
     stitch_data_top, stitch_extent_top, user_params_top,
@@ -310,9 +346,10 @@ def plot_split_stitched_data(
 def plot_combined_split_pairs(user_params, save_individual=True):
     file_number = extract_slice_number(user_params["input_file"])
     pairs = user_params["variable"]
-    ncolumns = len(pairs)
+    # ncolumns = len(pairs)
+    nrows = len(pairs)
     # If only one pair, just make the individual plot and skip the combined figure
-    if ncolumns == 1:
+    if nrows == 1:
         top_params = build_split_params(user_params, 0, 0)
         bot_params = build_split_params(user_params, 0, 1)
 
@@ -325,11 +362,17 @@ def plot_combined_split_pairs(user_params, save_individual=True):
         )
         return
     figsize_ind = user_params.get("figsize")
-    # figsize_combined = (figsize_ind[0]*ncolumns,figsize_ind[1])
-    figsize_combined = (21,figsize_ind[1])
+    figsize_combined = (figsize_ind[0], 10)
+    # figsize_combined = (21,figsize_ind[1])
+    # fig, axes = plt.subplots(
+    #     nrows=1,
+    #     ncols=ncolumns,
+    #     figsize = figsize_combined,
+    #     squeeze=False
+    # )
     fig, axes = plt.subplots(
-        nrows=1,
-        ncols=ncolumns,
+        nrows=nrows,
+        ncols=1,
         figsize = figsize_combined,
         squeeze=False
     )

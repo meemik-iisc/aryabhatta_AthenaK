@@ -28,8 +28,8 @@ config = {
             'quantity': 'dens',
             'cmap': 'PiYG',
             'norm': 'log',
-            'vmin': 1.0e-5, 
-            'vmax': 1.0e-2
+            'vmin': 1.0e-4, 
+            'vmax': 1.0
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -39,7 +39,7 @@ config = {
             'quantity': 'eint',      # Derived from internal energy
             'cmap': 'viridis',
             'norm': 'log',
-            'vmin': 1e-7, 
+            'vmin': 1e-5, 
             'vmax': 1e-1
             # 'vmin': None, 
             # 'vmax': None
@@ -50,8 +50,8 @@ config = {
             'quantity': 'velx',
             'cmap': 'seismic',
             'norm': None,            # Linear
-            'vmin': -1e4,
-            'vmax': 1e4
+            'vmin': -1e3,
+            'vmax': 1e3
         },
         'temp': {
             'label': 'Temperature',
@@ -60,7 +60,7 @@ config = {
             'cmap': 'coolwarm',
             'norm': 'log',
             'vmin': 1e4, 
-            'vmax': 1e9
+            'vmax': 1e7
             # 'vmin': None, 
             # 'vmax': None
         },
@@ -70,8 +70,8 @@ config = {
             'quantity': 'derived:t_cool',
             'cmap': 'turbo',
             'norm': 'log',
-            'vmin': 10, 
-            'vmax': 1e6
+            'vmin': 1e-3, 
+            'vmax': 1e3
             # 'vmin': None, 
             # 'vmax': None
         },
