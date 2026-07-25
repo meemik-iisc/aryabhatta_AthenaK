@@ -1,0 +1,46 @@
+
+Root grid = 2 x 1 x 1 MeshBlocks
+Total number of MeshBlocks = 16
+Number of logical  levels of refinement = 2 (3 levels total)
+Number of physical levels of refinement = 1 (2 levels total)
+Number of parallel ranks = 16
+  Rank = 0: 1 MeshBlocks, cost = 1
+  Rank = 1: 1 MeshBlocks, cost = 1
+  Rank = 2: 1 MeshBlocks, cost = 1
+  Rank = 3: 1 MeshBlocks, cost = 1
+  Rank = 4: 1 MeshBlocks, cost = 1
+  Rank = 5: 1 MeshBlocks, cost = 1
+  Rank = 6: 1 MeshBlocks, cost = 1
+  Rank = 7: 1 MeshBlocks, cost = 1
+  Rank = 8: 1 MeshBlocks, cost = 1
+  Rank = 9: 1 MeshBlocks, cost = 1
+  Rank = 10: 1 MeshBlocks, cost = 1
+  Rank = 11: 1 MeshBlocks, cost = 1
+  Rank = 12: 1 MeshBlocks, cost = 1
+  Rank = 13: 1 MeshBlocks, cost = 1
+  Rank = 14: 1 MeshBlocks, cost = 1
+  Rank = 15: 1 MeshBlocks, cost = 1
+Load Balancing:
+  Maximum normalized cost = 1, Average = 1
+
+Setup complete, executing task list(s)...
+
+elapsed=4.117539e+00 cycle=0 time=0.000000e+00 dt=1.349250e-02
+elapsed=4.637142e+02 cycle=1000 time=1.289710e+01 dt=1.243024e-02
+elapsed=9.443338e+02 cycle=2000 time=2.524741e+01 dt=1.231641e-02
+elapsed=1.473401e+03 cycle=3000 time=3.753753e+01 dt=1.245932e-02
+elapsed=1.995186e+03 cycle=4000 time=4.991975e+01 dt=1.259157e-02
+elapsed=2.488877e+03 cycle=5000 time=6.141908e+01 dt=9.684293e-03
+elapsed=2.976664e+03 cycle=6000 time=7.073199e+01 dt=9.431533e-03
+elapsed=3.467947e+03 cycle=7000 time=7.987255e+01 dt=8.512601e-03
+elapsed=3.983021e+03 cycle=8000 time=8.819592e+01 dt=8.025773e-03
+elapsed=4.511158e+03 cycle=9000 time=9.597838e+01 dt=7.569026e-03
+
+Terminating on time limit
+time=1.000000e+02 cycle=9539
+tlim=1.000000e+02 nlim=-1
+
+MeshBlock-cycles = 152624
+cpu time used  = 4.794459e+03
+zone-cycles/cpu_second = 8.344938e+06
+particle-updates/cpu_second = 0.000000e+00

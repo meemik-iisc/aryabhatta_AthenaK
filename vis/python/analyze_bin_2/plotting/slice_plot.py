@@ -2,19 +2,38 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib.cm import ScalarMappable
 import matplotlib.colors as plt_col
+import matplotlib.ticker as mticker
 from matplotlib.ticker import LogFormatterMathtext
 from pathlib import Path
 import os
 import numpy as np
-from utils.helpers import mask_half, build_split_params
+from utils.helpers import mask_half, build_split_params, get_symlog_ticks
 from utils.io_utils import extract_slice_number
 from data_processing.slice_data import get_stitched_slice_for_variable
+# def set_normalization(user_params, vmin, vmax):
+#     if user_params['norm'] is None:
+#         return plt_col.Normalize(vmin, vmax)
+#     elif user_params['norm'] == "log":
+#         return plt_col.LogNorm(vmin, vmax)
+    
 def set_normalization(user_params, vmin, vmax):
     if user_params['norm'] is None:
-        return plt_col.Normalize(vmin, vmax)
+        return plt_col.Normalize(vmin=vmin, vmax=vmax)
     elif user_params['norm'] == "log":
-        return plt_col.LogNorm(vmin, vmax)
-    
+        return plt_col.LogNorm(vmin=vmin, vmax=vmax)
+    elif user_params['norm'] == "symlog":
+        linthresh = user_params.get('linthresh', 1e-2)
+        linscale = user_params.get('linscale', 1.0)
+        base = user_params.get('base', 10)
+        return plt_col.SymLogNorm(
+            linthresh=linthresh,
+            linscale=linscale,
+            vmin=vmin,
+            vmax=vmax,
+            base=base
+        )
+    else:
+        raise ValueError(f"Unknown normalization: {user_params['norm']}")
 import numpy as np
 import matplotlib.pyplot as plt
     
@@ -96,52 +115,119 @@ def plot_athenak_combined(data_dict, user_params):
     plt.close()
     print(f"Saved plot to {out_path}")
 
+# def plot_stitched_data(global_array, global_extent, user_params):
+#     """
+#     Plot the stitched global 2D AthenaK slice data.
+    
+#     Parameters:
+#     - global_array: 2D numpy array from stitch_meshblocks_to_global
+#     - global_extent: tuple (x_min, x_max, y_min, y_max) corresponding to global_array
+#     - user_params: dict with keys 'cmap', 'xlabel', 'ylabel', 'figsize', 'cmap_label'
+#     - norm: matplotlib color normalization instance for consistent colormap scaling
+    
+#     Behavior:
+#     - Plots the global 2D array with imshow over the specified extent.
+#     - Uses user colormap and normalization.
+#     - Sets axis labels and colorbar label.
+#     """
+#     global_min = global_array.min()
+#     global_max = global_array.max()
+#     # print(global_array)
+#     vmin = user_params['clim'][0] if user_params['clim'][0] is not None else global_min
+#     vmax = user_params['clim'][1] if user_params['clim'][1] is not None else global_max
+#     norm = set_normalization(user_params, vmin, vmax)
+#     fig, ax = plt.subplots(figsize=user_params.get('figsize', (10, 8)))
+#     im = ax.imshow(global_array, origin='lower', extent=global_extent,
+#                    cmap=user_params['cmap'], norm=norm, aspect='auto')
+    
+#     ax.set_xlabel(user_params['xlabel'])
+#     ax.set_ylabel(user_params['ylabel'])
+#     ax.set_aspect('equal')
+    
+#     divider = make_axes_locatable(ax)
+#     cax = divider.append_axes("right", size="5%", pad=0.05)
+    
+#     sm = ScalarMappable(norm=norm, cmap=user_params['cmap'])
+#     sm.set_array([])
+#     cbar = fig.colorbar(sm, cax=cax)
+#     cbar.set_label(user_params['cmap_label'])
+    
+#     plt.tight_layout()
+    
+#     out_dir = Path(user_params['output_path']) / user_params['variable']
+#     out_dir.mkdir(parents=True, exist_ok=True)
+#     fname = f"{user_params['input_file']}.png"
+#     out_path = out_dir / fname
+
+#     fig.savefig(out_path, dpi=300, bbox_inches='tight')
+#     plt.close()
+#     print(f"Saved plot to {out_path}")
+
 def plot_stitched_data(global_array, global_extent, user_params):
-    """
-    Plot the stitched global 2D AthenaK slice data.
-    
-    Parameters:
-    - global_array: 2D numpy array from stitch_meshblocks_to_global
-    - global_extent: tuple (x_min, x_max, y_min, y_max) corresponding to global_array
-    - user_params: dict with keys 'cmap', 'xlabel', 'ylabel', 'figsize', 'cmap_label'
-    - norm: matplotlib color normalization instance for consistent colormap scaling
-    
-    Behavior:
-    - Plots the global 2D array with imshow over the specified extent.
-    - Uses user colormap and normalization.
-    - Sets axis labels and colorbar label.
-    """
     global_min = global_array.min()
     global_max = global_array.max()
-    print(global_array)
+
     vmin = user_params['clim'][0] if user_params['clim'][0] is not None else global_min
     vmax = user_params['clim'][1] if user_params['clim'][1] is not None else global_max
     norm = set_normalization(user_params, vmin, vmax)
-    fig, ax = plt.subplots(figsize=user_params.get('figsize', (10, 8)))
-    im = ax.imshow(global_array, origin='lower', extent=global_extent,
-                   cmap=user_params['cmap'], norm=norm, aspect='auto')
-    
-    ax.set_xlabel(user_params['xlabel'])
-    ax.set_ylabel(user_params['ylabel'])
+
+    plt.rcParams.update({
+        'font.size': 12,
+        'axes.titlesize': 16,
+        'axes.labelsize': 14,
+        'axes.labelweight': 'bold',
+        'axes.titleweight': 'bold',
+        'xtick.labelsize': 12,
+        'ytick.labelsize': 12,
+        'figure.dpi': 300,
+        'savefig.dpi': 300,
+    })
+
+    fig, ax = plt.subplots(figsize=user_params.get('figsize', (10, 8)), constrained_layout=True)
+
+    im = ax.imshow(
+        global_array,
+        origin='lower',
+        extent=global_extent,
+        cmap=user_params['cmap'],
+        norm=norm,
+        aspect='auto',
+        interpolation='nearest'
+    )
+    file_number = extract_slice_number(user_params["input_file"])
+    ax.set_title(f"t = {file_number} {user_params['time_label']}", fontsize=28, y=0.995, fontweight="bold")
+    ax.set_xlabel(user_params['xlabel'], fontweight='bold', labelpad=8)
+    ax.set_ylabel(user_params['ylabel'], fontweight='bold', labelpad=8)
+
     ax.set_aspect('equal')
-    
+    ax.tick_params(axis='both', which='major', labelsize=12, width=1.5, length=6)
+
+    for spine in ax.spines.values():
+        spine.set_linewidth(1.5)
+
+    for label in ax.get_xticklabels() + ax.get_yticklabels():
+        label.set_fontweight('bold')
+
     divider = make_axes_locatable(ax)
-    cax = divider.append_axes("right", size="5%", pad=0.05)
-    
+    cax = divider.append_axes("right", size="4.5%", pad=0.08)
+
     sm = ScalarMappable(norm=norm, cmap=user_params['cmap'])
     sm.set_array([])
     cbar = fig.colorbar(sm, cax=cax)
-    cbar.set_label(user_params['cmap_label'])
-    
-    plt.tight_layout()
-    
+
+    cbar.set_label(user_params['cmap_label'], fontweight='bold', fontsize=18, labelpad=10)
+    cbar.ax.tick_params(labelsize=11, width=1.3, length=5)
+    for t in cbar.ax.get_yticklabels():
+        t.set_fontweight('bold')
+    cbar.outline.set_linewidth(1.3)
+
     out_dir = Path(user_params['output_path']) / user_params['variable']
     out_dir.mkdir(parents=True, exist_ok=True)
     fname = f"{user_params['input_file']}.png"
     out_path = out_dir / fname
 
-    fig.savefig(out_path, dpi=300, bbox_inches='tight')
-    plt.close()
+    fig.savefig(out_path, dpi=300, bbox_inches='tight', facecolor='white')
+    plt.close(fig)
     print(f"Saved plot to {out_path}")
 
 def plot_individual_blocks(data_dict, user_params):
@@ -256,13 +342,13 @@ def draw_split_panel(
     ax.set_xlabel(user_params_top["xlabel"], labelpad=2.0, fontsize=20, fontweight="bold")
     ax.set_ylabel(user_params_top["ylabel"], labelpad=2.0, fontsize=20, fontweight="bold")
     ax.tick_params(axis="both", labelsize=18)
-    ax.set_aspect("equal")
+    # ax.set_aspect("equal")
     # for tick in ax.get_xticklabels():
     #     tick.set_fontweight("bold")
     # for tick in ax.get_yticklabels():
     #     tick.set_fontweight("bold")
     if add_panel_title:
-        ax.set_title(f"t = {file_number} {user_params_top['time_label']}", fontsize=16)
+        ax.set_title(f"t = {file_number} {user_params_top['time_label']}", fontsize=28, fontweight="bold")
 
     # if add_colorbars:
     #     divider = make_axes_locatable(ax)
@@ -377,7 +463,7 @@ def plot_combined_split_pairs(user_params, save_individual=True):
         squeeze=False
     )
     axes = axes.ravel()
-    fig.suptitle(f"t = {file_number} {user_params['time_label']}", fontsize=18, y=0.995)
+    fig.suptitle(f"t = {file_number} {user_params['time_label']}", fontsize=28, y=0.995, fontweight="bold")
 
     for pair_idx, ax in enumerate(axes):
         top_params = build_split_params(user_params, pair_idx, 0)

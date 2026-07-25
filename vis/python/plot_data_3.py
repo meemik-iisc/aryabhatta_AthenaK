@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 config = {
     # File processing
     'dt': 1,                    # Timestep interval (code units)
-    'time_label': 'kyr',
+    'time_label': 'Myr',
     'plot_dimension': 'z',
     
     # Figure sizes
@@ -80,22 +80,22 @@ config = {
             # 'vmin': None, 
             # 'vmax': None
         },
-        # 'tracer': {
-        #     'label': 'Outflow Tracer',
-        #     'folder_key': 'tracer',
-        #     'quantity': 's_00',
-        #     'cmap': 'bwr',
-        #     'norm': None,
-        #     'vmin': 0.0, 
-        #     'vmax': 1.0
-        #     # 'vmin': None, 
-        #     # 'vmax': None
-        # }
+        'tracer': {
+            'label': 'Outflow Tracer',
+            'folder_key': 'tracer',
+            'quantity': 's_00',
+            'cmap': 'bwr',
+            'norm': None,
+            'vmin': 0.0, 
+            'vmax': 1.0
+            # 'vmin': None, 
+            # 'vmax': None
+        }
     },
     
     # Combined plot order (top to bottom)
-    # 'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
-    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
+    'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool', 'tracer']
+    # 'plot_order': ['dens', 'pres', 'velx', 'temp', 't_cool']
     
 }
 

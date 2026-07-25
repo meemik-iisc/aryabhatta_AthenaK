@@ -88,3 +88,27 @@ def mask_half(array, extent, keep="top"):
         return np.ma.masked_where(Y > 0, array)
     else:
         raise ValueError("keep must be 'top' or 'bottom'")
+    
+def get_symlog_ticks(vmin, vmax, linthresh=1e-2, base=10, max_ticks=7):
+    import numpy as np
+    import matplotlib.ticker as mticker
+    max_abs = max(abs(vmin), abs(vmax))
+    if max_abs == 0:
+        return [0]
+
+    max_pow = int(np.floor(np.log(max_abs) / np.log(base)))
+    vals = [base**p for p in range(max_pow + 1) if base**p >= linthresh]
+
+    ticks = []
+    ticks += [-v for v in vals[::-1] if vmin <= -v <= vmax]
+    if vmin <= 0 <= vmax:
+        ticks += [0]
+    ticks += [v for v in vals if vmin <= v <= vmax]
+
+    if len(ticks) > max_ticks:
+        step = int(np.ceil(len(ticks) / max_ticks))
+        neg = [t for t in ticks if t < 0][::step]
+        pos = [t for t in ticks if t > 0][::step]
+        ticks = neg + ([0] if vmin <= 0 <= vmax else []) + pos
+
+    return ticks

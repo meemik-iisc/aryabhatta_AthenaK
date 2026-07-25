@@ -214,87 +214,138 @@ def plot_comparative_time_scales(timescales, user_params):
 
 
 def plot_comparative_profile_uCGM_tCGM(uCGM_df, tCGM_df, uCGM_params, tCGM_params):
+    """
+    Paper-ready comparative profile plot for uCGM vs tCGM.
+    Features:
+    - Larger, bold labels and tick labels
+    - Publication-quality aesthetics
+    - Clean legend with proper formatting
+    """
+    
+    # Only plot if profile variable is 'zh'
     if uCGM_params['profile_variable'] != 'zh':
         return
-
+    
+    # Get data
     uCGM_x, uCGM_data = get_zh_data(uCGM_df, uCGM_params)
     tCGM_x, tCGM_data = get_zh_data(tCGM_df, tCGM_params)
-
-    plt.style.use("seaborn-v0_8-whitegrid")
+    
+    # Set publication-style parameters
     plt.rcParams.update({
-        "font.size": 14,
-        "axes.labelsize": 16,
-        "axes.labelweight": "bold",
-        "xtick.labelsize": 13,
-        "ytick.labelsize": 13,
-        "legend.fontsize": 13,
-        "axes.linewidth": 1.2,
+        "font.family": "serif",
+        "font.serif": ["Times New Roman", "DejaVu Sans"],
+        "font.size": 16,
+        "axes.labelsize": 22,              # BIG and BOLD
+        "axes.labelweight": "bold",         # BOLD labels
+        "xtick.labelsize": 18,              # BIG tick labels
+        "ytick.labelsize": 18,              # BIG tick labels
+        "legend.fontsize": 18,              # BIG legend text
+        "axes.linewidth": 1.5,              # Thicker axes
+        "xtick.major.width": 1.2,
+        "ytick.major.width": 1.2,
         "figure.dpi": 150,
-        "savefig.dpi": 300,
+        "savefig.dpi": 300,                 # High resolution
+        "savefig.format": "png",
     })
-
-    fig, ax = plt.subplots(figsize=uCGM_params.get("figsize", (10, 8)))
-
+    
+    # Create figure
+    figsize = uCGM_params.get("figsize", (10, 8))
+    fig, ax = plt.subplots(figsize=figsize, dpi=150)
+    
+    # Scatter plots - publication colors
     sc1 = ax.scatter(
-        uCGM_x,
-        uCGM_data,
-        color=uCGM_params.get("color", "tab:blue"),
-        s=uCGM_params.get("marker_size", 20),
-        alpha=0.75,
+        uCGM_x, uCGM_data,
+        color=uCGM_params.get("color", "#1f77b4"),  # Better blue
+        s=uCGM_params.get("marker_size", 25),
+        alpha=0.7,
         edgecolors="none",
         rasterized=True,
-        label="uCGM"
+        label="uniform CGM"
     )
-
+    
     sc2 = ax.scatter(
-        tCGM_x,
-        tCGM_data,
-        color=tCGM_params.get("color", "tab:orange"),
-        s=tCGM_params.get("marker_size", 20),
-        alpha=0.75,
+        tCGM_x, tCGM_data,
+        color=tCGM_params.get("color", "#ff7f0e"),  # Better orange
+        s=tCGM_params.get("marker_size", 25),
+        alpha=0.7,
         edgecolors="none",
         rasterized=True,
-        label="tCGM"
+        label="exponential CGM"
     )
-
-    ax.set_xlabel(uCGM_params["xlabel"], labelpad=10)
-    ax.set_ylabel(uCGM_params["cmap_label"], labelpad=10)
+    
+    # Labels - BIG and BOLD
+    ax.set_xlabel(str(uCGM_params["xlabel"]), labelpad=12)
+    ax.set_ylabel(str(uCGM_params["cmap_label"]), labelpad=12)
+    
+    # Set limits
     ax.set_xlim(*uCGM_params["clim"])
+    
+    # Professional tick style
+    ax.tick_params(
+        direction="out",
+        length=6,
+        width=1.5,
+        top=True,
+        right=True,
+        labelsize=18,
+    )
+    # Make tick labels bold
+    for label in ax.get_xticklabels():
+        label.set_weight("bold")
 
-    ax.tick_params(direction="in", length=5, width=1.1, top=True, right=True)
+    for label in ax.get_yticklabels():
+        label.set_weight("bold")
+
+    # Thicker spines
     for spine in ax.spines.values():
-        spine.set_linewidth(1.1)
-
-    ax.grid(alpha=0.25, linewidth=0.8)
-
+        spine.set_linewidth(1.5)
+    
+    # Subtle grid
+    ax.grid(alpha=0.15, linewidth=0.6, linestyle='-', color='gray')
+    
+    # Publication-quality legend
     legend = ax.legend(
         handles=[sc1, sc2],
-        labels=["uniform CGM", "exponential CGM"],
+        labels=["Uniform CGM", "Exponential CGM"],
         loc="lower left",
         bbox_to_anchor=(0.02, 0.02),
         frameon=True,
-        fancybox=True,
-        framealpha=0.95,
-        edgecolor="0.8",
-        borderpad=0.6,
-        handletextpad=0.6,
+        fancybox=False,
+        framealpha=0.98,
+        edgecolor="black",
+        borderpad=0.8,
+        handletextpad=0.8,
+        labelspacing=0.6,
         scatterpoints=1,
-        markerscale=1.4,
+        markerscale=1.5,
     )
-
-    legend.get_frame().set_linewidth(0.8)
-
-    fig.tight_layout()
-
+    
+    legend.get_frame().set_linewidth(1.0)
+    legend.get_frame().set_edgecolor("black")
+    # Make legend text bold
+    for text in legend.get_texts():
+        text.set_weight("bold")
+    
+    # Layout
+    fig.tight_layout(pad=0.5)
+    
+    # Save
     out_dir = Path(uCGM_params["output_path"]) / "compare_zh_profile"
     out_dir.mkdir(parents=True, exist_ok=True)
-
+    
     if uCGM_params.get("loop_bin", False):
         fname = out_dir / f"zh_{uCGM_params['slice_number']}.png"
     else:
         fname = out_dir / "zh.png"
-
-    fig.savefig(fname, bbox_inches="tight", pad_inches=0.08)
+    
+    fig.savefig(
+        fname,
+        bbox_inches="tight",
+        pad_inches=0.08,
+        dpi=300,
+        facecolor="white",
+        edgecolor="none"
+    )
     plt.close(fig)
-
-    print(f"Profile saved at {fname}")
+    
+    print(f"Paper-ready profile saved at {fname}")

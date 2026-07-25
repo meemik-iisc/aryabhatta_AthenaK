@@ -1,7 +1,7 @@
 import struct
 import numpy as np
 import pandas as pd
-from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm,rho_cgs,pres_cgs,s_Myr
+from utils.constants import mu,mp_cgs,kB_cgs,length_cgs,mass_cgs,time_cgs,gamma,Temp_norm,rho_cgs,pres_cgs,s_Myr,Velr_scale
 from utils.helpers import cool_lambda, mask_half
 
 def extract_athenak_slice(user_params):
@@ -199,7 +199,7 @@ def extract_athenak_slice(user_params):
         
         quantities_stacked = [df.stack() for df in quantities_list]
         combined_df = pd.concat(quantities_stacked, keys=range(len(quantities_stacked)), names=['block', 'row', 'col'])
-        print(quantities_stacked)
+        # print(quantities_stacked)
         return {
             "df_quantities": combined_df,
             "df_extents": df_extents,
@@ -252,6 +252,18 @@ def extract_radial_vel_slice(user_params):
         "df_extents": velx_data_df['df_extents'],
         "num_blocks": velx_data_df['num_blocks'],
         "block_shape": velx_data_df['block_shape']
+    }
+
+def extract_y_vel_slice(user_params):
+    vel_params = user_params.copy()
+    vel_params.update(variable="vely")
+    vely_data_df=extract_athenak_slice(vel_params)
+    vely_data = vely_data_df['df_quantities']*Velr_scale
+    return {
+        "df_quantities": vely_data,
+        "df_extents": vely_data_df['df_extents'],
+        "num_blocks": vely_data_df['num_blocks'],
+        "block_shape": vely_data_df['block_shape']
     }
 
 def extract_cooling_rate_slice(user_params):
@@ -353,6 +365,7 @@ def get_stitched_slice_for_variable(user_params):
         "temp": extract_temp_slice,
         "cooling_rate": extract_cooling_rate_slice,
         "tcool": extract_tcool_slice,
+        "yvel": extract_y_vel_slice
     }
 
     if variable.startswith("derived:"):
